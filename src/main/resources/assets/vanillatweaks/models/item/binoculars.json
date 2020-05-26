@@ -1,0 +1,6 @@
+{
+  "parent": "vanillatweaks:item/base_item",
+  "textures": {
+    "layer0": "vanillatweaks:items/binoculars"
+  }
+}

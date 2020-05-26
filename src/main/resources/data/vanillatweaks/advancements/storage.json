@@ -1,0 +1,46 @@
+{
+  "display": {
+    "icon": {
+      "item": "vanillatweaks:sugar_block"
+    },
+    "title": {
+      "translate": "advancements.vt.storage"
+    },
+    "description": {
+      "translate": "advancements.vt.storage.desc"
+    }
+  },
+  "parent": "vanillatweaks:crafting_pad",
+  "criteria": {
+    "sugar_in_inventory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "vanillatweaks:sugar_block"
+          }
+        ]
+      }
+    },
+    "charcoal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "vanillatweaks:charcoal_block"
+          }
+        ]
+      }
+    },
+    "flint": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "vanillatweaks:flint_block"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "vanillatweaks:fried_egg"
+    },
+    "title": {
+      "translate": "advancements.vt.fried_egg"
+    },
+    "description": {
+      "translate": "advancements.vt.fried_egg.desc"
+    }
+  },
+  "parent": "vanillatweaks:crafting_pad",
+  "criteria": {
+    "sugar_in_inventory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "vanillatweaks:fried_egg"
+          }
+        ]
+      }
+    }
+  }
+}

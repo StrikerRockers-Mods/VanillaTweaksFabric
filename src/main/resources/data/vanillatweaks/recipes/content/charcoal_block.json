@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FFF",
+    "FFF",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:charcoal"
+    }
+  },
+  "result": {
+    "item": "vanillatweaks:charcoal_block"
+  }
+}

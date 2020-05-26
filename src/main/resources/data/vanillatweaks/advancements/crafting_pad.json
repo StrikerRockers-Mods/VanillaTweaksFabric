@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "vanillatweaks:crafting_pad"
+    },
+    "title": {
+      "translate": "advancements.vt.crafting_pad"
+    },
+    "description": {
+      "translate": "advancements.vt.crafting_pad.desc"
+    },
+    "background": "vanillatweaks:textures/blocks/sugar_block.png"
+  },
+  "criteria": {
+    "pad_in_inventory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "vanillatweaks:crafting_pad"
+          }
+        ]
+      }
+    }
+  }
+}
