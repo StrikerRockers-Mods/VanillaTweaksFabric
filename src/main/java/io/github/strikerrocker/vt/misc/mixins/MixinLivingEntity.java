@@ -1,7 +1,9 @@
 package io.github.strikerrocker.vt.misc.mixins;
 
-import io.github.strikerrocker.vt.misc.EntityTickCallback;
+import io.github.strikerrocker.vt.misc.LivingEntityDeathCallback;
+import io.github.strikerrocker.vt.misc.LivingEntityTickCallback;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,6 +17,12 @@ public class MixinLivingEntity {
     ), method = "baseTick")
     public void updateLogic(CallbackInfo info) {
         LivingEntity entity = (LivingEntity) (Object) this;
-        EntityTickCallback.EVENT.invoker().update(entity);
+        LivingEntityTickCallback.EVENT.invoker().update(entity);
+    }
+
+    @Inject(method = "onDeath", at = @At("RETURN"))
+    public void onDeath(DamageSource damageSource, CallbackInfo callbackInfo) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        LivingEntityDeathCallback.EVENT.invoker().onDeath(entity, damageSource);
     }
 }

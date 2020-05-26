@@ -1,9 +1,11 @@
 package io.github.strikerrocker.vt.misc.mixins;
 
+import io.github.strikerrocker.vt.misc.BlockBreakCallback;
 import io.github.strikerrocker.vt.misc.BlockPlaceCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +18,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinBlock {
     @Inject(method = "onPlaced", at = @At("RETURN"))
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
-        BlockPlaceCallback.EVENT.invoker().onPlaced(world, pos, state);
+        BlockPlaceCallback.EVENT.invoker().onPlaced(world, pos, state, placer);
+    }
+
+    @Inject(method = "onBreak", at = @At("RETURN"))
+    public void onPlaced(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo callbackInfo) {
+        BlockBreakCallback.EVENT.invoker().onBreak(world, pos, state, player);
     }
 }

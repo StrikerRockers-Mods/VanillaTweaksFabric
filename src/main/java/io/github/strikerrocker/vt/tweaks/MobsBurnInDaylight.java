@@ -1,7 +1,7 @@
 package io.github.strikerrocker.vt.tweaks;
 
 import io.github.strikerrocker.vt.base.Feature;
-import io.github.strikerrocker.vt.misc.EntityTickCallback;
+import io.github.strikerrocker.vt.misc.LivingEntityTickCallback;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.ZombieEntity;
@@ -15,7 +15,7 @@ public class MobsBurnInDaylight extends Feature {
 
     @Override
     public void initialize() {
-        EntityTickCallback.EVENT.register(livingEntity -> {
+        LivingEntityTickCallback.EVENT.register(livingEntity -> {
             if (!livingEntity.world.isClient) {
                 World world = livingEntity.world;
                 if (((livingEntity instanceof CreeperEntity && TweaksModule.config.creeperBurnInDaylight) || (livingEntity instanceof ZombieEntity && livingEntity.isBaby() &&

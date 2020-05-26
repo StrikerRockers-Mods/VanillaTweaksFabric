@@ -4,11 +4,11 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
 
-public interface EntityTickCallback {
-    Event<EntityTickCallback> EVENT = EventFactory.createArrayBacked(EntityTickCallback.class,
+public interface LivingEntityTickCallback {
+    Event<LivingEntityTickCallback> EVENT = EventFactory.createArrayBacked(LivingEntityTickCallback.class,
             (listeners) -> (livingEntity -> {
-                for (EntityTickCallback entityTickCallback : listeners) {
-                    entityTickCallback.update(livingEntity);
+                for (LivingEntityTickCallback livingEntityTickCallback : listeners) {
+                    livingEntityTickCallback.update(livingEntity);
                 }
             })
     );
