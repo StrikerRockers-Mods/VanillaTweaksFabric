@@ -15,13 +15,11 @@ public class TweaksModule extends Module {
         registerFeature("sign_editing", new SignEditing());
         registerFeature("tnt_ignition", new TNTIgnition());
         registerFeature("sickle", new Sickle());
-        registerFeature("modified_item_group", new ModifiedItemGroups());
         registerFeature("silk_spawner", new SilkSpawner());
         registerFeature("armor_stand_swap", new ArmorStandSwap());
         registerFeature("shear_nametag", new ShearNameTag());
         registerFeature("mobs_burn_daylight", new MobsBurnInDaylight());
         registerFeature("item_frame_reverse_rotate", new ItemFrameReverse());
-        registerFeature("stack_sizes", new StackSizes());
         registerFeature("squishy_sponges", new SquishySponges());
     }
 

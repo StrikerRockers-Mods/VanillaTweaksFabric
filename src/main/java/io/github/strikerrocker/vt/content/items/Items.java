@@ -33,24 +33,10 @@ public class Items extends Feature {
     private static final Item LENS = new Item(new Item.Settings().group(ItemGroup.MISC));
     private static final Item FRIED_EGG = new Item(new Item.Settings().food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.6f).build()).group(ItemGroup.FOOD));
     public static ArmorMaterial binocular_material = new BasicArmorMaterial("binoculars", 0, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0f, () -> Ingredient.ofItems(IRON_INGOT));
-    private static final Item BINOCULARS = new ArmorItem(binocular_material, EquipmentSlot.HEAD, new Item.Settings().maxCount(1).group(ItemGroup.TOOLS));
+    public static final Item BINOCULARS = new ArmorItem(binocular_material, EquipmentSlot.HEAD, new Item.Settings().maxCount(1).group(ItemGroup.TOOLS));
     public static Item CRAFTING_PAD = new CraftingPadItem();
     public static Item DYNAMITE = new DynamiteItem();
     public static Item SLIME_BUCKET = new SlimeBucketItem();
-
-    /*@SubscribeEvent
-    public void onFOVChange(FOVUpdateEvent event) {
-        if (event.getEntity() != null && binocularZoomAmount.get() != 0) {
-            ItemStack helmet = event.getEntity().getItemStackFromSlot(EquipmentSlotType.HEAD);
-            if ((!helmet.isEmpty() && helmet.getItem() == BINOCULARS)) {
-                event.setNewfov((float) (event.getFov() / binocularZoomAmount.get()));
-            } else if (ModList.get().isLoaded("curios")) {
-                if (CuriosCompat.isStackInCuriosSlot(new ItemStack(Items.BINOCULARS), event.getEntity())) {
-                    event.setNewfov((float) (event.getFov() / binocularZoomAmount.get()));
-                }
-            }
-        }
-    }*/
 
     @Override
     public void initialize() {

@@ -23,7 +23,9 @@ dependencies {
     modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modApi "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
+    implementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
 }
 
 processResources {

@@ -11,8 +11,6 @@ public class WorldModule extends Module {
     @Override
     public void addFeatures() {
         registerFeature("realistic_relationship", new RealisticRelationship());
-        //registerFeature(new NoMoreLavaGen());
-        registerFeature("self_planting", new SelfPlanting());
     }
 
     @Override
@@ -21,5 +19,4 @@ public class WorldModule extends Module {
         config = AutoConfig.getConfigHolder(WorldConfig.class).getConfig();
         super.initialize();
     }
-
 }
