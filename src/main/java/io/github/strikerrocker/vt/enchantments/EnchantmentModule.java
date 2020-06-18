@@ -3,14 +3,19 @@ package io.github.strikerrocker.vt.enchantments;
 import io.github.strikerrocker.vt.base.Module;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.Toml4jConfigSerializer;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.github.strikerrocker.vt.VanillaTweaks.MODID;
 
 public class EnchantmentModule extends Module {
 
     public static EnchantingConfig config;
+    public static Map<String, Enchantment> enchantments = new HashMap<>();
 
     @Override
     public void initialize() {
@@ -18,19 +23,20 @@ public class EnchantmentModule extends Module {
         AutoConfig.register(EnchantingConfig.class, Toml4jConfigSerializer::new);
         config = AutoConfig.getConfigHolder(EnchantingConfig.class).getConfig();
         if (config.enableBlazing)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "blazing"), new BlazingEnchantment());
+            enchantments.put("blazing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "blazing"), new BlazingEnchantment()));
         if (config.enableHops)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "hops"), new HopsEnchantment());
+            enchantments.put("hops", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "hops"), new HopsEnchantment()));
         if (config.enableNimble)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "nimble"), new NimbleEnchantment());
+            enchantments.put("nimble", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "nimble"), new NimbleEnchantment()));
         if (config.enableSiphon)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "siphon"), new SiphonEnchantment());
+            enchantments.put("siphon", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "siphon"), new SiphonEnchantment()));
         if (config.enableVeteran)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "veteran"), new VeteranEnchantment());
+            enchantments.put("veteran", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "veteran"), new VeteranEnchantment()));
         if (config.enableVigor)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "vigor"), new VigorEnchantment());
+            enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "vigor"), new VigorEnchantment()));
         if (config.enableHoming)
-            Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "homing"), new HomingEnchantment());
+            enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "homing"), new HomingEnchantment()));
+        super.initialize();
     }
 
     @Override

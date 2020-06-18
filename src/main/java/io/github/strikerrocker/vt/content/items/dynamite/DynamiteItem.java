@@ -1,6 +1,5 @@
 package io.github.strikerrocker.vt.content.items.dynamite;
 
-import io.github.strikerrocker.vt.content.items.Items;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -27,7 +26,7 @@ public class DynamiteItem extends Item {
         world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
         user.getItemCooldownManager().set(this, 20);
         if (!world.isClient) {
-            DynamiteEntity dynamite = new DynamiteEntity(Items.DYNAMITE_TYPE, world, user);
+            DynamiteEntity dynamite = new DynamiteEntity(world, user);
             dynamite.setItem(itemstack);
             dynamite.setProperties(user, user.pitch, user.yaw, 0, 1.5F, 0);
             user.getEntityWorld().spawnEntity(dynamite);

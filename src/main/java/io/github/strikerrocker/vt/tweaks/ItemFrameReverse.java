@@ -12,7 +12,10 @@ public class ItemFrameReverse extends Feature {
         UseEntityCallback.EVENT.register(((player, world, hand, target, entityHitResult) -> {
             if (TweaksModule.config.itemFrameRotateBackwards && target instanceof ItemFrameEntity && player.isSneaking()) {
                 ItemFrameEntity frame = (ItemFrameEntity) target;
-                frame.setRotation(frame.getRotation() - 1);
+                int rotation = frame.getRotation() - 1;
+                if (rotation < 0)
+                    rotation = 7;
+                frame.setRotation(rotation);
                 return ActionResult.SUCCESS;
             }
             return ActionResult.PASS;

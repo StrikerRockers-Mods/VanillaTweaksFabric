@@ -30,8 +30,8 @@ public class DynamiteEntity extends ThrownItemEntity {
         super(type, world);
     }
 
-    DynamiteEntity(EntityType<? extends ThrownItemEntity> type, World world, LivingEntity entity) {
-        super(type, entity, world);
+    DynamiteEntity(World world, LivingEntity entity) {
+        super(Items.DYNAMITE_TYPE, entity, world);
     }
 
     @Override
