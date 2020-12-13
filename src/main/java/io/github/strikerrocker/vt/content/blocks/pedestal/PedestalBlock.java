@@ -1,7 +1,5 @@
 package io.github.strikerrocker.vt.content.blocks.pedestal;
 
-import io.github.strikerrocker.vt.content.blocks.Blocks;
-import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +7,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -50,7 +49,9 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
             ItemStack heldItem = player.getStackInHand(hand);
             PedestalBlockEntity blockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
             if (player.isSneaking()) {
-                ContainerProviderRegistry.INSTANCE.openContainer(Blocks.PEDESTAL_IDENTIFIER, player, packetByteBuf -> packetByteBuf.writeBlockPos(pos));
+                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+                if (screenHandlerFactory != null)
+                    player.openHandledScreen(screenHandlerFactory);
             } else {
                 ItemStack stack = blockEntity.getStack(0);
                 if (heldItem.isEmpty()) {

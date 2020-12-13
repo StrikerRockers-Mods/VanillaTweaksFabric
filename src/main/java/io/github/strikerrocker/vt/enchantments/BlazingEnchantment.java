@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.enchantments;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.enchantment.Enchantments;
@@ -14,7 +15,7 @@ public class BlazingEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return EnchantmentModule.config.enableBlazing ? 1 : 0;
+        return VanillaTweaks.config.enchanting.enableBlazing ? 1 : 0;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class BlazingEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ToolItem && EnchantmentModule.config.enableBlazing;
+        return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableBlazing;
     }
 
     /*private static class BlazingModifier extends LootModifier {

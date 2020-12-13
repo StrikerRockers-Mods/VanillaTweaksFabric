@@ -1,6 +1,6 @@
 package io.github.strikerrocker.vt.misc.mixins.world;
 
-import io.github.strikerrocker.vt.world.WorldModule;
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FarmlandBlock;
@@ -30,17 +30,13 @@ public abstract class MixinItemEntity extends Entity {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"))
     public void tick(CallbackInfo callbackInfo) {
-        if (WorldModule.config.selfPlanting && age > 20 && getStack().getItem() instanceof BlockItem) {
-
+        if (VanillaTweaks.config.world.selfPlanting && age > 20 && getStack().getItem() instanceof BlockItem) {
             ItemStack stack = this.getStack();
             BlockPos pos = getBlockPos();
             if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)
                 pos = pos.add(0, 1, 0);
             BlockState state = world.getBlockState(pos);
             if (((BlockItem) stack.getItem()).getBlock() instanceof PlantBlock) {
-                System.out.println("pos=" + pos);
-                System.out.println("state=" + state);
-                System.out.println("Block=" + ((BlockItem) stack.getItem()).getBlock());
                 PlantBlock plantBlock = (PlantBlock) ((BlockItem) stack.getItem()).getBlock();
                 if (plantBlock.canPlaceAt(state, world, pos) && state.getBlock() instanceof AirBlock) {
                     world.setBlockState(pos, ((BlockItem) stack.getItem()).getBlock().getDefaultState());

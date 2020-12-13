@@ -21,6 +21,7 @@ public class CraftingPadItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient()) {
             user.openHandledScreen(new SimpleNamedScreenHandlerFactory(((syncId, inv, player) -> new CraftingPadScreenHandler(syncId, player.inventory, ScreenHandlerContext.EMPTY)), new TranslatableText("item.vanillatweaks.crafting_pad")));
+            //TODO doesnt work
             return new TypedActionResult<>(ActionResult.SUCCESS, user.getStackInHand(hand));
         }
         return new TypedActionResult<>(ActionResult.SUCCESS, user.getStackInHand(hand));

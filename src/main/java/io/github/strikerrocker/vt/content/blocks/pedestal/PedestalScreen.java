@@ -36,5 +36,6 @@ public class PedestalScreen extends HandledScreen<PedestalScreenHandler> {
     protected void init() {
         super.init();
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        playerInventoryTitleY = 40;
     }
 }

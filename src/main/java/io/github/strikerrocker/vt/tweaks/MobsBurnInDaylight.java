@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.tweaks;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.misc.LivingEntityTickCallback;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,8 +19,8 @@ public class MobsBurnInDaylight extends Feature {
         LivingEntityTickCallback.EVENT.register(livingEntity -> {
             if (!livingEntity.world.isClient) {
                 World world = livingEntity.world;
-                if (((livingEntity instanceof CreeperEntity && TweaksModule.config.creeperBurnInDaylight) || (livingEntity instanceof ZombieEntity && livingEntity.isBaby() &&
-                        TweaksModule.config.babyZombieBurnInDaylight)) && world.isDay()) {
+                if (((livingEntity instanceof CreeperEntity && VanillaTweaks.config.tweaks.creeperBurnInDaylight) || (livingEntity instanceof ZombieEntity && livingEntity.isBaby() &&
+                        VanillaTweaks.config.tweaks.babyZombieBurnInDaylight)) && world.isDay()) {
                     float brightness = livingEntity.getBrightnessAtEyes();
                     Random random = world.random;
                     BlockPos blockPos = livingEntity.getBlockPos();

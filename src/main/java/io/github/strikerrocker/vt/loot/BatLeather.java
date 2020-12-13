@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.loot;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.misc.LivingEntityDeathCallback;
 import net.minecraft.entity.passive.BatEntity;
@@ -16,7 +17,7 @@ public class BatLeather extends Feature {
             World world = livingEntity.world;
             if (!world.isClient && world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT) && damageSource != null && livingEntity instanceof BatEntity) {
                 ItemStack nameTag = new ItemStack(Items.LEATHER);
-                if (world.random.nextInt(10) <= LootModule.config.batLeatherDropChance)
+                if (world.random.nextInt(10) <= VanillaTweaks.config.loot.batLeatherDropChance)
                     livingEntity.dropStack(nameTag);
             }
         });

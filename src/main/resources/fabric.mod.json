@@ -16,6 +16,9 @@
     ],
     "client": [
       "io.github.strikerrocker.vt.VanillaTweaksClient"
+    ],
+    "modmenu": [
+      "io.github.strikerrocker.vt.misc.ModMenuIntegration"
     ]
   },
   "mixins": [

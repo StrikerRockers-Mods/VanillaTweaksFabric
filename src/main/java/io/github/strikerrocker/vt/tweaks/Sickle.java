@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.tweaks;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.*;
@@ -21,7 +22,7 @@ public class Sickle extends Feature {
     public void initialize() {
         AttackBlockCallback.EVENT.register(((player, world, hand, blockPos, direction) -> {
             ItemStack stack = player.getStackInHand(hand);
-            if (!stack.isEmpty() && stack.getItem() instanceof HoeItem && canHarvest(world.getBlockState(blockPos)) && TweaksModule.config.hoeActsAsSickle) {
+            if (!stack.isEmpty() && stack.getItem() instanceof HoeItem && canHarvest(world.getBlockState(blockPos)) && VanillaTweaks.config.tweaks.hoeActsAsSickle) {
                 int range = 1;
                 if (stack.getItem() == Items.DIAMOND_HOE)
                     range++;

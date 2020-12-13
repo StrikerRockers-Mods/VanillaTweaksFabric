@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.tweaks;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.EquipmentSlot;
@@ -20,7 +21,7 @@ public class ArmorStandSwap extends Feature {
     @Override
     public void initialize() {
         UseEntityCallback.EVENT.register(((player, world, hand, target, entityHitResult) -> {
-            if (player.isSneaking() && TweaksModule.config.enableArmorStandSwapping) {
+            if (player.isSneaking() && VanillaTweaks.config.tweaks.enableArmorStandSwapping) {
                 if (world.isClient || player.isSpectator() || player.isCreative() || !(target instanceof ArmorStandEntity))
                     return ActionResult.PASS;
                 ArmorStandEntity armorStand = (ArmorStandEntity) target;

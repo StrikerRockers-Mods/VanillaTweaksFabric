@@ -1,6 +1,8 @@
 package io.github.strikerrocker.vt.content.items.dynamite;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.content.items.Items;
+import io.github.strikerrocker.vt.misc.EntitySpawnPacket;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
@@ -9,7 +11,9 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -89,5 +93,10 @@ public class DynamiteEntity extends ThrownItemEntity {
             }
             this.remove();
         }
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return EntitySpawnPacket.create(this, new Identifier(VanillaTweaks.MODID, "dynamite"));
     }
 }

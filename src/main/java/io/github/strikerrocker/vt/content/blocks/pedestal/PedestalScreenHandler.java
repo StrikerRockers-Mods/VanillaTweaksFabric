@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.content.blocks.pedestal;
 
+import io.github.strikerrocker.vt.content.blocks.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -16,7 +17,7 @@ public class PedestalScreenHandler extends ScreenHandler {
     }
 
     public PedestalScreenHandler(int id, PlayerInventory playerInv, Inventory inventory) {
-        super(null, id);
+        super(Blocks.PEDESTAL_SCREEN_HANDLER, id);
         this.inventory = inventory;
         addSlot(new Slot(inventory, 0, 80, 20));
         for (int i = 0; i < 3; i++) {

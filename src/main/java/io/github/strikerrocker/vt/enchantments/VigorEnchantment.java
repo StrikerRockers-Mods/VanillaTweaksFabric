@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.enchantments;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
@@ -47,11 +48,11 @@ public class VigorEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return EnchantmentModule.config.enableVigor ? 3 : 0;
+        return VanillaTweaks.config.enchanting.enableVigor ? 3 : 0;
     }
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.CHEST) && EnchantmentModule.config.enableVigor;
+        return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.CHEST) && VanillaTweaks.config.enchanting.enableVigor;
     }
 }

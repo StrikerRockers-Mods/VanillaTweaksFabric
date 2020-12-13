@@ -2,11 +2,8 @@ package io.github.strikerrocker.vt.tweaks;
 
 import io.github.strikerrocker.vt.base.Module;
 import io.github.strikerrocker.vt.tweaks.silkspawner.SilkSpawner;
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.Toml4jConfigSerializer;
 
 public class TweaksModule extends Module {
-    public static TweaksConfig config;
 
     @Override
     public void addFeatures() {
@@ -19,12 +16,5 @@ public class TweaksModule extends Module {
         registerFeature("mobs_burn_daylight", new MobsBurnInDaylight());
         registerFeature("item_frame_reverse_rotate", new ItemFrameReverse());
         registerFeature("squishy_sponges", new SquishySponges());
-    }
-
-    @Override
-    public void initialize() {
-        AutoConfig.register(TweaksConfig.class, Toml4jConfigSerializer::new);
-        config = AutoConfig.getConfigHolder(TweaksConfig.class).getConfig();
-        super.initialize();
     }
 }

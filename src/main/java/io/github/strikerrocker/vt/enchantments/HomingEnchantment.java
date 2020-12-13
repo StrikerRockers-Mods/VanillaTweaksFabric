@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.enchantments;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
@@ -25,12 +26,12 @@ public class HomingEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return EnchantmentModule.config.enableHoming ? 3 : 0;
+        return VanillaTweaks.config.enchanting.enableHoming ? 3 : 0;
     }
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof BowItem && EnchantmentModule.config.enableHoming;
+        return stack.getItem() instanceof BowItem && VanillaTweaks.config.enchanting.enableHoming;
     }
 
     /*@SubscribeEvent

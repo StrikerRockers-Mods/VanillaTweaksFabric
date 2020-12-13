@@ -1,9 +1,9 @@
 package io.github.strikerrocker.vt.tweaks.silkspawner;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.misc.BlockBreakCallback;
 import io.github.strikerrocker.vt.misc.BlockPlaceCallback;
-import io.github.strikerrocker.vt.tweaks.TweaksModule;
 import net.fabricmc.fabric.api.event.client.ItemTooltipCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -35,7 +35,7 @@ public class SilkSpawner extends Feature {
                     stack = mainHand;
                 else if (offHand.getItem() == mobSpawnerItem)
                     stack = offHand;
-                if (TweaksModule.config.enableSilkSpawner && stack != null && stack.hasTag()) {
+                if (VanillaTweaks.config.tweaks.enableSilkSpawner && stack != null && stack.hasTag()) {
                     CompoundTag stackTag = stack.getTag();
                     assert stackTag != null;
                     CompoundTag spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
@@ -51,7 +51,7 @@ public class SilkSpawner extends Feature {
         BlockBreakCallback.EVENT.register((world, pos, blockState, playerEntity) -> {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             int lvl = EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandStack());
-            if (blockState.getBlock() instanceof SpawnerBlock && !world.isClient() && blockEntity instanceof MobSpawnerBlockEntity && TweaksModule.config.enableSilkSpawner && lvl >= 1) {
+            if (blockState.getBlock() instanceof SpawnerBlock && !world.isClient() && blockEntity instanceof MobSpawnerBlockEntity && VanillaTweaks.config.tweaks.enableSilkSpawner && lvl >= 1) {
                 ItemStack drop = new ItemStack(Blocks.SPAWNER);
                 CompoundTag spawnerData = ((MobSpawnerBlockEntity) blockEntity).getLogic().toTag(new CompoundTag());
                 CompoundTag stackTag = new CompoundTag();

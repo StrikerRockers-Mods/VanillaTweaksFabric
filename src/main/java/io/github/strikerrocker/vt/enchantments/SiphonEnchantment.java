@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.enchantments;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
@@ -23,12 +24,12 @@ public class SiphonEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return EnchantmentModule.config.enableSiphon ? 1 : 0;
+        return VanillaTweaks.config.enchanting.enableSiphon ? 1 : 0;
     }
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ToolItem && EnchantmentModule.config.enableSiphon;
+        return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableSiphon;
     }
 
     /*private static class SiphonModifier extends LootModifier {

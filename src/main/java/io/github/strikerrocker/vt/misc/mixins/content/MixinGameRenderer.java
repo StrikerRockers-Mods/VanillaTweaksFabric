@@ -1,6 +1,6 @@
 package io.github.strikerrocker.vt.misc.mixins.content;
 
-import io.github.strikerrocker.vt.content.ContentModule;
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.content.items.Items;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
@@ -26,10 +26,10 @@ public class MixinGameRenderer {
     private void getZoomedFov(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> info) {
         double fov = info.getReturnValueD();
         PlayerEntity player = client.player;
-        if (player != null && ContentModule.config.binocularZoomAmount != 0) {
+        if (player != null && VanillaTweaks.config.content.binocularZoomAmount != 0) {
             ItemStack helmet = player.getEquippedStack(EquipmentSlot.HEAD);
             if (!helmet.isEmpty() && helmet.getItem() == Items.BINOCULARS) {
-                info.setReturnValue(fov / ContentModule.config.binocularZoomAmount);
+                info.setReturnValue(fov / VanillaTweaks.config.content.binocularZoomAmount);
             }
         }
     }

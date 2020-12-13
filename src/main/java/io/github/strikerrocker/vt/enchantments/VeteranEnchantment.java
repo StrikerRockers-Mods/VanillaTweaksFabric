@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.enchantments;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
@@ -23,12 +24,12 @@ public class VeteranEnchantment extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return EnchantmentModule.config.enableVeteran ? 1 : 0;
+        return VanillaTweaks.config.enchanting.enableVeteran ? 1 : 0;
     }
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.HEAD) && EnchantmentModule.config.enableVeteran;
+        return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.HEAD) && VanillaTweaks.config.enchanting.enableVeteran;
     }
 
     /*@SubscribeEvent

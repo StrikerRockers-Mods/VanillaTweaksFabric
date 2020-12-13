@@ -1,7 +1,7 @@
 package io.github.strikerrocker.vt.content.blocks;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
-import io.github.strikerrocker.vt.content.ContentModule;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalBlock;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalBlockEntity;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalScreenHandler;
@@ -25,25 +25,24 @@ public class Blocks extends Feature {
     public static final Block FLINT_BLOCK = new Block(Block.Settings.of(Material.AGGREGATE, MaterialColor.BROWN).strength(1.0f, 10.0f));
     public static final Block PEDESTAL_BLOCK = new PedestalBlock();
     public static final Identifier PEDESTAL_IDENTIFIER = new Identifier(MODID, "pedestal");
-    public static BlockEntityType<PedestalBlockEntity> PEDESTAL_TYPE;
     public static final ScreenHandlerType<PedestalScreenHandler> PEDESTAL_SCREEN_HANDLER;
+    public static BlockEntityType<PedestalBlockEntity> PEDESTAL_TYPE;
 
     static {
         PEDESTAL_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(PEDESTAL_IDENTIFIER, PedestalScreenHandler::new);
+        PEDESTAL_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE, PEDESTAL_IDENTIFIER, BlockEntityType.Builder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build(null));
     }
 
     @Override
     public void initialize() {
-        if (ContentModule.config.enableStorageBlocks) {
+        if (VanillaTweaks.config.content.enableStorageBlocks) {
             Registry.register(Registry.BLOCK, new Identifier(MODID, "charcoal_block"), CHARCOAL_BLOCK);
             Registry.register(Registry.BLOCK, new Identifier(MODID, "sugar_block"), SUGAR_BLOCK);
             Registry.register(Registry.BLOCK, new Identifier(MODID, "flint_block"), FLINT_BLOCK);
             FuelRegistry.INSTANCE.add(CHARCOAL_BLOCK, 16000);
         }
-        if (ContentModule.config.enablePedestal) {
-            PEDESTAL_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE, PEDESTAL_IDENTIFIER, BlockEntityType.Builder.create(PedestalBlockEntity::new).build(null));
+        if (VanillaTweaks.config.content.enablePedestal) {
             Registry.register(Registry.BLOCK, PEDESTAL_IDENTIFIER, PEDESTAL_BLOCK);
-
         }
     }
 }
