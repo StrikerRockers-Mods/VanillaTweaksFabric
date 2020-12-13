@@ -9,27 +9,27 @@ import net.minecraft.item.ToolItem;
 
 public class BlazingEnchantment extends Enchantment {
     BlazingEnchantment() {
-        super(Weight.VERY_RARE, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.VERY_RARE, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     @Override
-    public int getMaximumLevel() {
+    public int getMaxLevel() {
         return EnchantmentModule.config.enableBlazing ? 1 : 0;
     }
 
     @Override
-    public int getMinimumPower(int level) {
+    public int getMinPower(int level) {
         return 15;
     }
 
     @Override
-    public int getMaximumPower(int level) {
+    public int getMaxPower(int level) {
         return 61;
     }
 
     @Override
-    protected boolean differs(Enchantment ench) {
-        return super.differs(ench) && ench != Enchantments.SILK_TOUCH;
+    protected boolean canAccept(Enchantment other) {
+        return super.canAccept(other) && other != Enchantments.SILK_TOUCH;
     }
 
 

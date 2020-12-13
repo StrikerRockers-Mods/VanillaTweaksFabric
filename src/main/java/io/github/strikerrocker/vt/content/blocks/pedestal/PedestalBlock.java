@@ -4,13 +4,12 @@ import io.github.strikerrocker.vt.content.blocks.Blocks;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.container.Container;
-import net.minecraft.entity.EntityContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
@@ -23,10 +22,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
-@SuppressWarnings("deprecation")
 public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     private final VoxelShape BASE = Block.createCuboidShape(0.5, 0.0, 0.5, 15.5, 1.0, 15.5);
@@ -54,13 +52,13 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
             if (player.isSneaking()) {
                 ContainerProviderRegistry.INSTANCE.openContainer(Blocks.PEDESTAL_IDENTIFIER, player, packetByteBuf -> packetByteBuf.writeBlockPos(pos));
             } else {
-                ItemStack stack = blockEntity.getInvStack(0);
+                ItemStack stack = blockEntity.getStack(0);
                 if (heldItem.isEmpty()) {
                     player.inventory.offerOrDrop(world, stack);
-                    blockEntity.removeInvStack(0);
+                    blockEntity.removeStack(0);
                 } else {
                     player.setStackInHand(hand, stack);
-                    blockEntity.setInvStack(0, heldItem);
+                    blockEntity.setStack(0, heldItem);
                 }
                 blockEntity.markDirty();
                 return ActionResult.SUCCESS;
@@ -70,14 +68,14 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     }
 
     @Override
-    public void onBlockRemoved(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof PedestalBlockEntity) {
                 ItemScatterer.spawn(world, pos, (PedestalBlockEntity) blockEntity);
-                world.updateHorizontalAdjacent(pos, this);
+                world.updateComparators(pos, this);
             }
-            super.onBlockRemoved(state, world, pos, newState, moved);
+            super.onStateReplaced(state, world, pos, newState, moved);
         }
     }
 
@@ -88,16 +86,11 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
 
     @Override
     public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        return Container.calculateComparatorOutput(world.getBlockEntity(pos));
+        return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 
     @Override
-    public boolean hasBlockEntity() {
-        return true;
-    }
-
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, EntityContext context) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return PEDESTAL_VOXEL_SHAPE;
     }
 
@@ -112,11 +105,11 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     }
 
     @Override
-    public BlockState getStateForNeighborUpdate(BlockState state, Direction facing, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState newState, WorldAccess world, BlockPos pos, BlockPos posFrom) {
         if (state.get(WATERLOGGED)) {
             world.getFluidTickScheduler().schedule(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
-        return super.getStateForNeighborUpdate(state, facing, neighborState, world, pos, neighborPos);
+        return super.getStateForNeighborUpdate(state, direction, newState, world, pos, posFrom);
     }
 
     @Override
@@ -127,10 +120,5 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     @Override
     public BlockEntity createBlockEntity(BlockView view) {
         return new PedestalBlockEntity();
-    }
-
-    @Override
-    public boolean isSimpleFullBlock(BlockState state, BlockView view, BlockPos pos) {
-        return false;
     }
 }

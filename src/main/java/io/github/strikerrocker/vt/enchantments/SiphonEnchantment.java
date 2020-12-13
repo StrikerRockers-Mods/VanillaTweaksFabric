@@ -8,21 +8,21 @@ import net.minecraft.item.ToolItem;
 
 public class SiphonEnchantment extends Enchantment {
     SiphonEnchantment() {
-        super(Weight.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     @Override
-    public int getMinimumPower(int level) {
+    public int getMinPower(int level) {
         return 15;
     }
 
     @Override
-    public int getMaximumPower(int level) {
+    public int getMaxPower(int level) {
         return 61;
     }
 
     @Override
-    public int getMaximumLevel() {
+    public int getMaxLevel() {
         return EnchantmentModule.config.enableSiphon ? 1 : 0;
     }
 

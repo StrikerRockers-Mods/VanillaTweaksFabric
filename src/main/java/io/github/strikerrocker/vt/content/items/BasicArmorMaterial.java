@@ -65,4 +65,9 @@ public class BasicArmorMaterial implements ArmorMaterial {
     public float getToughness() {
         return toughness;
     }
+
+    @Override
+    public float getKnockbackResistance() {
+        return 0;
+    }
 }

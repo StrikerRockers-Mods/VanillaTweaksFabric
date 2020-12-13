@@ -12,7 +12,7 @@ public class VigorEnchantment extends Enchantment {
     private static final UUID vigorUUID = UUID.fromString("18339f34-6ab5-461d-a103-9b9a3ac3eec7");
 
     VigorEnchantment() {
-        super(Weight.VERY_RARE, EnchantmentTarget.ARMOR_CHEST, new EquipmentSlot[]{EquipmentSlot.CHEST});
+        super(Rarity.VERY_RARE, EnchantmentTarget.ARMOR_CHEST, new EquipmentSlot[]{EquipmentSlot.CHEST});
     }
 
     /*@SubscribeEvent
@@ -36,17 +36,17 @@ public class VigorEnchantment extends Enchantment {
     }*/
 
     @Override
-    public int getMinimumPower(int level) {
+    public int getMinPower(int level) {
         return 5 + (level - 1) * 8;
     }
 
     @Override
-    public int getMaximumPower(int level) {
+    public int getMaxPower(int level) {
         return level * 10 + 51;
     }
 
     @Override
-    public int getMaximumLevel() {
+    public int getMaxLevel() {
         return EnchantmentModule.config.enableVigor ? 3 : 0;
     }
 

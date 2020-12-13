@@ -42,7 +42,7 @@ public class SilkSpawner extends Feature {
                     if (!spawnerDataNBT.isEmpty()) {
                         BlockEntity tile = world.getBlockEntity(pos);
                         if (tile instanceof MobSpawnerBlockEntity) {
-                            ((MobSpawnerBlockEntity) tile).getLogic().deserialize(spawnerDataNBT);
+                            ((MobSpawnerBlockEntity) tile).getLogic().fromTag(spawnerDataNBT);
                         }
                     }
                 }
@@ -53,7 +53,7 @@ public class SilkSpawner extends Feature {
             int lvl = EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandStack());
             if (blockState.getBlock() instanceof SpawnerBlock && !world.isClient() && blockEntity instanceof MobSpawnerBlockEntity && TweaksModule.config.enableSilkSpawner && lvl >= 1) {
                 ItemStack drop = new ItemStack(Blocks.SPAWNER);
-                CompoundTag spawnerData = ((MobSpawnerBlockEntity) blockEntity).getLogic().serialize(new CompoundTag());
+                CompoundTag spawnerData = ((MobSpawnerBlockEntity) blockEntity).getLogic().toTag(new CompoundTag());
                 CompoundTag stackTag = new CompoundTag();
                 spawnerData.remove("Delay");
                 stackTag.put(SPAWNER_TAG, spawnerData);
@@ -69,7 +69,7 @@ public class SilkSpawner extends Feature {
                 assert stackTag != null;
                 CompoundTag spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
                 if (!spawnerDataNBT.isEmpty()) {
-                    DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.deserialize(spawnerDataNBT);
+                    DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.fromTag(spawnerDataNBT);
                     Entity ent = DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.getRenderedEntity();
                     list.add(ent.getDisplayName());
                 }

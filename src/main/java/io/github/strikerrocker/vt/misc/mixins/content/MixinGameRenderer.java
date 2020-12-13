@@ -1,6 +1,5 @@
 package io.github.strikerrocker.vt.misc.mixins.content;
 
-import io.github.strikerrocker.vt.content.ClientContentModule;
 import io.github.strikerrocker.vt.content.ContentModule;
 import io.github.strikerrocker.vt.content.items.Items;
 import net.minecraft.client.MinecraftClient;
@@ -29,7 +28,7 @@ public class MixinGameRenderer {
         PlayerEntity player = client.player;
         if (player != null && ContentModule.config.binocularZoomAmount != 0) {
             ItemStack helmet = player.getEquippedStack(EquipmentSlot.HEAD);
-            if (!helmet.isEmpty() && helmet.getItem() == Items.BINOCULARS && ClientContentModule.zoomKey.isPressed()) {
+            if (!helmet.isEmpty() && helmet.getItem() == Items.BINOCULARS) {
                 info.setReturnValue(fov / ContentModule.config.binocularZoomAmount);
             }
         }

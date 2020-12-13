@@ -13,21 +13,21 @@ public class NimbleEnchantment extends Enchantment {
     private static final UUID nimbleUUID = UUID.fromString("05b61a62-ae84-492e-8536-f365b7143296");
 
     NimbleEnchantment() {
-        super(Weight.UNCOMMON, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
+        super(Rarity.UNCOMMON, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
     }
 
     @Override
-    public int getMinimumPower(int level) {
+    public int getMinPower(int level) {
         return 5 + (level - 1) * 8;
     }
 
     @Override
-    public int getMaximumPower(int level) {
+    public int getMaxPower(int level) {
         return level * 10 + 51;
     }
 
     @Override
-    public int getMaximumLevel() {
+    public int getMaxLevel() {
         return EnchantmentModule.config.enableNimble ? 3 : 0;
     }
 

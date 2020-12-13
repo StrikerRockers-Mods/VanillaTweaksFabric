@@ -9,21 +9,21 @@ import net.minecraft.item.ItemStack;
 public class HopsEnchantment extends Enchantment {
 
     HopsEnchantment() {
-        super(Weight.UNCOMMON, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
+        super(Rarity.UNCOMMON, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
     }
 
     @Override
-    public int getMinimumPower(int level) {
+    public int getMinPower(int level) {
         return 5 + (level - 1) * 8;
     }
 
     @Override
-    public int getMaximumPower(int level) {
+    public int getMaxPower(int level) {
         return level * 10 + 51;
     }
 
     @Override
-    public int getMaximumLevel() {
+    public int getMaxLevel() {
         return EnchantmentModule.config.enableHops ? 3 : 0;
     }
 

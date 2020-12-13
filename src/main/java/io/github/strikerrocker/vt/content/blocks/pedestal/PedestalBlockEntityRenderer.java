@@ -17,7 +17,7 @@ public class PedestalBlockEntityRenderer extends BlockEntityRenderer<PedestalBlo
 
     @Override
     public void render(PedestalBlockEntity blockEntity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        ItemStack stack = blockEntity.getInvStack(0);
+        ItemStack stack = blockEntity.getStack(0);
         System.out.println(stack + "no1");
         matrices.push();
         double offset = Math.sin((blockEntity.getWorld().getTime() + tickDelta) / 8.0) / 4.0;

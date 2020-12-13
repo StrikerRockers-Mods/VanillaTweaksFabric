@@ -1,16 +1,21 @@
 package io.github.strikerrocker.vt.content.blocks.pedestal;
 
-import net.minecraft.container.Container;
-import net.minecraft.container.Slot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
 
-public class PedestalContainer extends Container {
+public class PedestalScreenHandler extends ScreenHandler {
     private final Inventory inventory;
 
-    public PedestalContainer(int id, PlayerInventory playerInv, Inventory inventory) {
+    public PedestalScreenHandler(int id, PlayerInventory playerInventory) {
+        this(id, playerInventory, new SimpleInventory(1));
+    }
+
+    public PedestalScreenHandler(int id, PlayerInventory playerInv, Inventory inventory) {
         super(null, id);
         this.inventory = inventory;
         addSlot(new Slot(inventory, 0, 80, 20));
@@ -26,17 +31,17 @@ public class PedestalContainer extends Container {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+        Slot slot = this.slots.get(invSlot);
         if (slot != null && slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (index < this.inventory.getInvSize()) {
-                if (!this.insertItem(originalStack, this.inventory.getInvSize(), this.slots.size(), true)) {
+            if (invSlot < this.inventory.size()) {
+                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.getInvSize(), false)) {
+            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
                 return ItemStack.EMPTY;
             }
 

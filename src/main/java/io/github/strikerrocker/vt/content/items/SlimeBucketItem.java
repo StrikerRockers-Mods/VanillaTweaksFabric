@@ -8,8 +8,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkRandom;
 
@@ -21,10 +21,9 @@ public class SlimeBucketItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!world.isClient) {
-            BlockPos pos = user.getBlockPos();
-            ChunkPos chunkpos = new ChunkPos(new BlockPos(pos.getX(), pos.getY(), pos.getZ()));
-            boolean slime = ChunkRandom.create(chunkpos.x, chunkpos.z, world.getSeed(), 987234911L).nextInt(10) == 0;
-            user.addChatMessage(new TranslatableText(slime ? "slime.chunk" : "slime.chunk.false"), true);
+            ChunkPos chunkpos = new ChunkPos(user.getBlockPos());
+            boolean slime = ChunkRandom.getSlimeRandom(chunkpos.x, chunkpos.z, ((StructureWorldAccess) world).getSeed(), 987234911L).nextInt(10) == 0;
+            user.sendMessage(new TranslatableText(slime ? "slime.chunk" : "slime.chunk.false"), true);
         }
         return new TypedActionResult<>(ActionResult.PASS, user.getStackInHand(hand));
     }

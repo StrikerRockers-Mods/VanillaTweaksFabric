@@ -9,11 +9,11 @@ import io.github.strikerrocker.vt.content.items.dynamite.DynamiteItem;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
-import net.minecraft.entity.EntityCategory;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.projectile.Projectile;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.SoundEvents;
@@ -28,7 +28,7 @@ import static net.minecraft.item.Items.IRON_INGOT;
 public class Items extends Feature {
     public static final EntityType<DynamiteEntity> DYNAMITE_TYPE = Registry.register(Registry.ENTITY_TYPE,
             new Identifier(MODID, "dynamite"),
-            FabricEntityTypeBuilder.create(EntityCategory.MISC, DynamiteEntity::new).dimensions(EntityDimensions.fixed(0, 0)).build()
+            FabricEntityTypeBuilder.create(SpawnGroup.MISC, DynamiteEntity::new).dimensions(EntityDimensions.fixed(0, 0)).build()
     );
     private static final Item LENS = new Item(new Item.Settings().group(ItemGroup.MISC));
     private static final Item FRIED_EGG = new Item(new Item.Settings().food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.6f).build()).group(ItemGroup.FOOD));
@@ -52,19 +52,20 @@ public class Items extends Feature {
             Registry.register(Registry.ITEM, new Identifier(MODID, "dynamite"), DYNAMITE);
             DispenserBlock.registerBehavior(DYNAMITE, new ProjectileDispenserBehavior() {
                 @Override
-                protected Projectile createProjectile(World world, Position position, ItemStack itemStack) {
+                protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
                     return new DynamiteEntity(DYNAMITE_TYPE, world);
                 }
             });
+
+            if (ContentModule.config.enableSlimeBucket)
+                Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
+            if (ContentModule.config.enableStorageBlocks) {
+                Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+                Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+                Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            }
+            if (ContentModule.config.enablePedestal)
+                Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
         }
-        if (ContentModule.config.enableSlimeBucket)
-            Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
-        if (ContentModule.config.enableStorageBlocks) {
-            Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-        }
-        if (ContentModule.config.enablePedestal)
-            Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
     }
 }

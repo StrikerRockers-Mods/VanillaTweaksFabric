@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.2.7-SNAPSHOT'
+    id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -14,6 +14,12 @@ repositories {
     jcenter()
 }
 
+dependencies {
+    modApi("me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+}
+
 minecraft {
 }
 
@@ -24,7 +30,6 @@ dependencies {
 
     modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     implementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
     include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
 }
 

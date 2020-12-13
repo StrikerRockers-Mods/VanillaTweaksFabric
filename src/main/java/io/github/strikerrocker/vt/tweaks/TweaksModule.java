@@ -2,7 +2,6 @@ package io.github.strikerrocker.vt.tweaks;
 
 import io.github.strikerrocker.vt.base.Module;
 import io.github.strikerrocker.vt.tweaks.silkspawner.SilkSpawner;
-import io.github.strikerrocker.vt.tweaks.sit.Sit;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import me.sargunvohra.mcmods.autoconfig1u.serializer.Toml4jConfigSerializer;
 
@@ -11,7 +10,6 @@ public class TweaksModule extends Module {
 
     @Override
     public void addFeatures() {
-        registerFeature("sit", new Sit());
         registerFeature("sign_editing", new SignEditing());
         registerFeature("tnt_ignition", new TNTIgnition());
         registerFeature("sickle", new Sickle());
