@@ -1,6 +1,6 @@
 package io.github.strikerrocker.vt.content.items.dynamite;
 
-import io.github.strikerrocker.vt.VanillaTweaks;
+import io.github.strikerrocker.vt.content.ClientContentModule;
 import io.github.strikerrocker.vt.content.items.Items;
 import io.github.strikerrocker.vt.misc.EntitySpawnPacket;
 import net.minecraft.entity.EntityType;
@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -97,6 +96,11 @@ public class DynamiteEntity extends ThrownItemEntity {
 
     @Override
     public Packet<?> createSpawnPacket() {
-        return EntitySpawnPacket.create(this, new Identifier(VanillaTweaks.MODID, "dynamite"));
+        return EntitySpawnPacket.create(this, ClientContentModule.PACKET_ID);
+    }
+
+    @Override
+    public boolean shouldRender(double distance) {
+        return true;
     }
 }

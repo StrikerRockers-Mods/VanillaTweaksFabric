@@ -4,7 +4,7 @@ import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.misc.BlockBreakCallback;
 import io.github.strikerrocker.vt.misc.BlockPlaceCallback;
-import net.fabricmc.fabric.api.event.client.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SpawnerBlock;
@@ -60,7 +60,6 @@ public class SilkSpawner extends Feature {
                 drop.setTag(stackTag);
 
                 Block.dropStack(blockEntity.getWorld(), pos, drop);
-                //FIXME stop dropping xp when silk touched
             }
         });
         ItemTooltipCallback.EVENT.register((stack, tooltipContext, list) -> {
@@ -71,7 +70,8 @@ public class SilkSpawner extends Feature {
                 if (!spawnerDataNBT.isEmpty()) {
                     DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.fromTag(spawnerDataNBT);
                     Entity ent = DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.getRenderedEntity();
-                    list.add(ent.getDisplayName());
+                    if (ent != null && ent.getDisplayName() != null)
+                        list.add(ent.getDisplayName());
                 }
             }
         });

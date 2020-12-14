@@ -25,6 +25,7 @@ import static io.github.strikerrocker.vt.content.items.Items.DYNAMITE_TYPE;
 
 public class ClientContentModule extends Module {
 
+    public static Identifier PACKET_ID = new Identifier(VanillaTweaks.MODID, "dynamite");
 
     @Override
     public void addFeatures() {
@@ -37,11 +38,10 @@ public class ClientContentModule extends Module {
         BlockEntityRendererRegistry.INSTANCE.register(PEDESTAL_TYPE, PedestalBlockEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(DYNAMITE_TYPE, ((entityRenderDispatcher, context) -> new FlyingItemEntityRenderer<>(entityRenderDispatcher, context.getItemRenderer())));
         receiveEntityPacket();
-        //TODO fix dynamite renderer
     }
 
     public void receiveEntityPacket() {
-        ClientSidePacketRegistry.INSTANCE.register(new Identifier(VanillaTweaks.MODID, "dynamite"), (ctx, byteBuf) -> {
+        ClientSidePacketRegistry.INSTANCE.register(PACKET_ID, (ctx, byteBuf) -> {
             EntityType<?> et = Registry.ENTITY_TYPE.get(byteBuf.readVarInt());
             UUID uuid = byteBuf.readUuid();
             int entityId = byteBuf.readVarInt();

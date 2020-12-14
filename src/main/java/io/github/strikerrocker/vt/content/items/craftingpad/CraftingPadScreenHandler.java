@@ -10,7 +10,6 @@ public class CraftingPadScreenHandler extends CraftingScreenHandler {
     CraftingPadScreenHandler(int id, PlayerInventory playerInventory, ScreenHandlerContext screenHandlerContext) {
         super(id, playerInventory, screenHandlerContext);
     }
-
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;

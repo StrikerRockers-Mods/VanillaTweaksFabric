@@ -5,6 +5,7 @@
   "mixins": [
     "MixinBlock",
     "MixinLivingEntity",
+    "tweaks.MixinSpawnerBlock",
     "world.MixinItemEntity"
   ],
   "client": [
