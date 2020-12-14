@@ -2,7 +2,7 @@ package io.github.strikerrocker.vt.tweaks;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
-import io.github.strikerrocker.vt.misc.LivingEntityTickCallback;
+import io.github.strikerrocker.vt.events.LivingEntityTickCallback;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.ZombieEntity;

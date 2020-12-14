@@ -3,13 +3,24 @@ package io.github.strikerrocker.vt.enchantments;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
+import net.minecraft.server.world.ServerWorld;
+
+import java.util.List;
 
 public class SiphonEnchantment extends Enchantment {
     SiphonEnchantment() {
         super(Rarity.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    }
+
+    public static void siphonLogic(ServerWorld world, Entity entity, ItemStack tool, List<ItemStack> dropList) {
+        if (entity instanceof PlayerEntity) {
+            dropList.removeIf(((PlayerEntity) entity)::giveItemStack);
+        }
     }
 
     @Override
@@ -31,6 +42,7 @@ public class SiphonEnchantment extends Enchantment {
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableSiphon;
     }
+
 
     /*private static class SiphonModifier extends LootModifier {
         public SiphonModifier(ILootCondition[] conditionsIn) {

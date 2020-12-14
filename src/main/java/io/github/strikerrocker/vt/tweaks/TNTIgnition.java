@@ -2,7 +2,7 @@ package io.github.strikerrocker.vt.tweaks;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
-import io.github.strikerrocker.vt.misc.BlockPlaceCallback;
+import io.github.strikerrocker.vt.events.BlockPlaceCallback;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MagmaBlock;
 import net.minecraft.block.Material;

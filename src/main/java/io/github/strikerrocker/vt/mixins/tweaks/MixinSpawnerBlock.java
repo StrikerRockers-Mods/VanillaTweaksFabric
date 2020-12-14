@@ -1,4 +1,4 @@
-package io.github.strikerrocker.vt.misc.mixins.tweaks;
+package io.github.strikerrocker.vt.mixins.tweaks;
 
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.BlockState;

@@ -1,4 +1,4 @@
-package io.github.strikerrocker.vt.misc.mixins.content;
+package io.github.strikerrocker.vt.mixins.content;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.content.items.Items;
