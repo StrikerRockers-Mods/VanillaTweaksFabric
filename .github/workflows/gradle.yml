@@ -11,10 +11,7 @@ jobs:
           java-version: 1.8
           java-package: jdk
           architecture: x64
-      - name: "Build"
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: build --max-workers 1
-          wrapper-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
+      - name: Setup Build
+        run: chmod 777 gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
