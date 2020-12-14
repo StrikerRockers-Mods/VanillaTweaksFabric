@@ -10,7 +10,6 @@ public class ModConfig implements ConfigData {
     public Content content = new Content();
 
     @ConfigEntry.Gui.CollapsibleObject
-    @ConfigEntry.Gui.Excluded
     public Enchanting enchanting = new Enchanting();
 
     @ConfigEntry.Gui.CollapsibleObject
@@ -23,22 +22,35 @@ public class ModConfig implements ConfigData {
     public World world = new World();
 
     public static class Content {
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableCraftingPad = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableDynamite = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableSlimeBucket = true;
         public double binocularZoomAmount = 4;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableFriedEgg = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableStorageBlocks = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enablePedestal = true;
     }
 
     public static class Enchanting {
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableBlazing = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableHops = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableNimble = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableSiphon = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableVeteran = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableVigor = true;
+        @ConfigEntry.Gui.RequiresRestart
         public boolean enableHoming = true;
     }
 

@@ -1,7 +1,7 @@
-package io.github.strikerrocker.vt.misc.mixins;
+package io.github.strikerrocker.vt.mixins.events;
 
-import io.github.strikerrocker.vt.misc.BlockBreakCallback;
-import io.github.strikerrocker.vt.misc.BlockPlaceCallback;
+import io.github.strikerrocker.vt.events.BlockBreakCallback;
+import io.github.strikerrocker.vt.events.BlockPlaceCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;

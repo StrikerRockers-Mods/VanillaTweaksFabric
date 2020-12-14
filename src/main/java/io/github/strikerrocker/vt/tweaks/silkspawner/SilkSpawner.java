@@ -2,8 +2,8 @@ package io.github.strikerrocker.vt.tweaks.silkspawner;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
-import io.github.strikerrocker.vt.misc.BlockBreakCallback;
-import io.github.strikerrocker.vt.misc.BlockPlaceCallback;
+import io.github.strikerrocker.vt.events.BlockBreakCallback;
+import io.github.strikerrocker.vt.events.BlockPlaceCallback;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;

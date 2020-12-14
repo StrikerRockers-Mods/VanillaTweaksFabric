@@ -1,10 +1,13 @@
 {
   "required": true,
-  "package": "io.github.strikerrocker.vt.misc.mixins",
+  "package": "io.github.strikerrocker.vt.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MixinBlock",
-    "MixinLivingEntity",
+    "enchantments.MixinBlock",
+    "enchantments.MixinEntity",
+    "enchantments.MixinProjectileEntity",
+    "events.MixinBlock",
+    "events.MixinLivingEntity",
     "tweaks.MixinSpawnerBlock",
     "world.MixinItemEntity"
   ],

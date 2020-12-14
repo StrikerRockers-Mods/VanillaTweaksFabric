@@ -2,7 +2,7 @@ package io.github.strikerrocker.vt.loot;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
-import io.github.strikerrocker.vt.misc.LivingEntityDeathCallback;
+import io.github.strikerrocker.vt.events.LivingEntityDeathCallback;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.GameRules;

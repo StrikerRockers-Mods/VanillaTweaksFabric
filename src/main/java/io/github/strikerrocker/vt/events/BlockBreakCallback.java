@@ -1,4 +1,4 @@
-package io.github.strikerrocker.vt.misc;
+package io.github.strikerrocker.vt.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;

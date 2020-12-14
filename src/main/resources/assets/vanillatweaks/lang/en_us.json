@@ -37,7 +37,7 @@
   "enchantment.vanillatweaks.veteran.desc": "Attract all experience orbs in a 32-block radius towards you.",
   "enchantment.vanillatweaks.blazing.desc": "Automatically smelts everything the block drops.",
   "enchantment.vanillatweaks.siphon.desc": "All mined block drops instantly go into your inventory.",
-  "enchantment.vanillatweaks.homing.desc": "Your arrows will aim right at your target.",
+  "enchantment.vanillatweaks.homing.desc": "Each level decreases the inaccuracy in the arrow",
   "_comment": "keybinds",
   "key.category.vt": "VanillaTweaks",
   "key.vt:zoom": "Zoom Key",
