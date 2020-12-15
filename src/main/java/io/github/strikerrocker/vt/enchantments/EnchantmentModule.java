@@ -3,19 +3,27 @@ package io.github.strikerrocker.vt.enchantments;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Module;
 import io.github.strikerrocker.vt.events.EntityEquipmentChangeCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,20 +37,13 @@ public class EnchantmentModule extends Module {
 
     @Override
     public void initialize() {
-        if (VanillaTweaks.config.enchanting.enableBlazing)
-            enchantments.put("blazing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "blazing"), new BlazingEnchantment()));
-        if (VanillaTweaks.config.enchanting.enableHops)
-            enchantments.put("hops", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "hops"), new HopsEnchantment()));
-        if (VanillaTweaks.config.enchanting.enableNimble)
-            enchantments.put("nimble", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "nimble"), new NimbleEnchantment()));
-        if (VanillaTweaks.config.enchanting.enableSiphon)
-            enchantments.put("siphon", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "siphon"), new SiphonEnchantment()));
-        if (VanillaTweaks.config.enchanting.enableVeteran)
-            enchantments.put("veteran", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "veteran"), new VeteranEnchantment()));
-        if (VanillaTweaks.config.enchanting.enableVigor)
-            enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "vigor"), new VigorEnchantment()));
-        if (VanillaTweaks.config.enchanting.enableHoming)
-            enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "homing"), new HomingEnchantment()));
+        enchantments.put("blazing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "blazing"), new BlazingEnchantment()));
+        enchantments.put("hops", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "hops"), new HopsEnchantment()));
+        enchantments.put("nimble", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "nimble"), new NimbleEnchantment()));
+        enchantments.put("siphon", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "siphon"), new SiphonEnchantment()));
+        enchantments.put("veteran", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "veteran"), new VeteranEnchantment()));
+        enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "vigor"), new VigorEnchantment()));
+        enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "homing"), new HomingEnchantment()));
         super.initialize();
         EntityEquipmentChangeCallback.EVENT.register(((entity, slot, stack) -> {
             if (VanillaTweaks.config.enchanting.enableNimble) {
@@ -78,6 +79,39 @@ public class EnchantmentModule extends Module {
         ServerTickEvents.START_WORLD_TICK.register(serverWorld -> {
             if (VanillaTweaks.config.enchanting.enableVeteran && serverWorld != null && !serverWorld.isClient) {
                 serverWorld.getEntitiesByType(EntityType.EXPERIENCE_ORB, EntityPredicates.VALID_ENTITY).forEach(VeteranEnchantment::attemptToMove);
+            }
+        });
+        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+            if (entity instanceof ArrowEntity && VanillaTweaks.config.enchanting.enableHoming) {
+                ArrowEntity arrow = (ArrowEntity) entity;
+                if (arrow.getOwner() instanceof PlayerEntity) {
+                    PlayerEntity player = (PlayerEntity) arrow.getOwner();
+                    for (ItemStack stack : player.getItemsHand()) {
+                        int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
+                        if (lvl > 0) {
+                            double distance = Math.pow(2, lvl - 1) * 32;
+                            List<Entity> entityList = world.getOtherEntities(player, new Box(player.getBlockPos()).expand(distance), EntityPredicates.VALID_ENTITY);
+                            LivingEntity target = null;
+                            for (Entity entity1 : entityList) {
+                                if (entity1 instanceof LivingEntity) {
+                                    LivingEntity livingEntity = (LivingEntity) entity1;
+                                    double distanceToArrow = entity1.distanceTo(arrow);
+                                    if (distanceToArrow < distance && player.canSee(livingEntity) && !livingEntity.getUuid().equals(arrow.getUuid())) {
+                                        distance = distanceToArrow;
+                                        target = (LivingEntity) entity1;
+                                    }
+                                }
+                            }
+                            if (target != null) {
+                                double x1 = target.getX() - arrow.getX();
+                                double y1 = target.getBoundingBox().minY + target.getHeight() / 2 - (arrow.getY() + arrow.getHeight() / 2);
+                                double z1 = target.getZ() - arrow.getZ();
+                                arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
+                                System.out.println(arrow.getVelocity());
+                            }
+                        }
+                    }
+                }
             }
         });
     }
