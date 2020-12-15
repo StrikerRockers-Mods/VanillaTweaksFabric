@@ -33,7 +33,7 @@ public class MixinLivingEntity {
 
     @Inject(method = "method_30129", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z", shift = At.Shift.BY, by = 2),
             locals = LocalCapture.CAPTURE_FAILHARD)
-    public void entityEquip(CallbackInfoReturnable<Map<EquipmentSlot, ItemStack>> cir, Map map, EquipmentSlot var2[], int var3, int var4, EquipmentSlot equipmentSlot, ItemStack itemStack3) {
+    public void entityEquip(CallbackInfoReturnable<Map<EquipmentSlot, ItemStack>> cir, Map map, EquipmentSlot[] var2, int var3, int var4, EquipmentSlot equipmentSlot, ItemStack itemStack3) {
         EntityEquipmentChangeCallback.EVENT.invoker().onEntityEquipmentChange((LivingEntity) (Object) this, equipmentSlot, itemStack3);
     }
 }

@@ -1,5 +1,5 @@
 ---
-name: Bug report about: Create a bug report for VanillaTweaksFabric
+name: Bug reports about: Create a bug report for VanillaTweaksFabric
 ---
 
 **Describe the bug** (Required)

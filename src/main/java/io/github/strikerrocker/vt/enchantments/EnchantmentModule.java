@@ -33,7 +33,7 @@ public class EnchantmentModule extends Module {
 
     private static final UUID nimbleUUID = UUID.fromString("05b61a62-ae84-492e-8536-f365b7143296");
     private static final UUID vigorUUID = UUID.fromString("18339f34-6ab5-461d-a103-9b9a3ac3eec7");
-    public static Map<String, Enchantment> enchantments = new HashMap<>();
+    public static final Map<String, Enchantment> enchantments = new HashMap<>();
 
     @Override
     public void initialize() {

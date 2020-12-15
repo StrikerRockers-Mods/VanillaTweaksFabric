@@ -22,7 +22,7 @@ public class VanillaTweaks implements ModInitializer {
     public static final List<Module> modules = new ArrayList<>();
     public static ModConfig config;
     /**
-     * Vanilla Tweaks's mod ID
+     * Vanilla Tweaks mod ID
      */
     public static final String MODID = "vanillatweaks";
 

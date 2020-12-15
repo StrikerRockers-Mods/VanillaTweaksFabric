@@ -26,7 +26,7 @@ public class Blocks extends Feature {
     public static final Block PEDESTAL_BLOCK = new PedestalBlock();
     public static final Identifier PEDESTAL_IDENTIFIER = new Identifier(MODID, "pedestal");
     public static final ScreenHandlerType<PedestalScreenHandler> PEDESTAL_SCREEN_HANDLER;
-    public static BlockEntityType<PedestalBlockEntity> PEDESTAL_TYPE;
+    public static final BlockEntityType<PedestalBlockEntity> PEDESTAL_TYPE;
 
     static {
         PEDESTAL_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(PEDESTAL_IDENTIFIER, PedestalScreenHandler::new);

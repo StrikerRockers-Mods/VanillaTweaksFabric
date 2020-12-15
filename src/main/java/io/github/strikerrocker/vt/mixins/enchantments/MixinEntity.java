@@ -35,7 +35,6 @@ public abstract class MixinEntity {
                     default:
                         break;
                 }
-                //cir.setReturnValue((float) lvl);
             }
         }
     }

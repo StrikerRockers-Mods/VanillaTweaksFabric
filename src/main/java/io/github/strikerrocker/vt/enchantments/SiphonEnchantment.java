@@ -8,7 +8,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
-import net.minecraft.server.world.ServerWorld;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class SiphonEnchantment extends Enchantment {
         super(Rarity.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
-    public static void siphonLogic(ServerWorld world, Entity entity, ItemStack tool, List<ItemStack> dropList) {
+    public static void siphonLogic(Entity entity, List<ItemStack> dropList) {
         if (entity instanceof PlayerEntity) {
             dropList.removeIf(((PlayerEntity) entity)::giveItemStack);
         }
@@ -42,27 +41,4 @@ public class SiphonEnchantment extends Enchantment {
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableSiphon;
     }
-
-
-    /*private static class SiphonModifier extends LootModifier {
-        public SiphonModifier(ILootCondition[] conditionsIn) {
-            super(conditionsIn);
-        }
-
-        @Nonnull
-        @Override
-        public List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-            Entity e = context.get(LootParameters.THIS_ENTITY);
-            if (e instanceof PlayerEntity)
-                generatedLoot.removeIf(((PlayerEntity) e)::addItemStackToInventory);
-            return generatedLoot;
-        }
-    }
-
-    public static class Serializer extends GlobalLootModifierSerializer<SiphonEnchantment.SiphonModifier> {
-        @Override
-        public SiphonEnchantment.SiphonModifier read(ResourceLocation name, JsonObject json, ILootCondition[] conditionsIn) {
-            return new SiphonEnchantment.SiphonModifier(conditionsIn);
-        }
-    }*/
 }

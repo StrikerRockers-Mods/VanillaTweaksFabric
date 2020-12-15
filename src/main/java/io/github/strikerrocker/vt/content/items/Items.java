@@ -34,11 +34,11 @@ public class Items extends Feature {
     );
     private static final Item LENS = new Item(new Item.Settings().group(ItemGroup.MISC));
     private static final Item FRIED_EGG = new Item(new Item.Settings().food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.6f).build()).group(ItemGroup.FOOD));
-    public static ArmorMaterial binocular_material = new BasicArmorMaterial("binoculars", 0, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0f, () -> Ingredient.ofItems(IRON_INGOT));
+    public static final ArmorMaterial binocular_material = new BasicArmorMaterial("binoculars", 0, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0f, () -> Ingredient.ofItems(IRON_INGOT));
     public static final Item BINOCULARS = new ArmorItem(binocular_material, EquipmentSlot.HEAD, new Item.Settings().maxCount(1).group(ItemGroup.TOOLS));
-    public static Item CRAFTING_PAD = new CraftingPadItem();
-    public static Item DYNAMITE = new DynamiteItem();
-    public static Item SLIME_BUCKET = new SlimeBucketItem();
+    public static final Item CRAFTING_PAD = new CraftingPadItem();
+    public static final Item DYNAMITE = new DynamiteItem();
+    public static final Item SLIME_BUCKET = new SlimeBucketItem();
 
     @Override
     public void initialize() {

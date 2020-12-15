@@ -26,7 +26,7 @@ public class SilkSpawner extends Feature {
     public void initialize() {
         mobSpawnerItem = Blocks.SPAWNER.asItem();
         BlockPlaceCallback.EVENT.register((world, pos, blockState, entity) -> {
-            if (entity instanceof PlayerEntity && ((PlayerEntity) entity).getActiveHand() != null) {
+            if (entity instanceof PlayerEntity && entity.getActiveHand() != null) {
                 PlayerEntity playerEntity = (PlayerEntity) entity;
                 ItemStack mainHand = playerEntity.getMainHandStack();
                 ItemStack offHand = playerEntity.getOffHandStack();
