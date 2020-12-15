@@ -77,6 +77,8 @@
   "tooltip.entity": "Spawns: %s",
   "slime.chunk": "§aSlime Chunk",
   "slime.chunk.false": "Not a Slime Chunk",
+  "vanillatweaks.bees": "Bees: ",
+  "vanillatweaks.honey.lvl": "Honey Level: ",
   "key.vanillatweaks.zoom": "Zoom",
   "enchantment.level.11": "XI",
   "enchantment.level.12": "XII",
