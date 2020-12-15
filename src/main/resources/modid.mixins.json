@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "enchantments.MixinBlock",
-    "enchantments.MixinEntity",
     "events.MixinBlock",
     "events.MixinLivingEntity",
     "tweaks.MixinSpawnerBlock",

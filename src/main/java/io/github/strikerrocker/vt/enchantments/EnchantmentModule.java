@@ -14,6 +14,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
@@ -31,9 +33,9 @@ import static io.github.strikerrocker.vt.VanillaTweaks.MODID;
 
 public class EnchantmentModule extends Module {
 
+    public static final Map<String, Enchantment> enchantments = new HashMap<>();
     private static final UUID nimbleUUID = UUID.fromString("05b61a62-ae84-492e-8536-f365b7143296");
     private static final UUID vigorUUID = UUID.fromString("18339f34-6ab5-461d-a103-9b9a3ac3eec7");
-    public static final Map<String, Enchantment> enchantments = new HashMap<>();
 
     @Override
     public void initialize() {
@@ -45,7 +47,7 @@ public class EnchantmentModule extends Module {
         enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "vigor"), new VigorEnchantment()));
         enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "homing"), new HomingEnchantment()));
         super.initialize();
-        EntityEquipmentChangeCallback.EVENT.register(((entity, slot, stack) -> {
+        EntityEquipmentChangeCallback.EVENT.register(((entity, slot, from, to) -> {
             if (VanillaTweaks.config.enchanting.enableNimble) {
                 int enchantmentLevel = EnchantmentHelper.getLevel(enchantments.get("nimble"), entity.getEquippedStack(EquipmentSlot.FEET));
                 EntityAttributeInstance speedAttribute = entity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
@@ -72,6 +74,18 @@ public class EnchantmentModule extends Module {
                         vigorAttribute.removeModifier(vigorModifier);
                         if (entity.getHealth() > entity.getMaxHealth())
                             entity.setHealth(entity.getMaxHealth());
+                    }
+                }
+            }
+            if (VanillaTweaks.config.enchanting.enableHops) {
+                int lvl = EnchantmentHelper.getLevel(enchantments.get("hops"), entity.getEquippedStack(EquipmentSlot.FEET));
+                if (lvl > 0) {
+                    if (!entity.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
+                        entity.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, Integer.MAX_VALUE, lvl, true, false, false));
+                    }
+                } else {
+                    if (entity.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
+                        entity.removeStatusEffect(StatusEffects.JUMP_BOOST);
                     }
                 }
             }

@@ -8,12 +8,12 @@ import net.minecraft.item.ItemStack;
 
 public interface EntityEquipmentChangeCallback {
     Event<EntityEquipmentChangeCallback> EVENT = EventFactory.createArrayBacked(EntityEquipmentChangeCallback.class,
-            (listeners) -> ((LivingEntity entity, EquipmentSlot slot, ItemStack stack) -> {
+            (listeners) -> ((LivingEntity entity, EquipmentSlot slot, ItemStack from, ItemStack to) -> {
                 for (EntityEquipmentChangeCallback playerEquipmentChangeCallback : listeners) {
-                    playerEquipmentChangeCallback.onEntityEquipmentChange(entity, slot, stack);
+                    playerEquipmentChangeCallback.onEntityEquipmentChange(entity, slot, from, to);
                 }
             })
     );
 
-    void onEntityEquipmentChange(LivingEntity entity, EquipmentSlot slot, ItemStack stack);
+    void onEntityEquipmentChange(LivingEntity entity, EquipmentSlot slot, ItemStack from, ItemStack to);
 }
