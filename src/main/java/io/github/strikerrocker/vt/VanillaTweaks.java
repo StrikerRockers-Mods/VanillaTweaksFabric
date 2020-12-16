@@ -20,16 +20,16 @@ import java.util.List;
 public class VanillaTweaks implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final List<Module> modules = new ArrayList<>();
-    public static ModConfig config;
     /**
      * Vanilla Tweaks mod ID
      */
     public static final String MODID = "vanillatweaks";
+    public static ModConfig config;
 
     static {
         AutoConfig.register(ModConfig.class, Toml4jConfigSerializer::new);
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        Collections.addAll(modules, new ContentModule(), new EnchantmentModule(), new LootModule(), new TweaksModule(), new WorldModule());
+        Collections.addAll(modules, new ContentModule(), new EnchantmentModule(), new LootModule(), new TweaksModule(), new WorldModule(), new RecipeModule());
     }
 
     @Override

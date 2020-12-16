@@ -32,12 +32,4 @@ public class HopsEnchantment extends Enchantment {
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.FEET) && VanillaTweaks.config.enchanting.enableHops;
     }
-
-    /*TODO fix fall damage with hops enchantment
-    @SubscribeEvent
-    public void onLivingFall(LivingFallEvent event) {
-        if (EnchantmentFeature.enableHops.get() && !event.getEntity().world.isRemote()) {
-            event.setDistance(event.getDistance() - EnchantmentHelper.getEnchantmentLevel(this, event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET)));
-        }
-    }*/
 }

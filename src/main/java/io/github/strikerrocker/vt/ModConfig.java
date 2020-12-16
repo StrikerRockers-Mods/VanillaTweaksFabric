@@ -21,6 +21,9 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public World world = new World();
 
+    @ConfigEntry.Gui.CollapsibleObject
+    public Recipe recipe = new Recipe();
+
     public static class Content {
         @ConfigEntry.Gui.RequiresRestart
         public boolean enableCraftingPad = true;
@@ -76,5 +79,18 @@ public class ModConfig implements ConfigData {
         /*@Comment("Is realistic predator/prey relationships activated?")
         public boolean realisticRelationship = true;*/
         public boolean selfPlanting = true;
+    }
+
+    public static class Recipe {
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean betterChestRecipe = true;
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean betterRepeater = true;
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean betterTrappedChestRecipe = true;
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean woolToString = true;
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean nameTag = true;
     }
 }
