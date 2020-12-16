@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Module {
-    private Map<String, Feature> features = new HashMap<>();
+    private final Map<String, Feature> features = new HashMap<>();
 
     public Module() {
         addFeatures();

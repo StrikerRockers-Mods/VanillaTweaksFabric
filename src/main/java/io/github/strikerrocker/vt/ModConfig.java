@@ -79,6 +79,7 @@ public class ModConfig implements ConfigData {
         /*@Comment("Is realistic predator/prey relationships activated?")
         public boolean realisticRelationship = true;*/
         public boolean selfPlanting = true;
+        public boolean disableLavaPockets = true;
     }
 
     public static class Recipe {
