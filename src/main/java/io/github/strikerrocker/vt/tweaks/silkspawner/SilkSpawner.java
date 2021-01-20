@@ -4,7 +4,6 @@ import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.BlockBreakCallback;
 import io.github.strikerrocker.vt.events.BlockPlaceCallback;
-import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SpawnerBlock;
@@ -12,14 +11,13 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
 public class SilkSpawner extends Feature {
-    private static final String SPAWNER_TAG = "SilkSpawnerData";
+    protected static final String SPAWNER_TAG = "SilkSpawnerData";
     private static Item mobSpawnerItem = null;
 
     @Override
@@ -60,19 +58,6 @@ public class SilkSpawner extends Feature {
                 drop.setTag(stackTag);
 
                 Block.dropStack(blockEntity.getWorld(), pos, drop);
-            }
-        });
-        ItemTooltipCallback.EVENT.register((stack, tooltipContext, list) -> {
-            if (stack.hasTag()) {
-                CompoundTag stackTag = stack.getTag();
-                assert stackTag != null;
-                CompoundTag spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
-                if (!spawnerDataNBT.isEmpty()) {
-                    DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.fromTag(spawnerDataNBT);
-                    Entity ent = DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.getRenderedEntity();
-                    if (ent != null && ent.getDisplayName() != null)
-                        list.add(ent.getDisplayName());
-                }
             }
         });
     }
