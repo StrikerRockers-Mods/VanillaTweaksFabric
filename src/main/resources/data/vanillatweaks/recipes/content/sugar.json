@@ -8,5 +8,10 @@
   "result": {
     "item": "minecraft:sugar",
     "count": 9
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:sugar_block"
+    }
+  ]
 }

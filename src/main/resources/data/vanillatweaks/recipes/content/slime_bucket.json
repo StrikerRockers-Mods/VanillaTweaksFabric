@@ -14,5 +14,10 @@
   },
   "result": {
     "item": "vanillatweaks:slime_bucket"
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:slime_bucket"
+    }
+  ]
 }

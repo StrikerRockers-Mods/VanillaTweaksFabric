@@ -15,5 +15,10 @@
   },
   "result": {
     "item": "vanillatweaks:pedestal"
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:pedestal"
+    }
+  ]
 }

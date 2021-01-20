@@ -14,5 +14,10 @@
   },
   "result": {
     "item": "vanillatweaks:crafting_pad"
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:crafting_pad"
+    }
+  ]
 }

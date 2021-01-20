@@ -14,5 +14,10 @@
   "result": {
     "item": "minecraft:flint",
     "count": 9
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:flint_block"
+    }
+  ]
 }

@@ -12,5 +12,10 @@
   },
   "result": {
     "item": "vanillatweaks:sugar_block"
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:sugar_block"
+    }
+  ]
 }

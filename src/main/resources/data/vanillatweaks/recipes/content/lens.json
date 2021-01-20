@@ -15,5 +15,10 @@
   },
   "result": {
     "item": "vanillatweaks:lens"
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:lens"
+    }
+  ]
 }

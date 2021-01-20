@@ -18,5 +18,10 @@
   },
   "result": {
     "item": "vanillatweaks:dynamite"
-  }
+  },
+  "frc:conditions": [
+    {
+      "recipeconditions:item_registered": "vanillatweaks:dynamite"
+    }
+  ]
 }

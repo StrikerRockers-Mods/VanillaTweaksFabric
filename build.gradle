@@ -12,6 +12,9 @@ group = project.maven_group
 
 repositories {
     jcenter()
+    maven {
+        url = "https://ytg1234.github.io/maven"
+    }
 }
 
 dependencies {
@@ -32,6 +35,7 @@ dependencies {
     modImplementation "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
     include "me.sargunvohra.mcmods:autoconfig1u:${project.auto_config_version}"
     modImplementation "io.github.prospector:modmenu:${project.mod_menu_version}"
+    include(modImplementation("io.github.ytg1234:fabric-recipe-conditions:${project.recipe_conditions_version}"))
 }
 
 processResources {
