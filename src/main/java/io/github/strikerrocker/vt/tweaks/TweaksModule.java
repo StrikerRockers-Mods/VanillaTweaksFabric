@@ -9,7 +9,6 @@ public class TweaksModule extends Module {
     public void addFeatures() {
         registerFeature("silk_spawner", new SilkSpawner());
         registerFeature("armor_stand_swap", new ArmorStandSwap());
-        registerFeature("beehive_tooltip", new BeehiveTooltips());
         registerFeature("item_frame_reverse_rotate", new ItemFrameReverse());
         registerFeature("mobs_burn_daylight", new MobsBurnInDaylight());
         registerFeature("shear_nametag", new ShearNameTag());

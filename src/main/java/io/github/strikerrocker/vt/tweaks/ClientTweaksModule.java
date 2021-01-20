@@ -8,7 +8,6 @@ public class ClientTweaksModule extends Module {
     @Override
     public void addFeatures() {
         registerFeature("silk_spawner_client", new SilkSpawnerClient());
+        registerFeature("beehive_tooltip", new BeehiveTooltips());
     }
-
-
 }
