@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SiphonEnchantment extends Enchantment {
@@ -16,10 +17,13 @@ public class SiphonEnchantment extends Enchantment {
         super(Rarity.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
-    public static void siphonLogic(Entity entity, List<ItemStack> dropList) {
+    public static List<ItemStack> siphonLogic(Entity entity, List<ItemStack> dropList) {
         if (entity instanceof PlayerEntity) {
-            dropList.removeIf(((PlayerEntity) entity)::giveItemStack);
+            ArrayList<ItemStack> newDropList = new ArrayList<>(dropList);
+            newDropList.removeIf(((PlayerEntity) entity)::giveItemStack);
+            return newDropList;
         }
+        return dropList;
     }
 
     @Override
