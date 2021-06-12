@@ -1,7 +1,7 @@
 package io.github.strikerrocker.vt.misc;
 
 import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
@@ -17,12 +17,12 @@ public class EntitySpawnPacket {
         PacketByteBuf byteBuf = new PacketByteBuf(Unpooled.buffer());
         byteBuf.writeVarInt(Registry.ENTITY_TYPE.getRawId(e.getType()));
         byteBuf.writeUuid(e.getUuid());
-        byteBuf.writeVarInt(e.getEntityId());
+        byteBuf.writeVarInt(e.getId());
 
         PacketBufUtil.writeVec3d(byteBuf, e.getPos());
-        PacketBufUtil.writeAngle(byteBuf, e.pitch);
-        PacketBufUtil.writeAngle(byteBuf, e.yaw);
-        return ServerSidePacketRegistry.INSTANCE.toPacket(packetID, byteBuf);
+        PacketBufUtil.writeAngle(byteBuf, e.getPitch());
+        PacketBufUtil.writeAngle(byteBuf, e.getYaw());
+        return ServerPlayNetworking.createS2CPacket(packetID, byteBuf);
     }
 
     public static final class PacketBufUtil {

@@ -17,12 +17,12 @@ public class NoMoreLavaPocketGen extends Feature {
                     add(ModificationPhase.REMOVALS,
                             BiomeSelectors.foundInTheNether(),
                             biomeModificationContext ->
-                                    biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("spring_closed"))));
+                                    biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("spring_closed"))));
             BiomeModifications.create(new Identifier(VanillaTweaks.MODID, "lava_pocket_removal")).
                     add(ModificationPhase.REMOVALS,
                             BiomeSelectors.foundInTheNether(),
                             biomeModificationContext ->
-                                    biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier("spring_closed_double"))));
+                                    biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("spring_closed_double"))));
         }
     }
 }

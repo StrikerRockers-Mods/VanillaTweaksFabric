@@ -96,10 +96,8 @@ public class EnchantmentModule extends Module {
             }
         });
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if (entity instanceof ArrowEntity && VanillaTweaks.config.enchanting.enableHoming) {
-                ArrowEntity arrow = (ArrowEntity) entity;
-                if (arrow.getOwner() instanceof PlayerEntity) {
-                    PlayerEntity player = (PlayerEntity) arrow.getOwner();
+            if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming) {
+                if (arrow.getOwner() instanceof PlayerEntity player) {
                     for (ItemStack stack : player.getItemsHand()) {
                         int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
                         if (lvl > 0) {
@@ -107,8 +105,7 @@ public class EnchantmentModule extends Module {
                             List<Entity> entityList = world.getOtherEntities(player, new Box(player.getBlockPos()).expand(distance), EntityPredicates.VALID_ENTITY);
                             LivingEntity target = null;
                             for (Entity entity1 : entityList) {
-                                if (entity1 instanceof LivingEntity) {
-                                    LivingEntity livingEntity = (LivingEntity) entity1;
+                                if (entity1 instanceof LivingEntity livingEntity) {
                                     double distanceToArrow = entity1.distanceTo(arrow);
                                     if (distanceToArrow < distance && player.canSee(livingEntity) && !livingEntity.getUuid().equals(arrow.getUuid())) {
                                         distance = distanceToArrow;
@@ -121,7 +118,6 @@ public class EnchantmentModule extends Module {
                                 double y1 = target.getBoundingBox().minY + target.getHeight() / 2 - (arrow.getY() + arrow.getHeight() / 2);
                                 double z1 = target.getZ() - arrow.getZ();
                                 arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
-                                System.out.println(arrow.getVelocity());
                             }
                         }
                     }

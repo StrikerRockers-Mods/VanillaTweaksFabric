@@ -81,7 +81,7 @@ public class DynamiteEntity extends ThrownItemEntity {
         if (!world.isClient) {
             if (getDataTracker().get(TICKS_SINCE_WET) < WET_TICKS) {
                 this.dropItem(Items.DYNAMITE);
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
             } else {
                 if (hitResult instanceof EntityHitResult && ((EntityHitResult) hitResult).getEntity() instanceof DynamiteEntity) {
                     return;
@@ -90,7 +90,7 @@ public class DynamiteEntity extends ThrownItemEntity {
                     world.createExplosion(this, pos.getX(), pos.getY(), pos.getZ(), 3F, Explosion.DestructionType.BREAK);
                 }
             }
-            this.remove();
+            this.remove(RemovalReason.DISCARDED);
         }
     }
 

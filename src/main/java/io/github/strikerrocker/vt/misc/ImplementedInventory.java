@@ -10,15 +10,6 @@ public interface ImplementedInventory extends Inventory {
 
     DefaultedList<ItemStack> getItems();
 
-
-    static ImplementedInventory of(DefaultedList<ItemStack> items) {
-        return () -> items;
-    }
-
-    static ImplementedInventory ofSize(int size) {
-        return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
-    }
-
     @Override
     default int size() {
         return getItems().size();
@@ -42,15 +33,14 @@ public interface ImplementedInventory extends Inventory {
 
     @Override
     default ItemStack removeStack(int slot) {
+        markDirty();
         return Inventories.removeStack(getItems(), slot);
     }
 
     @Override
     default ItemStack removeStack(int slot, int count) {
         ItemStack result = Inventories.splitStack(getItems(), slot, count);
-        if (!result.isEmpty()) {
-            markDirty();
-        }
+        markDirty();
         return result;
     }
 
@@ -60,6 +50,7 @@ public interface ImplementedInventory extends Inventory {
         if (stack.getCount() > getMaxCountPerStack()) {
             stack.setCount(getMaxCountPerStack());
         }
+        markDirty();
     }
 
     @Override

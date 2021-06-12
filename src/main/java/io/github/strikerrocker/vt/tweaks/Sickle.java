@@ -26,6 +26,8 @@ public class Sickle extends Feature {
                 int range = 1;
                 if (stack.getItem() == Items.DIAMOND_HOE)
                     range++;
+                if (stack.getItem() == Items.NETHERITE_HOE)
+                    range += 2;
                 for (int i = -range; i < range + 1; i++) {
                     for (int k = -range; k < range + 1; k++) {
                         if (i == 0 && k == 0)
@@ -34,7 +36,7 @@ public class Sickle extends Feature {
                         BlockState state = world.getBlockState(pos);
                         if (canHarvest(state)) {
                             Block block = state.getBlock();
-                            if (player.isUsingEffectiveTool(state))
+                            if (player.canHarvest(state))
                                 block.afterBreak(world, player, pos, state, world.getBlockEntity(pos), stack);
                             world.setBlockState(pos, Blocks.AIR.getDefaultState());
                             world.playSound(player, player.getBlockPos(), block.getSoundGroup(state).getBreakSound(), SoundCategory.BLOCKS, 1f, 1f);

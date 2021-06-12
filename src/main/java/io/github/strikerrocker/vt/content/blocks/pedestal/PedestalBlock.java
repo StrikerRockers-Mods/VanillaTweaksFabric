@@ -23,6 +23,7 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import org.jetbrains.annotations.Nullable;
 
 public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
@@ -34,7 +35,7 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     private final VoxelShape PEDESTAL_VOXEL_SHAPE = VoxelShapes.union(BASE, DECO1, PILLAR, DECO2, TOP);
 
     public PedestalBlock() {
-        super(Block.Settings.of(Material.STONE, MaterialColor.GRAY_TERRACOTTA).strength(2.0f, 10.0f));
+        super(Block.Settings.of(Material.STONE, MapColor.TERRACOTTA_GRAY).strength(2.0f, 10.0f));
         this.setDefaultState(this.getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 
@@ -50,18 +51,19 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
             PedestalBlockEntity blockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
             if (player.isSneaking()) {
                 NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
-                if (screenHandlerFactory != null)
+                if (screenHandlerFactory != null) {
                     player.openHandledScreen(screenHandlerFactory);
+                }
             } else {
                 ItemStack stack = blockEntity.getStack(0);
                 if (heldItem.isEmpty()) {
-                    player.inventory.offerOrDrop(world, stack);
+                    player.getInventory().offerOrDrop(stack);
                     blockEntity.removeStack(0);
                 } else {
                     player.setStackInHand(hand, stack);
                     blockEntity.setStack(0, heldItem);
                 }
-                blockEntity.markDirty();
+                blockEntity.sync();
                 return ActionResult.SUCCESS;
             }
         }
@@ -118,8 +120,9 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
+    @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView view) {
-        return new PedestalBlockEntity();
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new PedestalBlockEntity(pos, state);
     }
 }

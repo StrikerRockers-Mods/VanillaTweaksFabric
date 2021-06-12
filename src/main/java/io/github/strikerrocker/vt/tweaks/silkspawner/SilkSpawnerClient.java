@@ -2,20 +2,22 @@ package io.github.strikerrocker.vt.tweaks.silkspawner;
 
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.BlockPos;
 
 public class SilkSpawnerClient extends Feature {
     @Override
     public void initialize() {
         ItemTooltipCallback.EVENT.register((stack, tooltipContext, list) -> {
             if (stack.hasTag()) {
-                CompoundTag stackTag = stack.getTag();
+                NbtCompound stackTag = stack.getTag();
                 assert stackTag != null;
-                CompoundTag spawnerDataNBT = stackTag.getCompound(SilkSpawner.SPAWNER_TAG);
+                NbtCompound spawnerDataNBT = stackTag.getCompound(SilkSpawner.SPAWNER_TAG);
                 if (!spawnerDataNBT.isEmpty()) {
-                    DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.fromTag(spawnerDataNBT);
-                    Entity ent = DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.getRenderedEntity();
+                    DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.readNbt(MinecraftClient.getInstance().world, new BlockPos(0, 0, 0), spawnerDataNBT);
+                    Entity ent = DummySpawnerLogic.DUMMY_SPAWNER_LOGIC.getRenderedEntity(MinecraftClient.getInstance().world);
                     if (ent != null && ent.getDisplayName() != null)
                         list.add(ent.getDisplayName());
                 }

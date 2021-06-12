@@ -52,7 +52,6 @@ public class PedestalScreenHandler extends ScreenHandler {
                 slot.markDirty();
             }
         }
-
         return newStack;
     }
 

@@ -6,11 +6,12 @@ import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalBlock;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalBlockEntity;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalScreenHandler;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.BlockSoundGroup;
@@ -20,9 +21,9 @@ import net.minecraft.util.registry.Registry;
 import static io.github.strikerrocker.vt.VanillaTweaks.MODID;
 
 public class Blocks extends Feature {
-    public static final CharcoalBlock CHARCOAL_BLOCK = new CharcoalBlock();
-    public static final Block SUGAR_BLOCK = new Block(FabricBlockSettings.of(Material.AGGREGATE, MaterialColor.WHITE_TERRACOTTA).strength(0.5f, 0.5f).sounds(BlockSoundGroup.SAND));
-    public static final Block FLINT_BLOCK = new Block(Block.Settings.of(Material.AGGREGATE, MaterialColor.BROWN).strength(1.0f, 10.0f));
+    public static final Block CHARCOAL_BLOCK = new Block(Block.Settings.of(Material.STONE, MapColor.BLACK).strength(5.0f, 10.0f));
+    public static final Block SUGAR_BLOCK = new Block(FabricBlockSettings.of(Material.AGGREGATE, MapColor.TERRACOTTA_WHITE).strength(0.5f, 0.5f).sounds(BlockSoundGroup.SAND));
+    public static final Block FLINT_BLOCK = new Block(Block.Settings.of(Material.AGGREGATE, MapColor.BROWN).strength(1.0f, 10.0f));
     public static final Block PEDESTAL_BLOCK = new PedestalBlock();
     public static final Identifier PEDESTAL_IDENTIFIER = new Identifier(MODID, "pedestal");
     public static final ScreenHandlerType<PedestalScreenHandler> PEDESTAL_SCREEN_HANDLER;
@@ -30,7 +31,7 @@ public class Blocks extends Feature {
 
     static {
         PEDESTAL_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(PEDESTAL_IDENTIFIER, PedestalScreenHandler::new);
-        PEDESTAL_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE, PEDESTAL_IDENTIFIER, BlockEntityType.Builder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build(null));
+        PEDESTAL_TYPE = Registry.register(Registry.BLOCK_ENTITY_TYPE, PEDESTAL_IDENTIFIER, FabricBlockEntityTypeBuilder.create(PedestalBlockEntity::new, PEDESTAL_BLOCK).build(null));
     }
 
     @Override

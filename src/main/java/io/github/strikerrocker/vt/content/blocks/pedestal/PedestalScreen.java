@@ -3,6 +3,7 @@ package io.github.strikerrocker.vt.content.blocks.pedestal;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -18,8 +19,9 @@ public class PedestalScreen extends HandledScreen<PedestalScreenHandler> {
 
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-        RenderSystem.color4f(1, 1, 1, 1);
-        client.getTextureManager().bindTexture(BG_TEXTURE);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, BG_TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);

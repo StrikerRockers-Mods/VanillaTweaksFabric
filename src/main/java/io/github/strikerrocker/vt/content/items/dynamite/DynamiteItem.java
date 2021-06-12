@@ -26,7 +26,7 @@ public class DynamiteItem extends Item {
         if (!world.isClient) {
             DynamiteEntity dynamite = new DynamiteEntity(world, user);
             dynamite.setItem(itemstack);
-            dynamite.setProperties(user, user.pitch, user.yaw, 0, 1.5F, 0);
+            dynamite.setProperties(user, user.getPitch(), user.getYaw(), 0, 1.5F, 0);
             world.spawnEntity(dynamite);
         }
         user.incrementStat(Stats.USED.getOrCreateStat(this));

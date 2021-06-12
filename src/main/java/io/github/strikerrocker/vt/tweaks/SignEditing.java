@@ -13,8 +13,7 @@ public class SignEditing extends Feature {
     public void initialize() {
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
             BlockEntity te = world.getBlockEntity(blockHitResult.getBlockPos());
-            if (te instanceof SignBlockEntity && VanillaTweaks.config.tweaks.enableSignEditing && !world.isClient) {
-                SignBlockEntity sign = (SignBlockEntity) te;
+            if (te instanceof SignBlockEntity sign && VanillaTweaks.config.tweaks.enableSignEditing && !world.isClient) {
                 playerEntity.openEditSignScreen(sign);
                 return ActionResult.SUCCESS;
             }
