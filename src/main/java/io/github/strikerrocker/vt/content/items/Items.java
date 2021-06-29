@@ -47,16 +47,15 @@ public class Items extends Feature {
                     return new DynamiteEntity(DYNAMITE_TYPE, world);
                 }
             });
-
-            if (VanillaTweaks.config.content.enableSlimeBucket)
-                Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
-            if (VanillaTweaks.config.content.enableStorageBlocks) {
-                Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-                Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-                Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-            }
-            if (VanillaTweaks.config.content.enablePedestal)
-                Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
         }
+        if (VanillaTweaks.config.content.enableSlimeBucket)
+            Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
+        if (VanillaTweaks.config.content.enableStorageBlocks) {
+            Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+        }
+        if (VanillaTweaks.config.content.enablePedestal)
+            Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
     }
 }

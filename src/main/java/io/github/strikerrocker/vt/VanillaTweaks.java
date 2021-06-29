@@ -26,14 +26,11 @@ public class VanillaTweaks implements ModInitializer {
     public static final String MODID = "vanillatweaks";
     public static ModConfig config;
 
-    static {
+    @Override
+    public void onInitialize() {
         AutoConfig.register(ModConfig.class, Toml4jConfigSerializer::new);
         config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         Collections.addAll(modules, new ContentModule(), new EnchantmentModule(), new LootModule(), new TweaksModule(), new WorldModule(), new RecipeModule());
-    }
-
-    @Override
-    public void onInitialize() {
         modules.forEach(Module::initialize);
         LOGGER.info("Setup Complete");
     }
