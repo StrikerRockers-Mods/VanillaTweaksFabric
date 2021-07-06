@@ -1,8 +1,8 @@
 package io.github.strikerrocker.vt;
 
-import me.sargunvohra.mcmods.autoconfig1u.ConfigData;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.Config;
-import me.sargunvohra.mcmods.autoconfig1u.annotation.ConfigEntry;
+import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "vanillatweaks")
 public class ModConfig implements ConfigData {
@@ -76,8 +76,8 @@ public class ModConfig implements ConfigData {
     }
 
     public static class World {
-        /*@Comment("Is realistic predator/prey relationships activated?")
-        public boolean realisticRelationship = true;*/
+        @ConfigEntry.Gui.RequiresRestart
+        public boolean realisticRelationship = true;
         public boolean selfPlanting = true;
         public boolean disableLavaPockets = true;
     }

@@ -34,7 +34,7 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     private final VoxelShape PEDESTAL_VOXEL_SHAPE = VoxelShapes.union(BASE, DECO1, PILLAR, DECO2, TOP);
 
     public PedestalBlock() {
-        super(Block.Settings.of(Material.STONE, MaterialColor.GRAY_TERRACOTTA).strength(2.0f, 10.0f));
+        super(Block.Settings.of(Material.STONE, MapColor.TERRACOTTA_GRAY).strength(2.0f, 10.0f));
         this.setDefaultState(this.getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 

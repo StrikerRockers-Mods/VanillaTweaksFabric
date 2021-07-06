@@ -32,13 +32,13 @@ public class Items extends Feature {
                     .trackRangeBlocks(4).trackedUpdateRate(10)
                     .build()
     );
-    private static final Item LENS = new Item(new Item.Settings().group(ItemGroup.MISC));
-    private static final Item FRIED_EGG = new Item(new Item.Settings().food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.6f).build()).group(ItemGroup.FOOD));
     public static final ArmorMaterial binocular_material = new BasicArmorMaterial("binoculars", 0, new int[]{0, 0, 0, 0}, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0f, () -> Ingredient.ofItems(IRON_INGOT));
     public static final Item BINOCULARS = new ArmorItem(binocular_material, EquipmentSlot.HEAD, new Item.Settings().maxCount(1).group(ItemGroup.TOOLS));
     public static final Item CRAFTING_PAD = new CraftingPadItem();
     public static final Item DYNAMITE = new DynamiteItem();
     public static final Item SLIME_BUCKET = new SlimeBucketItem();
+    private static final Item LENS = new Item(new Item.Settings().group(ItemGroup.MISC));
+    private static final Item FRIED_EGG = new Item(new Item.Settings().food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.6f).build()).group(ItemGroup.FOOD));
 
     @Override
     public void initialize() {
@@ -58,16 +58,15 @@ public class Items extends Feature {
                     return new DynamiteEntity(DYNAMITE_TYPE, world);
                 }
             });
-
-            if (VanillaTweaks.config.content.enableSlimeBucket)
-                Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
-            if (VanillaTweaks.config.content.enableStorageBlocks) {
-                Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-                Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-                Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-            }
-            if (VanillaTweaks.config.content.enablePedestal)
-                Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
         }
+        if (VanillaTweaks.config.content.enableSlimeBucket)
+            Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
+        if (VanillaTweaks.config.content.enableStorageBlocks) {
+            Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+        }
+        if (VanillaTweaks.config.content.enablePedestal)
+            Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
     }
 }

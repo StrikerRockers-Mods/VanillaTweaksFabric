@@ -34,7 +34,7 @@ public class Sickle extends Feature {
                         BlockState state = world.getBlockState(pos);
                         if (canHarvest(state)) {
                             Block block = state.getBlock();
-                            if (player.isUsingEffectiveTool(state))
+                            if (player.canHarvest(state))
                                 block.afterBreak(world, player, pos, state, world.getBlockEntity(pos), stack);
                             world.setBlockState(pos, Blocks.AIR.getDefaultState());
                             world.playSound(player, player.getBlockPos(), block.getSoundGroup(state).getBreakSound(), SoundCategory.BLOCKS, 1f, 1f);

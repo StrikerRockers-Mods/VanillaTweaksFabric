@@ -22,7 +22,7 @@
         ]
       }
     },
-    "charcoal": {
+    "charcoal_in_inv": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -32,7 +32,7 @@
         ]
       }
     },
-    "flint": {
+    "flint_in_inv": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [

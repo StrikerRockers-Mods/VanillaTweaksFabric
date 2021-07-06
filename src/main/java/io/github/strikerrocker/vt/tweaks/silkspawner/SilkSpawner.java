@@ -14,7 +14,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class SilkSpawner extends Feature {
     protected static final String SPAWNER_TAG = "SilkSpawnerData";
@@ -34,9 +34,9 @@ public class SilkSpawner extends Feature {
                 else if (offHand.getItem() == mobSpawnerItem)
                     stack = offHand;
                 if (VanillaTweaks.config.tweaks.enableSilkSpawner && stack != null && stack.hasTag()) {
-                    CompoundTag stackTag = stack.getTag();
+                    NbtCompound stackTag = stack.getTag();
                     assert stackTag != null;
-                    CompoundTag spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
+                    NbtCompound spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
                     if (!spawnerDataNBT.isEmpty()) {
                         BlockEntity tile = world.getBlockEntity(pos);
                         if (tile instanceof MobSpawnerBlockEntity) {
@@ -51,8 +51,8 @@ public class SilkSpawner extends Feature {
             int lvl = EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandStack());
             if (blockState.getBlock() instanceof SpawnerBlock && !world.isClient() && blockEntity instanceof MobSpawnerBlockEntity && VanillaTweaks.config.tweaks.enableSilkSpawner && lvl >= 1) {
                 ItemStack drop = new ItemStack(Blocks.SPAWNER);
-                CompoundTag spawnerData = ((MobSpawnerBlockEntity) blockEntity).getLogic().toTag(new CompoundTag());
-                CompoundTag stackTag = new CompoundTag();
+                NbtCompound spawnerData = ((MobSpawnerBlockEntity) blockEntity).getLogic().toTag(new NbtCompound());
+                NbtCompound stackTag = new NbtCompound();
                 spawnerData.remove("Delay");
                 stackTag.put(SPAWNER_TAG, spawnerData);
                 drop.setTag(stackTag);

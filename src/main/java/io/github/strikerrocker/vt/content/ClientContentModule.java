@@ -6,10 +6,11 @@ import io.github.strikerrocker.vt.content.blocks.Blocks;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalBlockEntityRenderer;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalScreen;
 import io.github.strikerrocker.vt.misc.EntitySpawnPacket;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.entity.Entity;
@@ -37,18 +38,18 @@ public class ClientContentModule extends Module {
         ScreenRegistry.register(Blocks.PEDESTAL_SCREEN_HANDLER, PedestalScreen::new);
         BlockEntityRendererRegistry.INSTANCE.register(PEDESTAL_TYPE, PedestalBlockEntityRenderer::new);
         EntityRendererRegistry.INSTANCE.register(DYNAMITE_TYPE, ((entityRenderDispatcher, context) -> new FlyingItemEntityRenderer<>(entityRenderDispatcher, context.getItemRenderer())));
-        receiveEntityPacket();
+        ClientPlayConnectionEvents.INIT.register((handler, client) -> receiveEntityPacket());
     }
 
     public void receiveEntityPacket() {
-        ClientSidePacketRegistry.INSTANCE.register(PACKET_ID, (ctx, byteBuf) -> {
-            EntityType<?> et = Registry.ENTITY_TYPE.get(byteBuf.readVarInt());
-            UUID uuid = byteBuf.readUuid();
-            int entityId = byteBuf.readVarInt();
-            Vec3d pos = EntitySpawnPacket.PacketBufUtil.readVec3d(byteBuf);
-            float pitch = EntitySpawnPacket.PacketBufUtil.readAngle(byteBuf);
-            float yaw = EntitySpawnPacket.PacketBufUtil.readAngle(byteBuf);
-            ctx.getTaskQueue().execute(() -> {
+        ClientPlayNetworking.registerReceiver(PACKET_ID, (client, handler, buf, responseSender) -> {
+            EntityType<?> et = Registry.ENTITY_TYPE.get(buf.readVarInt());
+            UUID uuid = buf.readUuid();
+            int entityId = buf.readVarInt();
+            Vec3d pos = EntitySpawnPacket.PacketBufUtil.readVec3d(buf);
+            float pitch = EntitySpawnPacket.PacketBufUtil.readAngle(buf);
+            float yaw = EntitySpawnPacket.PacketBufUtil.readAngle(buf);
+            client.execute(() -> {
                 if (MinecraftClient.getInstance().world == null)
                     throw new IllegalStateException("Tried to spawn entity in a null world!");
                 Entity e = et.create(MinecraftClient.getInstance().world);
