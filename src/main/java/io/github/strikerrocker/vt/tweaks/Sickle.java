@@ -26,6 +26,8 @@ public class Sickle extends Feature {
                 int range = 1;
                 if (stack.getItem() == Items.DIAMOND_HOE)
                     range++;
+                if (stack.getItem() == Items.NETHERITE_HOE)
+                    range += 2;
                 for (int i = -range; i < range + 1; i++) {
                     for (int k = -range; k < range + 1; k++) {
                         if (i == 0 && k == 0)
