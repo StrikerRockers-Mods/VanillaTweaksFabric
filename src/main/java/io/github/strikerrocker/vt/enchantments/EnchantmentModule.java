@@ -1,8 +1,11 @@
 package io.github.strikerrocker.vt.enchantments;
 
+import com.google.common.collect.Lists;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Module;
 import io.github.strikerrocker.vt.events.EntityEquipmentChangeCallback;
+import io.github.strikerrocker.vt.misc.ConeShape;
+import io.github.strikerrocker.vt.mixins.enchantments.MixinServerWorld;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.enchantment.Enchantment;
@@ -98,27 +101,27 @@ public class EnchantmentModule extends Module {
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming) {
                 if (arrow.getOwner() instanceof PlayerEntity player) {
-                    for (ItemStack stack : player.getItemsHand()) {
-                        int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
-                        if (lvl > 0) {
-                            double distance = Math.pow(2, lvl - 1) * 32;
-                            List<Entity> entityList = world.getOtherEntities(player, new Box(player.getBlockPos()).expand(distance), EntityPredicates.VALID_ENTITY);
-                            LivingEntity target = null;
-                            for (Entity entity1 : entityList) {
-                                if (entity1 instanceof LivingEntity livingEntity) {
-                                    double distanceToArrow = entity1.distanceTo(arrow);
-                                    if (distanceToArrow < distance && player.canSee(livingEntity) && !livingEntity.getUuid().equals(arrow.getUuid())) {
-                                        distance = distanceToArrow;
-                                        target = (LivingEntity) entity1;
-                                    }
-                                }
+                    ItemStack stack = player.getActiveItem();
+                    int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
+                    if (lvl > 0) {
+                        List<Entity> entities = Lists.newArrayList();
+                        Box coneBound = ConeShape.getConeBounds(player, lvl);
+                        ((MixinServerWorld) world).getServerEntityManager().getLookup().forEachIntersects(coneBound, (entity1 -> {
+                            if (!entity1.getUuid().equals(player.getUuid())) {
+                                entities.add(entity);
                             }
-                            if (target != null) {
-                                double x1 = target.getX() - arrow.getX();
-                                double y1 = target.getBoundingBox().minY + target.getHeight() / 2 - (arrow.getY() + arrow.getHeight() / 2);
-                                double z1 = target.getZ() - arrow.getZ();
-                                arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
+                        }));
+                        LivingEntity target = null;
+                        for (Entity entity1 : entities) {
+                            if (entity1 instanceof LivingEntity livingEntity && player.canSee(entity1)) {
+                                target = livingEntity;
                             }
+                        }
+                        if (target != null) {
+                            double x1 = target.getX() - arrow.getX();
+                            double y1 = target.getEyeY() - arrow.getY();
+                            double z1 = target.getZ() - arrow.getZ();
+                            arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
                         }
                     }
                 }
