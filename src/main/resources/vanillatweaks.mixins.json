@@ -5,11 +5,10 @@
   "mixins": [
     "MixinRecipeManager",
     "enchantments.MixinBlock",
-    "enchantments.MixinServerWorld",
     "events.MixinBlock",
     "events.MixinLivingEntity",
-    "tweaks.MixinSpawnerBlock",
-    "world.MixinItemEntity"
+    "tweaks.MixinItemEntity",
+    "tweaks.MixinSpawnerBlock"
   ],
   "client": [
   ],

@@ -26,7 +26,7 @@ import static io.github.strikerrocker.vt.content.items.Items.DYNAMITE_TYPE;
 
 public class ClientContentModule extends Module {
 
-    public static final Identifier PACKET_ID = new Identifier(VanillaTweaks.MODID, "dynamite");
+    public static final Identifier PACKET_ID = new Identifier(VanillaTweaks.MOD_ID, "dynamite");
 
     @Override
     public void addFeatures() {

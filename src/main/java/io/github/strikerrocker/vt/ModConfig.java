@@ -53,7 +53,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.RequiresRestart
         public boolean enableVigor = true;
         @ConfigEntry.Gui.RequiresRestart
-        public boolean enableHoming = false;
+        public boolean enableHoming = true;
     }
 
     public static class Loot {
@@ -72,12 +72,12 @@ public class ModConfig implements ConfigData {
         public boolean enableSignEditing = true;
         public boolean tntIgnition = true;
         public boolean enableSilkSpawner = true;
-    }
+        public boolean selfPlanting = true;
 
+    }
     public static class World {
         @ConfigEntry.Gui.RequiresRestart
         public boolean realisticRelationship = true;
-        public boolean selfPlanting = true;
         public boolean disableLavaPockets = true;
     }
 

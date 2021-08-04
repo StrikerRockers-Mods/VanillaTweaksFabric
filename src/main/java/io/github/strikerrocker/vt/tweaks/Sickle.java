@@ -13,11 +13,17 @@ import net.minecraft.util.math.BlockPos;
 
 public class Sickle extends Feature {
 
+    /**
+     * Returns whether the given BlockState is considered for sickle feature
+     */
     private static boolean canHarvest(BlockState state) {
         Block block = state.getBlock();
         return (block instanceof PlantBlock && !(block instanceof LilyPadBlock)) || block instanceof SugarCaneBlock;
     }
 
+    /**
+     * Handles crop harvesting more than one block when using hoe
+     */
     @Override
     public void initialize() {
         AttackBlockCallback.EVENT.register(((player, world, hand, blockPos, direction) -> {

@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class PedestalScreen extends HandledScreen<PedestalScreenHandler> {
 
-    private static final Identifier BG_TEXTURE = new Identifier(VanillaTweaks.MODID, "textures/gui/pedestal.png");
+    private static final Identifier BG_TEXTURE = new Identifier(VanillaTweaks.MOD_ID, "textures/gui/pedestal.png");
 
     public PedestalScreen(PedestalScreenHandler container, PlayerInventory playerInv, Text title) {
         super(container, playerInv, title);

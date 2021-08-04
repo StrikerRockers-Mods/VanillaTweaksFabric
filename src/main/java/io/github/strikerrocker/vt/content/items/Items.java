@@ -19,11 +19,11 @@ import net.minecraft.util.math.Position;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import static io.github.strikerrocker.vt.VanillaTweaks.MODID;
+import static io.github.strikerrocker.vt.VanillaTweaks.MOD_ID;
 
 public class Items extends Feature {
     public static final EntityType<DynamiteEntity> DYNAMITE_TYPE = Registry.register(Registry.ENTITY_TYPE,
-            new Identifier(MODID, "dynamite"),
+            new Identifier(MOD_ID, "dynamite"),
             FabricEntityTypeBuilder.create(SpawnGroup.MISC, DynamiteEntity::new).dimensions(EntityDimensions.fixed(0, 0))
                     .trackRangeBlocks(4).trackedUpdateRate(10)
                     .build()
@@ -33,14 +33,17 @@ public class Items extends Feature {
     public static final Item SLIME_BUCKET = new SlimeBucketItem();
     private static final Item FRIED_EGG = new Item(new Item.Settings().food((new FoodComponent.Builder()).hunger(5).saturationModifier(0.6f).build()).group(ItemGroup.FOOD));
 
+    /**
+     * Register ItemBlocks and Items
+     */
     @Override
     public void initialize() {
         if (VanillaTweaks.config.content.enableFriedEgg)
-            Registry.register(Registry.ITEM, new Identifier(MODID, "fried_egg"), FRIED_EGG);
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "fried_egg"), FRIED_EGG);
         if (VanillaTweaks.config.content.enableCraftingPad)
-            Registry.register(Registry.ITEM, new Identifier(MODID, "crafting_pad"), CRAFTING_PAD);
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "crafting_pad"), CRAFTING_PAD);
         if (VanillaTweaks.config.content.enableDynamite) {
-            Registry.register(Registry.ITEM, new Identifier(MODID, "dynamite"), DYNAMITE);
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "dynamite"), DYNAMITE);
             DispenserBlock.registerBehavior(DYNAMITE, new ProjectileDispenserBehavior() {
                 @Override
                 protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
@@ -49,13 +52,13 @@ public class Items extends Feature {
             });
         }
         if (VanillaTweaks.config.content.enableSlimeBucket)
-            Registry.register(Registry.ITEM, new Identifier(MODID, "slime_bucket"), SLIME_BUCKET);
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "slime_bucket"), SLIME_BUCKET);
         if (VanillaTweaks.config.content.enableStorageBlocks) {
-            Registry.register(Registry.ITEM, new Identifier(MODID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
-            Registry.register(Registry.ITEM, new Identifier(MODID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "charcoal_block"), new BlockItem(Blocks.CHARCOAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "sugar_block"), new BlockItem(Blocks.SUGAR_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "flint_block"), new BlockItem(Blocks.FLINT_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
         }
         if (VanillaTweaks.config.content.enablePedestal)
-            Registry.register(Registry.ITEM, new Identifier(MODID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
+            Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pedestal"), new BlockItem(Blocks.PEDESTAL_BLOCK, new Item.Settings().group(ItemGroup.MISC)));
     }
 }

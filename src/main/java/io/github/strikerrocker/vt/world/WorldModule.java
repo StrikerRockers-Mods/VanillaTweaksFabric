@@ -15,13 +15,11 @@ public class WorldModule extends Module {
     public static final LootConditionType KILLED_BY_OCELOT = register("killed_by_ocelot", new KilledByOcelotLootCondition.Serializer());
     public static final LootConditionType KILLED_BY_FOX = register("killed_by_fox", new KilledByFoxLootCondition.Serializer());
 
+    /**
+     * Registers LootConditionType
+     */
     private static LootConditionType register(String id, JsonSerializer<? extends LootCondition> serializer) {
         return Registry.register(Registry.LOOT_CONDITION_TYPE, new Identifier(id), new LootConditionType(serializer));
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize();
     }
 
     @Override

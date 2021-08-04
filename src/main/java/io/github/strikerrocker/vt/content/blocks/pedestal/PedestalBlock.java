@@ -55,19 +55,21 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
                     player.openHandledScreen(screenHandlerFactory);
                 }
             } else {
-                ItemStack stack = blockEntity.getStack(0);
-                if (heldItem.isEmpty()) {
-                    player.getInventory().offerOrDrop(stack);
-                    blockEntity.removeStack(0);
-                } else {
-                    player.setStackInHand(hand, stack);
-                    blockEntity.setStack(0, heldItem);
+                if (blockEntity != null) {
+                    if (heldItem.isEmpty()) {
+                        player.getInventory().offerOrDrop(blockEntity.getStack(0));
+                        blockEntity.removeStack(0);
+                    } else {
+                        player.setStackInHand(hand, blockEntity.getStack(0).copy());
+                        blockEntity.setStack(0, heldItem);
+                    }
+                    blockEntity.sync();
+                    return ActionResult.SUCCESS;
                 }
-                blockEntity.sync();
-                return ActionResult.SUCCESS;
             }
+            blockEntity.sync();
         }
-        return ActionResult.PASS;
+        return ActionResult.SUCCESS;
     }
 
     @Override

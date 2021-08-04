@@ -12,6 +12,9 @@ import net.minecraft.util.ActionResult;
 
 public class ShearNameTag extends Feature {
 
+    /**
+     * Make the nametag shear-able
+     */
     @Override
     public void initialize() {
         UseEntityCallback.EVENT.register(((player, world, hand, target, entityHitResult) -> {
@@ -20,7 +23,9 @@ public class ShearNameTag extends Feature {
                 if (heldItem.getItem() instanceof ShearsItem && target instanceof LivingEntity && target.hasCustomName() && !world.isClient) {
                     target.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1, 1);
                     ItemStack nameTag = new ItemStack(Items.NAME_TAG).setCustomName(target.getCustomName());
-                    nameTag.getTag().putInt("RepairCost", 0);
+                    if (nameTag.getNbt() != null) {
+                        nameTag.getNbt().putInt("RepairCost", 0);
+                    }
                     target.dropStack(nameTag);
                     target.setCustomName(null);
                     heldItem.damage(1, player, playerEntity -> playerEntity.sendToolBreakStatus(playerEntity.getActiveHand()));

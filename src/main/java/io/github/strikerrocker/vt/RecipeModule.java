@@ -11,8 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RecipeModule extends Module {
-    public static Map<Identifier, JsonObject> recipes = new HashMap<>();
+    public static final Map<Identifier, JsonObject> recipes = new HashMap<>();
 
+    /**
+     * Creates and registers shaped recipe via code
+     */
     public static void createShapedRecipeJson(ArrayList<Character> keys, ArrayList<Identifier> items, ArrayList<String> type, ArrayList<String> pattern, Identifier output, int count) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "minecraft:crafting_shaped");
@@ -40,6 +43,9 @@ public class RecipeModule extends Module {
         recipes.put(output, json);
     }
 
+    /**
+     * Creates and registers shapeless recipe via code
+     */
     public static void createShapelessRecipeJson(ArrayList<Identifier> ingredients, ArrayList<String> types
             , Identifier output, int count) {
         JsonObject json = new JsonObject();

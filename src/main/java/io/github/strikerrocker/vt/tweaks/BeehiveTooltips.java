@@ -9,12 +9,16 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.text.TranslatableText;
 
 public class BeehiveTooltips extends Feature {
+
+    /**
+     * Shows the number of bees and honey level of bee hives
+     */
     @Override
     public void initialize() {
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             if (context.isAdvanced()) {
                 if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof BeehiveBlock) {
-                    NbtCompound tag = stack.getTag();
+                    NbtCompound tag = stack.getNbt();
                     if (tag != null) {
                         NbtCompound beTag = tag.getCompound("BlockEntityTag");
                         NbtList bees = beTag.getList("Bees", 10);

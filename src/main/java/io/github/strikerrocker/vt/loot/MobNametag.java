@@ -9,6 +9,10 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 
 public class MobNametag extends Feature {
+
+    /**
+     * Makes named mob drop nametag when killed
+     */
     @Override
     public void initialize() {
         LivingEntityDeathCallback.EVENT.register((livingEntity, damageSource) -> {
@@ -16,7 +20,9 @@ public class MobNametag extends Feature {
             if (!world.isClient && world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT) && damageSource != null && VanillaTweaks.config.loot.namedMobsDropNameTag && livingEntity.hasCustomName()) {
                 ItemStack nameTag = new ItemStack(Items.NAME_TAG);
                 nameTag.setCustomName(livingEntity.getCustomName());
-                nameTag.getTag().putInt("RepairCost", 0);
+                if (nameTag.getNbt() != null) {
+                    nameTag.getNbt().putInt("RepairCost", 0);
+                }
                 livingEntity.dropStack(nameTag);
                 livingEntity.setCustomName(null);
             }

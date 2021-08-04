@@ -12,14 +12,20 @@ public abstract class Module {
 
     public abstract void addFeatures();
 
+    /**
+     * Initializes the module
+     */
     public void initialize() {
         features.values().forEach(Feature::initialize);
     }
 
+    /**
+     * Register the given feature
+     *
+     * @param name    The name of the feature
+     * @param feature The feature
+     */
     protected void registerFeature(String name, Feature feature) {
         features.put(name, feature);
-        feature.setName(name);
-        feature.setModule(this);
     }
-
 }

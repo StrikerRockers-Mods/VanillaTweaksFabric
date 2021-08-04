@@ -23,7 +23,7 @@ public class VanillaTweaks implements ModInitializer {
     /**
      * Vanilla Tweaks mod ID
      */
-    public static final String MODID = "vanillatweaks";
+    public static final String MOD_ID = "vanillatweaks";
     public static ModConfig config;
 
     @Override

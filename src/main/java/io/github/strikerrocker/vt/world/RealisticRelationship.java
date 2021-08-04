@@ -36,6 +36,9 @@ public class RealisticRelationship extends Feature {
             });
     }
 
+    /**
+     * Add the given LootCondition to given LootTable ID
+     */
     public void addLootCondition(LootCondition condition, Identifier id_to_replace, LootManager manager, Identifier loot_table_id, LootTableSetter setter) {
         if (loot_table_id.equals(id_to_replace) && manager.getTable(id_to_replace) instanceof FabricLootSupplier supplier) {
             LootContextType contextType = supplier.getType();

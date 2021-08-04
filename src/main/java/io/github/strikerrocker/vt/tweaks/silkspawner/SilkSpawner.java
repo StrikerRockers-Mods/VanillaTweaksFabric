@@ -23,6 +23,7 @@ public class SilkSpawner extends Feature {
     @Override
     public void initialize() {
         mobSpawnerItem = Blocks.SPAWNER.asItem();
+        // Handles spawner block entity placement
         BlockPlaceCallback.EVENT.register((world, pos, blockState, entity) -> {
             if (entity instanceof PlayerEntity playerEntity && entity.getActiveHand() != null) {
                 ItemStack mainHand = playerEntity.getMainHandStack();
@@ -32,8 +33,8 @@ public class SilkSpawner extends Feature {
                     stack = mainHand;
                 else if (offHand.getItem() == mobSpawnerItem)
                     stack = offHand;
-                if (VanillaTweaks.config.tweaks.enableSilkSpawner && stack != null && stack.hasTag()) {
-                    NbtCompound stackTag = stack.getTag();
+                if (VanillaTweaks.config.tweaks.enableSilkSpawner && stack != null && stack.hasNbt()) {
+                    NbtCompound stackTag = stack.getNbt();
                     assert stackTag != null;
                     NbtCompound spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
                     if (!spawnerDataNBT.isEmpty()) {
@@ -45,6 +46,7 @@ public class SilkSpawner extends Feature {
                 }
             }
         });
+        //Handles spawner blocking  logic
         BlockBreakCallback.EVENT.register((world, pos, blockState, playerEntity) -> {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             int lvl = EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandStack());
@@ -54,7 +56,7 @@ public class SilkSpawner extends Feature {
                 NbtCompound stackTag = new NbtCompound();
                 spawnerData.remove("Delay");
                 stackTag.put(SPAWNER_TAG, spawnerData);
-                drop.setTag(stackTag);
+                drop.setNbt(stackTag);
 
                 Block.dropStack(blockEntity.getWorld(), pos, drop);
             }

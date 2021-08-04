@@ -16,10 +16,13 @@ import java.util.Map;
 
 @Mixin(RecipeManager.class)
 public class MixinRecipeManager {
+    /**
+     * Injects recipes generated in code
+     */
     @Inject(method = "apply", at = @At("HEAD"))
     public void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
         RecipeModule.recipes.forEach((identifier, jsonObject) -> {
-            map.put(new Identifier(VanillaTweaks.MODID, "vanilla_recipes/" + identifier.getPath()), jsonObject);
+            map.put(new Identifier(VanillaTweaks.MOD_ID, "vanilla_recipes/" + identifier.getPath()), jsonObject);
             VanillaTweaks.LOGGER.info("Added " + identifier + " recipe");
         });
     }

@@ -8,11 +8,13 @@ import net.minecraft.util.ActionResult;
 
 public class ItemFrameReverse extends Feature {
 
+    /**
+     * Rotates the item frame in reverse when shift right clicked
+     */
     @Override
     public void initialize() {
         UseEntityCallback.EVENT.register(((player, world, hand, target, entityHitResult) -> {
-            if (VanillaTweaks.config.tweaks.itemFrameRotateBackwards && target instanceof ItemFrameEntity && player.isSneaking()) {
-                ItemFrameEntity frame = (ItemFrameEntity) target;
+            if (VanillaTweaks.config.tweaks.itemFrameRotateBackwards && target instanceof ItemFrameEntity frame && player.isSneaking()) {
                 int rotation = frame.getRotation() - 1;
                 if (rotation < 0)
                     rotation = 7;

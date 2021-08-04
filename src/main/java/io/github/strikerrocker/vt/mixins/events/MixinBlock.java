@@ -16,12 +16,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Block.class)
 public class MixinBlock {
-
+    /**
+     * Fires block place callback
+     */
     @Inject(method = "onPlaced", at = @At("RETURN"))
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
         BlockPlaceCallback.EVENT.invoker().onPlaced(world, pos, state, placer);
     }
 
+    /**
+     * Fires block break callback
+     */
     @Inject(method = "onBreak", at = @At("RETURN"))
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfo callbackInfo) {
         BlockBreakCallback.EVENT.invoker().onBreak(world, pos, state, player);

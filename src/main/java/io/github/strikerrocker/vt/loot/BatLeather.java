@@ -11,6 +11,9 @@ import net.minecraft.world.World;
 
 public class BatLeather extends Feature {
 
+    /**
+     * Adds the chance of leather dropping when bat is killed
+     */
     @Override
     public void initialize() {
         LivingEntityDeathCallback.EVENT.register((livingEntity, damageSource) -> {

@@ -13,12 +13,12 @@ public class NoMoreLavaPocketGen extends Feature {
     @Override
     public void initialize() {
         if (VanillaTweaks.config.world.disableLavaPockets) {
-            BiomeModifications.create(new Identifier(VanillaTweaks.MODID, "lava_pocket_removal_double")).
+            BiomeModifications.create(new Identifier(VanillaTweaks.MOD_ID, "lava_pocket_removal_double")).
                     add(ModificationPhase.REMOVALS,
                             BiomeSelectors.foundInTheNether(),
                             biomeModificationContext ->
                                     biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("spring_closed"))));
-            BiomeModifications.create(new Identifier(VanillaTweaks.MODID, "lava_pocket_removal")).
+            BiomeModifications.create(new Identifier(VanillaTweaks.MOD_ID, "lava_pocket_removal")).
                     add(ModificationPhase.REMOVALS,
                             BiomeSelectors.foundInTheNether(),
                             biomeModificationContext ->

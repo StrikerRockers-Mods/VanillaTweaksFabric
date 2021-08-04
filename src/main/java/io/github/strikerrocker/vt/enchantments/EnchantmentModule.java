@@ -1,11 +1,9 @@
 package io.github.strikerrocker.vt.enchantments;
 
-import com.google.common.collect.Lists;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Module;
 import io.github.strikerrocker.vt.events.EntityEquipmentChangeCallback;
 import io.github.strikerrocker.vt.misc.ConeShape;
-import io.github.strikerrocker.vt.mixins.enchantments.MixinServerWorld;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.enchantment.Enchantment;
@@ -32,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static io.github.strikerrocker.vt.VanillaTweaks.MODID;
+import static io.github.strikerrocker.vt.VanillaTweaks.MOD_ID;
 
 public class EnchantmentModule extends Module {
 
@@ -42,14 +40,15 @@ public class EnchantmentModule extends Module {
 
     @Override
     public void initialize() {
-        enchantments.put("blazing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "blazing"), new BlazingEnchantment()));
-        enchantments.put("hops", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "hops"), new HopsEnchantment()));
-        enchantments.put("nimble", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "nimble"), new NimbleEnchantment()));
-        enchantments.put("siphon", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "siphon"), new SiphonEnchantment()));
-        enchantments.put("veteran", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "veteran"), new VeteranEnchantment()));
-        enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "vigor"), new VigorEnchantment()));
-        enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MODID, "homing"), new HomingEnchantment()));
+        enchantments.put("blazing", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "blazing"), new BlazingEnchantment()));
+        enchantments.put("hops", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "hops"), new HopsEnchantment()));
+        enchantments.put("nimble", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "nimble"), new NimbleEnchantment()));
+        enchantments.put("siphon", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), new SiphonEnchantment()));
+        enchantments.put("veteran", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "veteran"), new VeteranEnchantment()));
+        enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "vigor"), new VigorEnchantment()));
+        enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "homing"), new HomingEnchantment()));
         super.initialize();
+        //Nimble, Vigor and Hops functionality
         EntityEquipmentChangeCallback.EVENT.register(((entity, slot, from, to) -> {
             if (VanillaTweaks.config.enchanting.enableNimble) {
                 int enchantmentLevel = EnchantmentHelper.getLevel(enchantments.get("nimble"), entity.getEquippedStack(EquipmentSlot.FEET));
@@ -93,24 +92,21 @@ public class EnchantmentModule extends Module {
                 }
             }
         }));
+        //Veteran functionality
         ServerTickEvents.START_WORLD_TICK.register(serverWorld -> {
             if (VanillaTweaks.config.enchanting.enableVeteran && serverWorld != null && !serverWorld.isClient) {
                 serverWorld.getEntitiesByType(EntityType.EXPERIENCE_ORB, EntityPredicates.VALID_ENTITY).forEach(VeteranEnchantment::attemptToMove);
             }
         });
+        //Homing functionality
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming) {
                 if (arrow.getOwner() instanceof PlayerEntity player) {
                     ItemStack stack = player.getActiveItem();
                     int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
                     if (lvl > 0) {
-                        List<Entity> entities = Lists.newArrayList();
                         Box coneBound = ConeShape.getConeBounds(player, lvl);
-                        ((MixinServerWorld) world).getServerEntityManager().getLookup().forEachIntersects(coneBound, (entity1 -> {
-                            if (!entity1.getUuid().equals(player.getUuid())) {
-                                entities.add(entity);
-                            }
-                        }));
+                        List<Entity> entities = world.getOtherEntities(null, coneBound);
                         LivingEntity target = null;
                         for (Entity entity1 : entities) {
                             if (entity1 instanceof LivingEntity livingEntity && player.canSee(entity1)) {

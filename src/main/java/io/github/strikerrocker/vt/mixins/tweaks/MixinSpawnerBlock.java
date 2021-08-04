@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.mixins.tweaks;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SpawnerBlock;
@@ -13,14 +14,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * Silk Spawner Functionality
- */
 @Mixin(SpawnerBlock.class)
 public class MixinSpawnerBlock {
+
+    /*
+     * Cancels experience drop when spawner is silk touched
+     */
     @Inject(method = "onStacksDropped", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockWithEntity;onStacksDropped(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER), cancellable = true)
     public void cancelXP(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack, CallbackInfo ci) {
-        if (FabricToolTags.PICKAXES.contains(stack.getItem()) && EnchantmentHelper.get(stack).containsKey(Enchantments.SILK_TOUCH)) {
+        if (FabricToolTags.PICKAXES.contains(stack.getItem()) && EnchantmentHelper.get(stack).containsKey(Enchantments.SILK_TOUCH)
+                && VanillaTweaks.config.tweaks.enableSilkSpawner) {
             ci.cancel();
         }
     }

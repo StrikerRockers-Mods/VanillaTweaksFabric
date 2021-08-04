@@ -18,6 +18,9 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public class MixinLivingEntity {
+    /**
+     * Fires living entity tick callback
+     */
     @Inject(at = @At(value = "INVOKE_STRING",
             target = "Lnet/minecraft/util/profiler/Profiler;push(Ljava/lang/String;)V",
             args = "ldc=livingEntityBaseTick"
@@ -26,11 +29,17 @@ public class MixinLivingEntity {
         LivingEntityTickCallback.EVENT.invoker().update((LivingEntity) (Object) this);
     }
 
+    /**
+     * Fires living entity death callback
+     */
     @Inject(method = "onDeath", at = @At("RETURN"))
     public void onDeath(DamageSource damageSource, CallbackInfo callbackInfo) {
         LivingEntityDeathCallback.EVENT.invoker().onDeath((LivingEntity) (Object) this, damageSource);
     }
 
+    /**
+     * Fires living entity change equipment callback
+     */
     @Inject(method = "getEquipment", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;areEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z", shift = At.Shift.BY, by = 2),
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void entityEquip(CallbackInfoReturnable<Map<EquipmentSlot, ItemStack>> cir, Map map, EquipmentSlot[] var2, int var3, int var4, EquipmentSlot equipmentSlot, ItemStack itemStack3, ItemStack itemStack4) {
