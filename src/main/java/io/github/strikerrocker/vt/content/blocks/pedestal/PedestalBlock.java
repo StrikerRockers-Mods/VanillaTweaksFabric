@@ -35,7 +35,7 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
     private final VoxelShape PEDESTAL_VOXEL_SHAPE = VoxelShapes.union(BASE, DECO1, PILLAR, DECO2, TOP);
 
     public PedestalBlock() {
-        super(Block.Settings.of(Material.STONE, MapColor.TERRACOTTA_GRAY).strength(2.0f, 10.0f));
+        super(Settings.of(Material.STONE, MapColor.TERRACOTTA_GRAY).strength(2.0f, 10.0f));
         this.setDefaultState(this.getStateManager().getDefaultState().with(WATERLOGGED, false));
     }
 
@@ -49,13 +49,13 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
         if (!world.isClient) {
             ItemStack heldItem = player.getStackInHand(hand);
             PedestalBlockEntity blockEntity = (PedestalBlockEntity) world.getBlockEntity(pos);
-            if (player.isSneaking()) {
-                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
-                if (screenHandlerFactory != null) {
-                    player.openHandledScreen(screenHandlerFactory);
-                }
-            } else {
-                if (blockEntity != null) {
+            if (blockEntity != null) {
+                if (player.isSneaking()) {
+                    NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
+                    if (screenHandlerFactory != null) {
+                        player.openHandledScreen(screenHandlerFactory);
+                    }
+                } else {
                     if (heldItem.isEmpty()) {
                         player.getInventory().offerOrDrop(blockEntity.getStack(0));
                         blockEntity.removeStack(0);
@@ -66,8 +66,8 @@ public class PedestalBlock extends BlockWithEntity implements Waterloggable {
                     blockEntity.sync();
                     return ActionResult.SUCCESS;
                 }
+                blockEntity.sync();
             }
-            blockEntity.sync();
         }
         return ActionResult.SUCCESS;
     }

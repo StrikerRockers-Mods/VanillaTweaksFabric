@@ -7,7 +7,7 @@ import net.minecraft.entity.damage.DamageSource;
 
 public interface LivingEntityDeathCallback {
     Event<LivingEntityDeathCallback> EVENT = EventFactory.createArrayBacked(LivingEntityDeathCallback.class,
-            (listeners) -> ((livingEntity, damageSource) -> {
+            listeners -> ((livingEntity, damageSource) -> {
                 for (LivingEntityDeathCallback livingEntityDeathCallback : listeners) {
                     livingEntityDeathCallback.onDeath(livingEntity, damageSource);
                 }

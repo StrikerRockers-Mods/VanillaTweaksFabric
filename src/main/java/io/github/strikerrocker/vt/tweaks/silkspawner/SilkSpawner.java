@@ -12,28 +12,20 @@ import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 
 public class SilkSpawner extends Feature {
     protected static final String SPAWNER_TAG = "SilkSpawnerData";
-    private static Item mobSpawnerItem = null;
 
     @Override
     public void initialize() {
-        mobSpawnerItem = Blocks.SPAWNER.asItem();
         // Handles spawner block entity placement
         BlockPlaceCallback.EVENT.register((world, pos, blockState, entity) -> {
-            if (entity instanceof PlayerEntity playerEntity && entity.getActiveHand() != null) {
-                ItemStack mainHand = playerEntity.getMainHandStack();
-                ItemStack offHand = playerEntity.getOffHandStack();
-                ItemStack stack = null;
-                if (mainHand.getItem() == mobSpawnerItem)
-                    stack = mainHand;
-                else if (offHand.getItem() == mobSpawnerItem)
-                    stack = offHand;
-                if (VanillaTweaks.config.tweaks.enableSilkSpawner && stack != null && stack.hasNbt()) {
+            if (entity instanceof PlayerEntity playerEntity) {
+                ItemStack stack = playerEntity.getActiveItem();
+                if (VanillaTweaks.config.tweaks.enableSilkSpawner && !stack.isEmpty() && stack.hasNbt() && stack.getItem() == Items.SPAWNER) {
                     NbtCompound stackTag = stack.getNbt();
                     assert stackTag != null;
                     NbtCompound spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
@@ -58,7 +50,7 @@ public class SilkSpawner extends Feature {
                 stackTag.put(SPAWNER_TAG, spawnerData);
                 drop.setNbt(stackTag);
 
-                Block.dropStack(blockEntity.getWorld(), pos, drop);
+                Block.dropStack(playerEntity.getEntityWorld(), pos, drop);
             }
         });
     }

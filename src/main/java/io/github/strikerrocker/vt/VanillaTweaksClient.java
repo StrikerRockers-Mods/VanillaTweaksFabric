@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class VanillaTweaksClient implements ClientModInitializer {
-    public static final List<Module> clientModules = new ArrayList<>();
+    private static final List<Module> clientModules = new ArrayList<>();
 
     static {
         Collections.addAll(clientModules, new ClientContentModule(), new ClientTweaksModule());

@@ -30,6 +30,6 @@ public class HopsEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.FEET) && VanillaTweaks.config.enchanting.enableHops;
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.FEET) && VanillaTweaks.config.enchanting.enableHops;
     }
 }

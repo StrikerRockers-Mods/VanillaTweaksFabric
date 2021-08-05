@@ -83,7 +83,7 @@ public class DynamiteEntity extends ThrownItemEntity {
                 this.dropItem(Items.DYNAMITE);
                 this.remove(RemovalReason.DISCARDED);
             } else {
-                if (hitResult instanceof EntityHitResult && ((EntityHitResult) hitResult).getEntity() instanceof DynamiteEntity) {
+                if (hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof DynamiteEntity) {
                     return;
                 } else {
                     BlockPos pos = getBlockPos();

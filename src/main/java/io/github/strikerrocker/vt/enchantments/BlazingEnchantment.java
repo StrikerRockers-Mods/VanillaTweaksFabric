@@ -36,14 +36,14 @@ public class BlazingEnchantment extends Enchantment {
             itemToBeChecked = dropList.get(stacksIndex);
             simpleInv.setStack(0, itemToBeChecked);
             smeltingResult = recipeManager.getFirstMatch(RecipeType.SMELTING, simpleInv, entity.world);
-            if (smeltingResult.isPresent() && entity instanceof PlayerEntity) {
+            if (smeltingResult.isPresent() && entity instanceof PlayerEntity playerEntity) {
                 int count = itemToBeChecked.getCount();
                 if (EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool) > 0) {
                     count = getFortuneCount(world.getRandom(), count, EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool));
-                    tool.damage(Math.max(count - 1, 3), (PlayerEntity) entity, (player) -> player.sendToolBreakStatus(((PlayerEntity) entity).getActiveHand()));
+                    tool.damage(Math.max(count - 1, 3), playerEntity, player -> player.sendToolBreakStatus(player.getActiveHand()));
                 }
                 dropList.set(stacksIndex, new ItemStack(smeltingResult.get().getOutput().getItem(), count));
-                ((PlayerEntity) entity).addExperience((int) (smeltingResult.get().getExperience() * itemToBeChecked.getCount()));
+                playerEntity.addExperience((int) (smeltingResult.get().getExperience() * itemToBeChecked.getCount()));
             }
         }
 

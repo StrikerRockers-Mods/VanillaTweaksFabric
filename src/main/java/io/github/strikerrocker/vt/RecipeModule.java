@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import io.github.strikerrocker.vt.base.Module;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RecipeModule extends Module {
@@ -16,7 +16,7 @@ public class RecipeModule extends Module {
     /**
      * Creates and registers shaped recipe via code
      */
-    public static void createShapedRecipeJson(ArrayList<Character> keys, ArrayList<Identifier> items, ArrayList<String> type, ArrayList<String> pattern, Identifier output, int count) {
+    public static void createShapedRecipeJson(List<Character> keys, List<Identifier> items, List<String> type, List<String> pattern, Identifier output, int count) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "minecraft:crafting_shaped");
         JsonArray jsonArray = new JsonArray();
@@ -46,7 +46,7 @@ public class RecipeModule extends Module {
     /**
      * Creates and registers shapeless recipe via code
      */
-    public static void createShapelessRecipeJson(ArrayList<Identifier> ingredients, ArrayList<String> types
+    public static void createShapelessRecipeJson(List<Identifier> ingredients, List<String> types
             , Identifier output, int count) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "minecraft:crafting_shapeless");

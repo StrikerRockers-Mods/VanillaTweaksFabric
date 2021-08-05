@@ -30,6 +30,6 @@ public class VigorEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem && ((ArmorItem) stack.getItem()).getSlotType().equals(EquipmentSlot.CHEST) && VanillaTweaks.config.enchanting.enableVigor;
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.CHEST) && VanillaTweaks.config.enchanting.enableVigor;
     }
 }

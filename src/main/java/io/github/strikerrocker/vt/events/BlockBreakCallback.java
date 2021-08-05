@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public interface BlockBreakCallback {
     Event<BlockBreakCallback> EVENT = EventFactory.createArrayBacked(BlockBreakCallback.class,
-            (listeners) -> ((world, pos, blockState, player) -> {
+            listeners -> ((world, pos, blockState, player) -> {
                 for (BlockBreakCallback blockBreakCallback : listeners) {
                     blockBreakCallback.onBreak(world, pos, blockState, player);
                 }

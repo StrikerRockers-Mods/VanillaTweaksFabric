@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public interface BlockPlaceCallback {
     Event<BlockPlaceCallback> EVENT = EventFactory.createArrayBacked(BlockPlaceCallback.class,
-            (listeners) -> ((world, pos, blockState, entity) -> {
+            listeners -> ((world, pos, blockState, entity) -> {
                 for (BlockPlaceCallback blockPlaceCallback : listeners) {
                     blockPlaceCallback.onPlaced(world, pos, blockState, entity);
                 }

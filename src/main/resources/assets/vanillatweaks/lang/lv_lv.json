@@ -31,9 +31,6 @@
   "enchantment.vanillatweaks.blazing": "Liesmojošs",
   "enchantment.vanillatweaks.siphon": "Sifons",
   "enchantment.vanillatweaks.homing": "Sekojošs",
-  "_comment": "keybinds",
-  "key.vt:zoom": "Pievilkšanas Taustiņš",
-  "key.category.vt": "VanillaTweaks",
   "_comment": "misc",
   "entity.dynamite": "Dinamīts",
   "tooltip.entity": "Rodas: %s"

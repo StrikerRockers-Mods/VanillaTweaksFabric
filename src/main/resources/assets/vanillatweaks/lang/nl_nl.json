@@ -31,9 +31,6 @@
   "enchantment.vanillatweaks.blazing": "Vlammend",
   "enchantment.vanillatweaks.siphon": "Hevel",
   "enchantment.vanillatweaks.homing": "Doelzoekend",
-  "_comment": "keybinds",
-  "key.category.vt": "VanilleAanpassingen",
-  "key.vt:zoom": "Inzoem Toets",
   "_comment": "misc",
   "entity.dynamite": "Dynamiet",
   "tooltip.entity": "Brengt voort: %s"

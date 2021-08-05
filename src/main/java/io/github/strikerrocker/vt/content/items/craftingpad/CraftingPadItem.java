@@ -28,12 +28,12 @@ public class CraftingPadItem extends Item {
         return TypedActionResult.success(user.getStackInHand(hand), world.isClient);
     }
 
-    private NamedScreenHandlerFactory createScreenHandlerFactory(World world_1, BlockPos blockPos_1) {
+    private NamedScreenHandlerFactory createScreenHandlerFactory(World world, BlockPos blockPos) {
         return new SimpleNamedScreenHandlerFactory(
-                (int_1, playerInventory_1, playerEntity_1)
+                (id, playerInventory, playerEntity)
                         ->
-                        new CraftingPadScreenHandler(int_1, playerInventory_1,
-                                ScreenHandlerContext.create(world_1, blockPos_1)),
+                        new CraftingPadScreenHandler(id, playerInventory,
+                                ScreenHandlerContext.create(world, blockPos)),
                 new TranslatableText("item.vanillatweaks.crafting_pad")
         );
     }

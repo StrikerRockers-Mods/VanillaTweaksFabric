@@ -33,7 +33,7 @@ public abstract class MixinItemEntity extends Entity {
      */
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"))
     public void tick(CallbackInfo callbackInfo) {
-        if (getStack().getItem() instanceof BlockItem && ((BlockItem) getStack().getItem()).getBlock() instanceof PlantBlock && VanillaTweaks.config.tweaks.selfPlanting && age > 20) {
+        if (getStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PlantBlock && VanillaTweaks.config.tweaks.selfPlanting && age > 20) {
             ItemStack stack = this.getStack();
             BlockPos pos = getBlockPos();
             if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)

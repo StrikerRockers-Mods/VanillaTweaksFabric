@@ -20,9 +20,9 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class RealisticRelationship extends Feature {
-    private static final Identifier SHEEP_LOOT_TABLE_ID = new Identifier("minecraft", "entities/sheep");
-    private static final Identifier CHICKEN_LOOT_TABLE_ID = new Identifier("minecraft", "entities/chicken");
-    private static final Identifier RABBIT_LOOT_TABLE_ID = new Identifier("minecraft", "entities/rabbit");
+    private static final Identifier SHEEP_LOOT_TABLE_ID = new Identifier("entities/sheep");
+    private static final Identifier CHICKEN_LOOT_TABLE_ID = new Identifier("entities/chicken");
+    private static final Identifier RABBIT_LOOT_TABLE_ID = new Identifier("entities/rabbit");
 
     @Override
     public void initialize() {
@@ -39,8 +39,8 @@ public class RealisticRelationship extends Feature {
     /**
      * Add the given LootCondition to given LootTable ID
      */
-    public void addLootCondition(LootCondition condition, Identifier id_to_replace, LootManager manager, Identifier loot_table_id, LootTableSetter setter) {
-        if (loot_table_id.equals(id_to_replace) && manager.getTable(id_to_replace) instanceof FabricLootSupplier supplier) {
+    public void addLootCondition(LootCondition condition, Identifier idToReplace, LootManager manager, Identifier lootTableId, LootTableSetter setter) {
+        if (lootTableId.equals(idToReplace) && manager.getTable(idToReplace) instanceof FabricLootSupplier supplier) {
             LootContextType contextType = supplier.getType();
             List<LootPool> pools = supplier.getPools();
             List<LootFunction> functions = supplier.getFunctions();

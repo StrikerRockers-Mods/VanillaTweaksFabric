@@ -18,9 +18,9 @@ public class SiphonEnchantment extends Enchantment {
     }
 
     public static List<ItemStack> siphonLogic(Entity entity, List<ItemStack> dropList) {
-        if (entity instanceof PlayerEntity) {
+        if (entity instanceof PlayerEntity playerEntity) {
             ArrayList<ItemStack> newDropList = new ArrayList<>(dropList);
-            newDropList.removeIf(((PlayerEntity) entity)::giveItemStack);
+            newDropList.removeIf(playerEntity::giveItemStack);
             return newDropList;
         }
         return dropList;

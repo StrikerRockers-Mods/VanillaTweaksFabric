@@ -38,16 +38,9 @@
   "enchantment.vanillatweaks.blazing.desc": "Автоматично топи всичко което блокчето дропва.",
   "enchantment.vanillatweaks.siphon.desc": "Всички минирани блокчета веднага отиват в твоп инвентар.",
   "enchantment.vanillatweaks.homing.desc": "Твойте стрели ще олучат точно твоята цел.",
-  "_comment": "keybinds",
-  "key.category.vt": "VanillaTweaks",
-  "key.vt:zoom": "Zoom Key",
   "_comment": "misc",
   "entity.dynamite": "Динамит",
   "tooltip.entity": "Spawns: %s",
-  "advancements.vt.crafting_pad": "Vanilla Tweaks",
-  "advancements.vt.fried_egg": "Fried Egg!!",
-  "advancements.vt.crafting_pad.desc": "Craft an Crafting Pad",
-  "advancements.vt.fried_egg.desc": "Smelt an Egg",
   "slime.chunk": "§aSlime Chunk",
   "slime.chunk.false": "Not a Slime Chunk"
 }

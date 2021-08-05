@@ -31,9 +31,6 @@
   "enchantment.vanillatweaks.blazing": "Brûlant",
   "enchantment.vanillatweaks.siphon": "Siphon",
   "enchantment.vanillatweaks.homing": "La Prise D'origine",
-  "_comment": "keybinds",
-  "key.category.vt": "VanillaTweaks",
-  "key.vt:zoom": "Zoom Key",
   "_comment": "misc",
   "entity.dynamite": "Dynamite",
   "tooltip.entity": "Spawns: %s"

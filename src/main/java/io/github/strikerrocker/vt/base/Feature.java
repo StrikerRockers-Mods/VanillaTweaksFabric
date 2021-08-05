@@ -1,7 +1,7 @@
 package io.github.strikerrocker.vt.base;
 
 /**
- * Base class for Feature's
+ * Base class for Features
  */
 public abstract class Feature {
 

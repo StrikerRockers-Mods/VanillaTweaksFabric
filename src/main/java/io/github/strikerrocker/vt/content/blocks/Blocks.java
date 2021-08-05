@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -21,9 +22,9 @@ import net.minecraft.util.registry.Registry;
 import static io.github.strikerrocker.vt.VanillaTweaks.MOD_ID;
 
 public class Blocks extends Feature {
-    public static final Block CHARCOAL_BLOCK = new Block(Block.Settings.of(Material.STONE, MapColor.BLACK).strength(5.0f, 10.0f));
+    public static final Block CHARCOAL_BLOCK = new Block(Settings.of(Material.STONE, MapColor.BLACK).strength(5.0f, 10.0f));
     public static final Block SUGAR_BLOCK = new Block(FabricBlockSettings.of(Material.AGGREGATE, MapColor.TERRACOTTA_WHITE).strength(0.5f, 0.5f).sounds(BlockSoundGroup.SAND));
-    public static final Block FLINT_BLOCK = new Block(Block.Settings.of(Material.AGGREGATE, MapColor.BROWN).strength(1.0f, 10.0f));
+    public static final Block FLINT_BLOCK = new Block(Settings.of(Material.AGGREGATE, MapColor.BROWN).strength(1.0f, 10.0f));
     public static final Block PEDESTAL_BLOCK = new PedestalBlock();
     public static final Identifier PEDESTAL_IDENTIFIER = new Identifier(MOD_ID, "pedestal");
     public static final ScreenHandlerType<PedestalScreenHandler> PEDESTAL_SCREEN_HANDLER;

@@ -31,9 +31,6 @@
   "enchantment.vanillatweaks.blazing": "Flameante",
   "enchantment.vanillatweaks.siphon": "Sifón",
   "enchantment.vanillatweaks.homing": "Buscador de Blancos",
-  "_comment": "keybinds",
-  "key.category.vt": "VanillaTweaks",
-  "key.vt:zoom": "Zoom Key",
   "_comment": "misc",
   "entity.dynamite": "Dynamite",
   "tooltip.entity": "Spawns: %s"

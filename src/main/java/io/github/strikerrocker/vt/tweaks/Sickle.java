@@ -5,6 +5,7 @@ import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.minecraft.block.*;
 import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
@@ -22,6 +23,17 @@ public class Sickle extends Feature {
     }
 
     /**
+     * Get the range for sickle harvesting based on type of hoe
+     */
+    private int getRange(Item item) {
+        if (item == Items.DIAMOND_HOE)
+            return 2;
+        else if (item == Items.NETHERITE_HOE)
+            return 3;
+        else return 1;
+    }
+
+    /**
      * Handles crop harvesting more than one block when using hoe
      */
     @Override
@@ -29,11 +41,7 @@ public class Sickle extends Feature {
         AttackBlockCallback.EVENT.register(((player, world, hand, blockPos, direction) -> {
             ItemStack stack = player.getStackInHand(hand);
             if (!stack.isEmpty() && stack.getItem() instanceof HoeItem && canHarvest(world.getBlockState(blockPos)) && VanillaTweaks.config.tweaks.hoeActsAsSickle) {
-                int range = 1;
-                if (stack.getItem() == Items.DIAMOND_HOE)
-                    range++;
-                if (stack.getItem() == Items.NETHERITE_HOE)
-                    range += 2;
+                int range = getRange(stack.getItem());
                 for (int i = -range; i < range + 1; i++) {
                     for (int k = -range; k < range + 1; k++) {
                         if (i == 0 && k == 0)

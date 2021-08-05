@@ -6,7 +6,7 @@ import net.minecraft.entity.LivingEntity;
 
 public interface LivingEntityTickCallback {
     Event<LivingEntityTickCallback> EVENT = EventFactory.createArrayBacked(LivingEntityTickCallback.class,
-            (listeners) -> (livingEntity -> {
+            listeners -> (livingEntity -> {
                 for (LivingEntityTickCallback livingEntityTickCallback : listeners) {
                     livingEntityTickCallback.update(livingEntity);
                 }

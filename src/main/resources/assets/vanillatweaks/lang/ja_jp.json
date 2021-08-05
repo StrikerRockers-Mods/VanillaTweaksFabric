@@ -31,9 +31,6 @@
   "enchantment.vanillatweaks.blazing": "炎々",
   "enchantment.vanillatweaks.siphon": "サイフォン",
   "enchantment.vanillatweaks.homing": "ホーミング",
-  "_comment": "keybinds",
-  "key.category.vt": "VanillaTweaks",
-  "key.vt:zoom": "Zoom Key",
   "_comment": "misc",
   "entity.dynamite": "Dynamite",
   "tooltip.entity": "Spawns: %s"

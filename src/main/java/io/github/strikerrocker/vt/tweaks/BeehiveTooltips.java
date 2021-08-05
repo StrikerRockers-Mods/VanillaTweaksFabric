@@ -16,18 +16,16 @@ public class BeehiveTooltips extends Feature {
     @Override
     public void initialize() {
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
-            if (context.isAdvanced()) {
-                if (stack.getItem() instanceof BlockItem && ((BlockItem) stack.getItem()).getBlock() instanceof BeehiveBlock) {
-                    NbtCompound tag = stack.getNbt();
-                    if (tag != null) {
-                        NbtCompound beTag = tag.getCompound("BlockEntityTag");
-                        NbtList bees = beTag.getList("Bees", 10);
-                        int numBees = bees.size();
-                        NbtCompound blockStateTag = tag.getCompound("BlockStateTag");
-                        String honeyLvl = blockStateTag.getString("honey_level");
-                        lines.add(new TranslatableText("vanillatweaks.bees").append(String.format("%d", numBees)));
-                        lines.add(new TranslatableText("vanillatweaks.honey.lvl").append(String.format("%s", honeyLvl)));
-                    }
+            if (context.isAdvanced() && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof BeehiveBlock) {
+                NbtCompound tag = stack.getNbt();
+                if (tag != null) {
+                    NbtCompound beTag = tag.getCompound("BlockEntityTag");
+                    NbtList bees = beTag.getList("Bees", 10);
+                    int numBees = bees.size();
+                    NbtCompound blockStateTag = tag.getCompound("BlockStateTag");
+                    String honeyLvl = blockStateTag.getString("honey_level");
+                    lines.add(new TranslatableText("vanillatweaks.bees").append(String.format("%d", numBees)));
+                    lines.add(new TranslatableText("vanillatweaks.honey.lvl").append(String.format("%s", honeyLvl)));
                 }
             }
         });

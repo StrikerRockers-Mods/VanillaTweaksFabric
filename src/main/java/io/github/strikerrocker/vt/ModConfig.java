@@ -75,6 +75,7 @@ public class ModConfig implements ConfigData {
         public boolean selfPlanting = true;
 
     }
+
     public static class World {
         @ConfigEntry.Gui.RequiresRestart
         public boolean realisticRelationship = true;

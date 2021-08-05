@@ -55,27 +55,31 @@ public class EnchantmentModule extends Module {
                 EntityAttributeInstance speedAttribute = entity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
                 EntityAttributeModifier speedModifier = new EntityAttributeModifier(nimbleUUID, "Nimble",
                         (float) enchantmentLevel * 0.20000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-                if (enchantmentLevel > 0) {
-                    if (speedAttribute.getModifier(nimbleUUID) == null) {
-                        speedAttribute.addPersistentModifier(speedModifier);
+                if (speedAttribute != null) {
+                    if (enchantmentLevel > 0) {
+                        if (speedAttribute.getModifier(nimbleUUID) == null) {
+                            speedAttribute.addPersistentModifier(speedModifier);
+                        }
+                    } else if (speedAttribute.getModifier(nimbleUUID) != null) {
+                        speedAttribute.removeModifier(speedModifier);
                     }
-                } else if (speedAttribute.getModifier(nimbleUUID) != null) {
-                    speedAttribute.removeModifier(speedModifier);
                 }
             }
             if (VanillaTweaks.config.enchanting.enableVigor) {
                 int lvl = EnchantmentHelper.getLevel(enchantments.get("vigor"), entity.getEquippedStack(EquipmentSlot.CHEST));
                 EntityAttributeInstance vigorAttribute = entity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH);
                 EntityAttributeModifier vigorModifier = new EntityAttributeModifier(vigorUUID, "vigor", (float) lvl / 10, EntityAttributeModifier.Operation.MULTIPLY_BASE);
-                if (lvl > 0) {
-                    if (vigorAttribute.getModifier(vigorUUID) == null) {
-                        vigorAttribute.addPersistentModifier(vigorModifier);
-                    }
-                } else {
-                    if (vigorAttribute.getModifier(vigorUUID) != null) {
-                        vigorAttribute.removeModifier(vigorModifier);
-                        if (entity.getHealth() > entity.getMaxHealth())
-                            entity.setHealth(entity.getMaxHealth());
+                if (vigorAttribute != null) {
+                    if (lvl > 0) {
+                        if (vigorAttribute.getModifier(vigorUUID) == null) {
+                            vigorAttribute.addPersistentModifier(vigorModifier);
+                        }
+                    } else {
+                        if (vigorAttribute.getModifier(vigorUUID) != null) {
+                            vigorAttribute.removeModifier(vigorModifier);
+                            if (entity.getHealth() > entity.getMaxHealth())
+                                entity.setHealth(entity.getMaxHealth());
+                        }
                     }
                 }
             }
@@ -100,25 +104,24 @@ public class EnchantmentModule extends Module {
         });
         //Homing functionality
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-            if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming) {
-                if (arrow.getOwner() instanceof PlayerEntity player) {
-                    ItemStack stack = player.getActiveItem();
-                    int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
-                    if (lvl > 0) {
-                        Box coneBound = ConeShape.getConeBounds(player, lvl);
-                        List<Entity> entities = world.getOtherEntities(null, coneBound);
-                        LivingEntity target = null;
-                        for (Entity entity1 : entities) {
-                            if (entity1 instanceof LivingEntity livingEntity && player.canSee(entity1)) {
-                                target = livingEntity;
-                            }
+            if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming &&
+                    arrow.getOwner() instanceof PlayerEntity player) {
+                ItemStack stack = player.getActiveItem();
+                int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
+                if (lvl > 0) {
+                    Box coneBound = ConeShape.getConeBounds(player, lvl);
+                    List<Entity> entities = world.getOtherEntities(null, coneBound);
+                    LivingEntity target = null;
+                    for (Entity entity1 : entities) {
+                        if (entity1 instanceof LivingEntity livingEntity && player.canSee(entity1)) {
+                            target = livingEntity;
                         }
-                        if (target != null) {
-                            double x1 = target.getX() - arrow.getX();
-                            double y1 = target.getEyeY() - arrow.getY();
-                            double z1 = target.getZ() - arrow.getZ();
-                            arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
-                        }
+                    }
+                    if (target != null) {
+                        double x1 = target.getX() - arrow.getX();
+                        double y1 = target.getEyeY() - arrow.getY();
+                        double z1 = target.getZ() - arrow.getZ();
+                        arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
                     }
                 }
             }

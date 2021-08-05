@@ -8,7 +8,6 @@ import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 
 public class HomingEnchantment extends Enchantment {
-    /*private AxisAlignedBB ZERO_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);*/
 
     HomingEnchantment() {
         super(Rarity.VERY_RARE, EnchantmentTarget.BOW, new EquipmentSlot[]{EquipmentSlot.MAINHAND});

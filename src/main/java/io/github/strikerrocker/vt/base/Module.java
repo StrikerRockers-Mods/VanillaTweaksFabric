@@ -6,7 +6,7 @@ import java.util.Map;
 public abstract class Module {
     private final Map<String, Feature> features = new HashMap<>();
 
-    public Module() {
+    protected Module() {
         addFeatures();
     }
 
