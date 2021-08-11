@@ -45,4 +45,9 @@ public class SiphonEnchantment extends Enchantment {
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableSiphon;
     }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return VanillaTweaks.config.enchanting.enableSiphon;
+    }
 }

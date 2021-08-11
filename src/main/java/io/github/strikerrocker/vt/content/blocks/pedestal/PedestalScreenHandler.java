@@ -20,12 +20,13 @@ public class PedestalScreenHandler extends ScreenHandler {
         super(Blocks.PEDESTAL_SCREEN_HANDLER, id);
         this.inventory = inventory;
         addSlot(new Slot(inventory, 0, 80, 20));
+        // Add player inventory slots
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlot(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 51 + i * 18));
             }
         }
-        // Add player hotbar
+        // Add player hotbar slots
         for (int k = 0; k < 9; k++) {
             addSlot(new Slot(playerInv, k, 8 + k * 18, 109));
         }

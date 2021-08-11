@@ -8,6 +8,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,6 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemEntity.class)
 public abstract class MixinItemEntity extends Entity {
 
+    /**
+     * Counter to check and perform self planting logic only every 2 seconds
+     */
+    int lastChecked = 0;
+
     public MixinItemEntity(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -33,16 +39,20 @@ public abstract class MixinItemEntity extends Entity {
      */
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"))
     public void tick(CallbackInfo callbackInfo) {
-        if (getStack().getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PlantBlock && VanillaTweaks.config.tweaks.selfPlanting && age > 20) {
-            ItemStack stack = this.getStack();
-            BlockPos pos = getBlockPos();
-            if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)
-                pos = pos.add(0, 1, 0);
-            BlockState state = world.getBlockState(pos);
-            PlantBlock plantBlock = (PlantBlock) ((BlockItem) stack.getItem()).getBlock();
-            if (plantBlock.canPlaceAt(state, world, pos) && state.getBlock() instanceof AirBlock && !(plantBlock instanceof TallPlantBlock)) {
-                world.setBlockState(pos, ((BlockItem) stack.getItem()).getBlock().getDefaultState());
-                stack.decrement(1);
+        ItemStack stack = this.getStack();
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PlantBlock plantBlock && VanillaTweaks.config.world.selfPlanting && age > 20) {
+            if (lastChecked > 40) {
+                lastChecked = 0;
+                BlockPos pos = getBlockPos();
+                if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)
+                    pos = pos.offset(Direction.UP);
+                BlockState state = world.getBlockState(pos);
+                if (plantBlock.canPlaceAt(state, world, pos) && state.getBlock() instanceof AirBlock && !(plantBlock instanceof TallPlantBlock)) {
+                    world.setBlockState(pos, ((BlockItem) stack.getItem()).getBlock().getDefaultState());
+                    stack.decrement(1);
+                }
+            } else {
+                lastChecked++;
             }
         }
     }

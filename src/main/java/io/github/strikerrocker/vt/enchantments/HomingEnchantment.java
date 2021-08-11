@@ -32,4 +32,9 @@ public class HomingEnchantment extends Enchantment {
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof BowItem && VanillaTweaks.config.enchanting.enableHoming;
     }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return VanillaTweaks.config.enchanting.enableHoming;
+    }
 }

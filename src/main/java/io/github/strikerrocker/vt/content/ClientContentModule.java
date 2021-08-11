@@ -3,7 +3,7 @@ package io.github.strikerrocker.vt.content;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Module;
 import io.github.strikerrocker.vt.content.blocks.Blocks;
-import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalBlockEntityRenderer;
+import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalRenderer;
 import io.github.strikerrocker.vt.content.blocks.pedestal.PedestalScreen;
 import io.github.strikerrocker.vt.misc.EntitySpawnPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -36,7 +36,7 @@ public class ClientContentModule extends Module {
     @Override
     public void initialize() {
         ScreenRegistry.register(Blocks.PEDESTAL_SCREEN_HANDLER, PedestalScreen::new);
-        BlockEntityRendererRegistry.INSTANCE.register(PEDESTAL_TYPE, PedestalBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.INSTANCE.register(PEDESTAL_TYPE, PedestalRenderer::new);
         EntityRendererRegistry.INSTANCE.register(DYNAMITE_TYPE, FlyingItemEntityRenderer::new);
         ClientPlayConnectionEvents.INIT.register((handler, client) -> receiveEntityPacket());
     }

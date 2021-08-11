@@ -28,7 +28,9 @@ public class VeteranEnchantment extends Enchantment {
             if (invertedMovementFactor > 0) {
                 invertedMovementFactor *= invertedMovementFactor;
                 Vec3d motion = entity.getVelocity();
-                entity.setVelocity(motion.x + xDiff / movementFactor * invertedMovementFactor * 0.3, motion.y + yDiff / movementFactor * invertedMovementFactor * 0.3, motion.z + zDiff / movementFactor * invertedMovementFactor * 0.3);
+                entity.setVelocity(motion.x + xDiff / movementFactor * invertedMovementFactor * 0.3,
+                        motion.y + yDiff / movementFactor * invertedMovementFactor * 0.3,
+                        motion.z + zDiff / movementFactor * invertedMovementFactor * 0.3);
             }
         }
     }
@@ -50,6 +52,12 @@ public class VeteranEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.HEAD) && VanillaTweaks.config.enchanting.enableVeteran;
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.HEAD) &&
+                VanillaTweaks.config.enchanting.enableVeteran;
+    }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return VanillaTweaks.config.enchanting.enableVeteran;
     }
 }

@@ -12,11 +12,11 @@ import net.minecraft.util.math.Direction;
 
 public class TNTIgnition extends Feature {
     /**
-     * Explode Tnt when it is beside lava or magma block
+     * Explode TNT when it is beside lava or magma block
      */
     @Override
     public void initialize() {
-        BlockPlaceCallback.EVENT.register((world, pos, blockState, entity) -> {
+        BlockPlaceCallback.EVENT.register((world, pos, blockState, entity, stack) -> {
             if (!world.isClient() && VanillaTweaks.config.tweaks.tntIgnition) {
                 if (blockState.getBlock() instanceof TntBlock) {
                     for (Direction f : Direction.values()) {

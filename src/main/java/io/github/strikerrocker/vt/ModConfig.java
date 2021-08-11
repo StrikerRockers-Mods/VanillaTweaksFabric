@@ -37,6 +37,8 @@ public class ModConfig implements ConfigData {
         public boolean enableStorageBlocks = true;
         @ConfigEntry.Gui.RequiresRestart
         public boolean enablePedestal = true;
+        public int dynamiteCooldown = 20;
+        public int dynamiteExplosionPower = 3;
     }
 
     public static class Enchanting {
@@ -72,7 +74,6 @@ public class ModConfig implements ConfigData {
         public boolean enableSignEditing = true;
         public boolean tntIgnition = true;
         public boolean enableSilkSpawner = true;
-        public boolean selfPlanting = true;
 
     }
 
@@ -80,6 +81,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.RequiresRestart
         public boolean realisticRelationship = true;
         public boolean disableLavaPockets = true;
+        public boolean selfPlanting = true;
     }
 
     public static class Recipe {

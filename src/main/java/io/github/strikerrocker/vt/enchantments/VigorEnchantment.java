@@ -15,7 +15,7 @@ public class VigorEnchantment extends Enchantment {
 
     @Override
     public int getMinPower(int level) {
-        return 5 + (level - 1) * 8;
+        return 10 + (level - 1) * 10;
     }
 
     @Override
@@ -30,6 +30,12 @@ public class VigorEnchantment extends Enchantment {
 
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.CHEST) && VanillaTweaks.config.enchanting.enableVigor;
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.CHEST) &&
+                VanillaTweaks.config.enchanting.enableVigor;
+    }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return VanillaTweaks.config.enchanting.enableVigor;
     }
 }

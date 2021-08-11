@@ -26,7 +26,7 @@ public class ArmorStandSwap extends Feature {
         //Swaps all the armor slots of armor stand and player when shift right clicked
         UseEntityCallback.EVENT.register(((player, world, hand, target, entityHitResult) -> {
             if (player.isSneaking() && VanillaTweaks.config.tweaks.enableArmorStandSwapping && !world.isClient() && !player.isSpectator()
-                    && !player.isCreative() && target instanceof ArmorStandEntity armorStand) {
+                    && target instanceof ArmorStandEntity armorStand) {
                 for (EquipmentSlot equipmentSlotType : EquipmentSlot.values()) {
                     if (equipmentSlotType.getType() == EquipmentSlot.Type.ARMOR) {
                         swapSlot(player, armorStand, equipmentSlotType);

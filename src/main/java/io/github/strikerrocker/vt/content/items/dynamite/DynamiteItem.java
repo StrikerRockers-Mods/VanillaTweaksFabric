@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.content.items.dynamite;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -22,7 +23,7 @@ public class DynamiteItem extends Item {
         if (!user.isCreative())
             itemstack.decrement(1);
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
-        user.getItemCooldownManager().set(this, 20);
+        user.getItemCooldownManager().set(this, VanillaTweaks.config.content.dynamiteCooldown);
         if (!world.isClient) {
             DynamiteEntity dynamite = new DynamiteEntity(world, user);
             dynamite.setItem(itemstack);

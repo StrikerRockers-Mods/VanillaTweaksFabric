@@ -3,6 +3,7 @@ package io.github.strikerrocker.vt.loot;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.LivingEntityDeathCallback;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.world.GameRules;
@@ -17,12 +18,11 @@ public class MobNametag extends Feature {
     public void initialize() {
         LivingEntityDeathCallback.EVENT.register((livingEntity, damageSource) -> {
             World world = livingEntity.world;
-            if (!world.isClient && world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT) && damageSource != null && VanillaTweaks.config.loot.namedMobsDropNameTag && livingEntity.hasCustomName()) {
+            if (!world.isClient && world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT) && damageSource.getAttacker() instanceof PlayerEntity &&
+                    VanillaTweaks.config.loot.namedMobsDropNameTag && livingEntity.hasCustomName()) {
                 ItemStack nameTag = new ItemStack(Items.NAME_TAG);
                 nameTag.setCustomName(livingEntity.getCustomName());
-                if (nameTag.getNbt() != null) {
-                    nameTag.getNbt().putInt("RepairCost", 0);
-                }
+                nameTag.getOrCreateNbt().putInt("RepairCost", 0);
                 livingEntity.dropStack(nameTag);
                 livingEntity.setCustomName(null);
             }

@@ -40,7 +40,8 @@ public class Sickle extends Feature {
     public void initialize() {
         AttackBlockCallback.EVENT.register(((player, world, hand, blockPos, direction) -> {
             ItemStack stack = player.getStackInHand(hand);
-            if (!stack.isEmpty() && stack.getItem() instanceof HoeItem && canHarvest(world.getBlockState(blockPos)) && VanillaTweaks.config.tweaks.hoeActsAsSickle) {
+            if (!stack.isEmpty() && stack.getItem() instanceof HoeItem && canHarvest(world.getBlockState(blockPos)) &&
+                    VanillaTweaks.config.tweaks.hoeActsAsSickle) {
                 int range = getRange(stack.getItem());
                 for (int i = -range; i < range + 1; i++) {
                     for (int k = -range; k < range + 1; k++) {

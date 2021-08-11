@@ -17,16 +17,13 @@ public class BeehiveTooltips extends Feature {
     public void initialize() {
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             if (context.isAdvanced() && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof BeehiveBlock) {
-                NbtCompound tag = stack.getNbt();
-                if (tag != null) {
-                    NbtCompound beTag = tag.getCompound("BlockEntityTag");
-                    NbtList bees = beTag.getList("Bees", 10);
-                    int numBees = bees.size();
-                    NbtCompound blockStateTag = tag.getCompound("BlockStateTag");
-                    String honeyLvl = blockStateTag.getString("honey_level");
-                    lines.add(new TranslatableText("vanillatweaks.bees").append(String.format("%d", numBees)));
-                    lines.add(new TranslatableText("vanillatweaks.honey.lvl").append(String.format("%s", honeyLvl)));
-                }
+                NbtCompound tag = stack.getOrCreateNbt();
+                NbtCompound beTag = tag.getCompound("BlockEntityTag");
+                NbtList bees = beTag.getList("Bees", 10);
+                NbtCompound blockStateTag = tag.getCompound("BlockStateTag");
+                String honeyLvl = blockStateTag.getString("honey_level");
+                lines.add(new TranslatableText("vanillatweaks.bees").append(String.format("%d", bees.size())));
+                lines.add(new TranslatableText("vanillatweaks.honey.lvl").append(String.format("%s", honeyLvl)));
             }
         });
     }

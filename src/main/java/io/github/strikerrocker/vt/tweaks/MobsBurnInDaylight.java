@@ -3,12 +3,12 @@ package io.github.strikerrocker.vt.tweaks;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.LivingEntityTickCallback;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.ZombieEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class MobsBurnInDaylight extends Feature {
 
@@ -18,18 +18,40 @@ public class MobsBurnInDaylight extends Feature {
     @Override
     public void initialize() {
         LivingEntityTickCallback.EVENT.register(livingEntity -> {
-            if (!livingEntity.world.isClient) {
-                World world = livingEntity.world;
-                if (((livingEntity instanceof CreeperEntity && VanillaTweaks.config.tweaks.creeperBurnInDaylight) || (livingEntity instanceof ZombieEntity && livingEntity.isBaby() &&
-                        VanillaTweaks.config.tweaks.babyZombieBurnInDaylight)) && world.isDay()) {
-                    float brightness = livingEntity.getBrightnessAtEyes();
-                    Random random = world.random;
-                    BlockPos blockPos = livingEntity.getBlockPos();
-                    if (brightness > 0.5 && random.nextFloat() * 30 < (brightness - 0.4) * 2 && world.isSkyVisible(blockPos)) {
-                        livingEntity.setOnFireFor(10);
+            if (((livingEntity instanceof CreeperEntity && VanillaTweaks.config.tweaks.creeperBurnInDaylight) ||
+                    (livingEntity instanceof ZombieEntity && livingEntity.isBaby() && VanillaTweaks.config.tweaks.babyZombieBurnInDaylight))) {
+                boolean flag = canBurn(livingEntity);
+                if (flag) {
+                    ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.HEAD);
+                    // Damages the helmet if its present
+                    if (!itemStack.isEmpty()) {
+                        if (itemStack.isDamageable()) {
+                            itemStack.setDamage(itemStack.getDamage() + livingEntity.getRandom().nextInt(2));
+                            if (itemStack.getDamage() >= itemStack.getMaxDamage()) {
+                                livingEntity.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
+                                livingEntity.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                            }
+                        }
+                        flag = false;
+                    }
+                    if (flag) {
+                        livingEntity.setOnFireFor(8);
                     }
                 }
             }
         });
+    }
+
+    /**
+     * Returns if entity can burn
+     */
+    boolean canBurn(LivingEntity entity) {
+        World world = entity.world;
+        if (world.isDay() && !world.isClient) {
+            float f = entity.getBrightnessAtEyes();
+            boolean bl = entity.isWet() || entity.inPowderSnow || entity.wasInPowderSnow;
+            return f > 0.5F && entity.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && !bl && world.isSkyVisible(entity.getBlockPos());
+        }
+        return false;
     }
 }

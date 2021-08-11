@@ -17,7 +17,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -105,23 +104,23 @@ public class EnchantmentModule extends Module {
         //Homing functionality
         ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
             if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming &&
-                    arrow.getOwner() instanceof PlayerEntity player) {
-                ItemStack stack = player.getActiveItem();
+                    arrow.getOwner() instanceof LivingEntity shooter) {
+                ItemStack stack = shooter.getActiveItem();
                 int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
                 if (lvl > 0) {
-                    Box coneBound = ConeShape.getConeBounds(player, lvl);
-                    List<Entity> entities = world.getOtherEntities(null, coneBound);
+                    Box coneBound = ConeShape.getConeBounds(shooter, lvl);
+                    List<Entity> potentialTargets = world.getOtherEntities(shooter, coneBound);
                     LivingEntity target = null;
-                    for (Entity entity1 : entities) {
-                        if (entity1 instanceof LivingEntity livingEntity && player.canSee(entity1)) {
+                    for (Entity potentialTarget : potentialTargets) {
+                        if (potentialTarget instanceof LivingEntity livingEntity && shooter.canSee(potentialTarget)) {
                             target = livingEntity;
                         }
                     }
                     if (target != null) {
-                        double x1 = target.getX() - arrow.getX();
-                        double y1 = target.getEyeY() - arrow.getY();
-                        double z1 = target.getZ() - arrow.getZ();
-                        arrow.setVelocity(x1, y1, z1, (float) arrow.getVelocity().length(), 0);
+                        double x = target.getX() - arrow.getX();
+                        double y = target.getEyeY() - arrow.getY();
+                        double z = target.getZ() - arrow.getZ();
+                        arrow.setVelocity(x, y, z, (float) arrow.getVelocity().length(), 0);
                     }
                 }
             }

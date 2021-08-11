@@ -1,5 +1,6 @@
 package io.github.strikerrocker.vt.content.items.dynamite;
 
+import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.content.ClientContentModule;
 import io.github.strikerrocker.vt.content.items.Items;
 import io.github.strikerrocker.vt.misc.EntitySpawnPacket;
@@ -58,9 +59,9 @@ public class DynamiteEntity extends ThrownItemEntity {
     public void tick() {
         super.tick();
         if (!this.world.isClient) {
-            if (this.isWet()) {
+            if (this.isWet())
                 getDataTracker().set(TICKS_WET, getDataTracker().get(TICKS_WET) + 1);
-            } else
+            else
                 getDataTracker().set(TICKS_WET, 0);
             if (getDataTracker().get(TICKS_WET) == 0)
                 getDataTracker().set(TICKS_SINCE_WET, getDataTracker().get(TICKS_SINCE_WET) + 1);
@@ -81,13 +82,13 @@ public class DynamiteEntity extends ThrownItemEntity {
         if (!world.isClient) {
             if (getDataTracker().get(TICKS_SINCE_WET) < WET_TICKS) {
                 this.dropItem(Items.DYNAMITE);
-                this.remove(RemovalReason.DISCARDED);
+                this.remove(RemovalReason.KILLED);
             } else {
                 if (hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof DynamiteEntity) {
                     return;
                 } else {
                     BlockPos pos = getBlockPos();
-                    world.createExplosion(this, pos.getX(), pos.getY(), pos.getZ(), 3F, Explosion.DestructionType.BREAK);
+                    world.createExplosion(this, pos.getX(), pos.getY(), pos.getZ(), VanillaTweaks.config.content.dynamiteExplosionPower, Explosion.DestructionType.BREAK);
                 }
             }
             this.remove(RemovalReason.DISCARDED);

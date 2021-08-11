@@ -22,23 +22,19 @@ public class SilkSpawner extends Feature {
     @Override
     public void initialize() {
         // Handles spawner block entity placement
-        BlockPlaceCallback.EVENT.register((world, pos, blockState, entity) -> {
-            if (entity instanceof PlayerEntity playerEntity) {
-                ItemStack stack = playerEntity.getActiveItem();
-                if (VanillaTweaks.config.tweaks.enableSilkSpawner && !stack.isEmpty() && stack.hasNbt() && stack.getItem() == Items.SPAWNER) {
-                    NbtCompound stackTag = stack.getNbt();
-                    assert stackTag != null;
-                    NbtCompound spawnerDataNBT = stackTag.getCompound(SPAWNER_TAG);
-                    if (!spawnerDataNBT.isEmpty()) {
-                        BlockEntity tile = world.getBlockEntity(pos);
-                        if (tile instanceof MobSpawnerBlockEntity) {
-                            ((MobSpawnerBlockEntity) tile).getLogic().readNbt(world, pos, spawnerDataNBT);
-                        }
+        BlockPlaceCallback.EVENT.register((world, pos, blockState, entity, stack) -> {
+            if (entity instanceof PlayerEntity playerEntity && VanillaTweaks.config.tweaks.enableSilkSpawner &&
+                    !stack.isEmpty() && stack.getItem() == Items.SPAWNER) {
+                NbtCompound spawnerDataNBT = stack.getOrCreateNbt().getCompound(SPAWNER_TAG);
+                if (!spawnerDataNBT.isEmpty()) {
+                    BlockEntity tile = world.getBlockEntity(pos);
+                    if (tile instanceof MobSpawnerBlockEntity spawner) {
+                        spawner.getLogic().readNbt(world, pos, spawnerDataNBT);
                     }
                 }
             }
         });
-        //Handles spawner blocking  logic
+        //Handles spawner breaking logic
         BlockBreakCallback.EVENT.register((world, pos, blockState, playerEntity) -> {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             int lvl = EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandStack());

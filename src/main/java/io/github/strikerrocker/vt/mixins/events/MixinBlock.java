@@ -21,7 +21,7 @@ public class MixinBlock {
      */
     @Inject(method = "onPlaced", at = @At("RETURN"))
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo callbackInfo) {
-        BlockPlaceCallback.EVENT.invoker().onPlaced(world, pos, state, placer);
+        BlockPlaceCallback.EVENT.invoker().onPlaced(world, pos, state, placer, itemStack);
     }
 
     /**
