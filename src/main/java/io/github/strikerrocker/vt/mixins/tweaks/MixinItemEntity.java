@@ -41,18 +41,20 @@ public abstract class MixinItemEntity extends Entity {
     public void tick(CallbackInfo callbackInfo) {
         ItemStack stack = this.getStack();
         if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PlantBlock plantBlock && VanillaTweaks.config.world.selfPlanting && age > 20) {
-            if (lastChecked > 40) {
-                lastChecked = 0;
-                BlockPos pos = getBlockPos();
-                if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)
-                    pos = pos.offset(Direction.UP);
-                BlockState state = world.getBlockState(pos);
-                if (plantBlock.canPlaceAt(state, world, pos) && state.getBlock() instanceof AirBlock && !(plantBlock instanceof TallPlantBlock)) {
-                    world.setBlockState(pos, ((BlockItem) stack.getItem()).getBlock().getDefaultState());
-                    stack.decrement(1);
+            if (!(plantBlock instanceof TallPlantBlock)) {
+                if (lastChecked > 40) {
+                    lastChecked = 0;
+                    BlockPos pos = getBlockPos();
+                    if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)
+                        pos = pos.offset(Direction.UP);
+                    BlockState state = world.getBlockState(pos);
+                    if (plantBlock.canPlaceAt(state, world, pos) && state.getBlock() instanceof AirBlock) {
+                        world.setBlockState(pos, ((BlockItem) stack.getItem()).getBlock().getDefaultState());
+                        stack.decrement(1);
+                    }
+                } else {
+                    lastChecked++;
                 }
-            } else {
-                lastChecked++;
             }
         }
     }
