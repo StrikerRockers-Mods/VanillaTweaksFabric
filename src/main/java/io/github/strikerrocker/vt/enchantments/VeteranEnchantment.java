@@ -60,4 +60,9 @@ public class VeteranEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return VanillaTweaks.config.enchanting.enableVeteran;
     }
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.veteranTreasureOnly;
+    }
 }

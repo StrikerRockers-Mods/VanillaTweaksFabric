@@ -50,4 +50,9 @@ public class SiphonEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return VanillaTweaks.config.enchanting.enableSiphon;
     }
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.siphonTreasureOnly;
+    }
 }

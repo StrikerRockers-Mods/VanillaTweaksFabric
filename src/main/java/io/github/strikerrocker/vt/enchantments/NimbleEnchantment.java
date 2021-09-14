@@ -38,4 +38,10 @@ public class NimbleEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return VanillaTweaks.config.enchanting.enableNimble;
     }
+
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.nimbleTreasureOnly;
+    }
 }

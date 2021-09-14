@@ -55,7 +55,6 @@ public class BlazingEnchantment extends Enchantment {
             if (i < 0) {
                 i = 0;
             }
-
             return initialCount * (i + 1);
         } else {
             return initialCount;
@@ -85,5 +84,10 @@ public class BlazingEnchantment extends Enchantment {
     @Override
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableBlazing;
+    }
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.blazingTreasureOnly;
     }
 }

@@ -56,6 +56,13 @@ public class ModConfig implements ConfigData {
         public boolean enableVigor = true;
         @ConfigEntry.Gui.RequiresRestart
         public boolean enableHoming = true;
+        public boolean blazingTreasureOnly = false;
+        public boolean hopsTreasureOnly = false;
+        public boolean nimbleTreasureOnly = false;
+        public boolean siphonTreasureOnly = false;
+        public boolean veteranTreasureOnly = false;
+        public boolean vigorTreasureOnly = false;
+        public boolean homingTreasureOnly = false;
     }
 
     public static class Loot {

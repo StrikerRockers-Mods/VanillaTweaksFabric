@@ -38,4 +38,10 @@ public class HopsEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return VanillaTweaks.config.enchanting.enableHops;
     }
+
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.hopsTreasureOnly;
+    }
 }

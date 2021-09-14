@@ -37,4 +37,9 @@ public class HomingEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return VanillaTweaks.config.enchanting.enableHoming;
     }
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.homingTreasureOnly;
+    }
 }

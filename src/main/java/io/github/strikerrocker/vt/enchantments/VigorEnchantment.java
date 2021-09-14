@@ -38,4 +38,9 @@ public class VigorEnchantment extends Enchantment {
     public boolean isAvailableForRandomSelection() {
         return VanillaTweaks.config.enchanting.enableVigor;
     }
+
+    @Override
+    public boolean isTreasure() {
+        return VanillaTweaks.config.enchanting.vigorTreasureOnly;
+    }
 }
