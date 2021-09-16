@@ -2,18 +2,29 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "vanillatweaks:content/fried_egg",
-      "vanillatweaks:content/fried_egg_smoker"
+      "vanillatweaks:content/slime_bucket"
     ]
   },
   "criteria": {
-    "has_egg": {
+    "has_slime_ball": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:egg"
+              "minecraft:slime_ball"
+            ]
+          }
+        ]
+      }
+    },
+    "has_iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_ingot"
             ]
           }
         ]
@@ -22,13 +33,14 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "vanillatweaks:content/fried_egg"
+        "recipe": "vanillatweaks:content/slime_bucket"
       }
     }
   },
   "requirements": [
     [
-      "has_egg",
+      "has_slime_ball",
+      "has_iron_ingot",
       "has_the_recipe"
     ]
   ]

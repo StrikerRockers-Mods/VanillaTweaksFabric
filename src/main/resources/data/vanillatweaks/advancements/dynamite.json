@@ -2,18 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "vanillatweaks:content/fried_egg",
-      "vanillatweaks:content/fried_egg_smoker"
+      "vanillatweaks:content/dynamite"
     ]
   },
   "criteria": {
-    "has_egg": {
+    "has_gunpowder": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:egg"
+              "minecraft:gunpowder"
             ]
           }
         ]
@@ -22,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "vanillatweaks:content/fried_egg"
+        "recipe": "vanillatweaks:content/dynamite"
       }
     }
   },
   "requirements": [
     [
-      "has_egg",
+      "has_gunpowder",
       "has_the_recipe"
     ]
   ]
