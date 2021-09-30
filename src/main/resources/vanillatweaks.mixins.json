@@ -3,12 +3,8 @@
   "package": "io.github.strikerrocker.vt.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "MixinRecipeManager",
-    "enchantments.MixinBlock",
-    "events.MixinBlock",
-    "events.MixinLivingEntity",
-    "tweaks.MixinItemEntity",
-    "tweaks.MixinSpawnerBlock"
+    "MixinRecipeManager", "enchantments.MixinBlock", "enchantments.MixinItem", "events.MixinBlock",
+    "events.MixinLivingEntity", "tweaks.MixinItemEntity", "tweaks.MixinSpawnerBlock"
   ],
   "client": [
   ],

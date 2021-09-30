@@ -6,7 +6,6 @@ import io.github.strikerrocker.vt.events.EntityEquipmentChangeCallback;
 import io.github.strikerrocker.vt.misc.ConeShape;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -19,7 +18,6 @@ import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -41,7 +39,7 @@ public class EnchantmentModule extends Module {
     private static final UUID nimbleUUID = UUID.fromString("05b61a62-ae84-492e-8536-f365b7143296");
     private static final UUID vigorUUID = UUID.fromString("18339f34-6ab5-461d-a103-9b9a3ac3eec7");
 
-    private static LivingEntity getTarget(World world, LivingEntity shooter, int homingLevel) {
+    public static LivingEntity getTarget(World world, LivingEntity shooter, int homingLevel) {
         Box coneBound = ConeShape.getConeBoundApprox(shooter, homingLevel);
         List<Entity> potentialTargets = world.getOtherEntities(shooter, coneBound);
         LivingEntity target = null;
@@ -132,19 +130,6 @@ public class EnchantmentModule extends Module {
                 }
             }
         });
-        //Adds glowing effect to the targeted entity.
-        UseItemCallback.EVENT.register(((player, world, hand) -> {
-            if (!world.isClient()) {
-                int lvl = EnchantmentHelper.getLevel(HOMING, player.getStackInHand(hand));
-                if (lvl > 0) {
-                    LivingEntity target = getTarget(world, player, lvl);
-                    if (target != null) {
-                        target.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 4, 1, true, false, false));
-                    }
-                }
-            }
-            return TypedActionResult.pass(player.getStackInHand(hand));
-        }));
     }
 
     @Override
