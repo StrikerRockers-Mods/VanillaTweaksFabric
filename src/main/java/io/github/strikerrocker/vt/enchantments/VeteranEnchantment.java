@@ -19,7 +19,7 @@ public class VeteranEnchantment extends Enchantment {
     public static void attemptToMove(Entity entity) {
         double range = 32;
         PlayerEntity closestPlayer = entity.world.getClosestPlayer(entity, range);
-        if (closestPlayer != null && EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("veteran"), closestPlayer.getEquippedStack(EquipmentSlot.HEAD)) > 0) {
+        if (closestPlayer != null && EnchantmentHelper.getLevel(EnchantmentModule.VETERAN, closestPlayer.getEquippedStack(EquipmentSlot.HEAD)) > 0) {
             double xDiff = (closestPlayer.getPos().getX() - entity.getPos().getX()) / range;
             double yDiff = (closestPlayer.getPos().getY() + closestPlayer.getStandingEyeHeight() - entity.getPos().getY()) / range;
             double zDiff = (closestPlayer.getPos().getZ() - entity.getPos().getZ()) / range;

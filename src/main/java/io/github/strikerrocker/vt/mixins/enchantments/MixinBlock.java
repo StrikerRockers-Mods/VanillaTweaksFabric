@@ -29,10 +29,10 @@ public class MixinBlock {
             method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;",
             cancellable = true)
     private static void dropLoot(BlockState state, ServerWorld world, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack tool, CallbackInfoReturnable<List<ItemStack>> ci) {
-        if (EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("blazing"), tool) != 0 && VanillaTweaks.config.enchanting.enableBlazing) {
-            BlazingEnchantment.blazingLogic(world, entity, tool, ci.getReturnValue());
+        if (EnchantmentHelper.getLevel(EnchantmentModule.BLAZING, tool) != 0 && VanillaTweaks.config.enchanting.enableBlazing) {
+            ci.setReturnValue(BlazingEnchantment.blazingLogic(world, entity, tool, ci.getReturnValue()));
         }
-        if (EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("siphon"), tool) != 0 && VanillaTweaks.config.enchanting.enableSiphon) {
+        if (EnchantmentHelper.getLevel(EnchantmentModule.SIPHON, tool) != 0 && VanillaTweaks.config.enchanting.enableSiphon) {
             ci.setReturnValue(SiphonEnchantment.siphonLogic(entity, ci.getReturnValue()));
         }
     }

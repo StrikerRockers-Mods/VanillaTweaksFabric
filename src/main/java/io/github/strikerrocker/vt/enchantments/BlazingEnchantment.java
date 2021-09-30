@@ -17,6 +17,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
 import net.minecraft.server.world.ServerWorld;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -26,27 +27,28 @@ public class BlazingEnchantment extends Enchantment {
         super(Rarity.VERY_RARE, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
-    public static void blazingLogic(ServerWorld world, Entity entity, ItemStack tool, List<ItemStack> dropList) {
+    public static List<ItemStack> blazingLogic(ServerWorld world, Entity entity, ItemStack tool, List<ItemStack> dropList) {
         RecipeManager recipeManager = world.getRecipeManager();
         Inventory simpleInv = new SimpleInventory(1);
         ItemStack itemToBeChecked;
         Optional<SmeltingRecipe> smeltingResult;
-
-        for (int stacksIndex = 0; stacksIndex < dropList.size(); stacksIndex++) {
-            itemToBeChecked = dropList.get(stacksIndex);
-            simpleInv.setStack(0, itemToBeChecked);
-            smeltingResult = recipeManager.getFirstMatch(RecipeType.SMELTING, simpleInv, entity.world);
-            if (smeltingResult.isPresent() && entity instanceof PlayerEntity playerEntity) {
-                int count = itemToBeChecked.getCount();
-                if (EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool) > 0) {
-                    count = getFortuneCount(world.getRandom(), count, EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool));
-                    tool.damage(Math.max(count - 1, 3), playerEntity, player -> player.sendToolBreakStatus(player.getActiveHand()));
+        ArrayList<ItemStack> newDropList = new ArrayList<>(dropList);
+        if (!newDropList.isEmpty())
+            for (int i = 0; i < newDropList.size(); i++) {
+                itemToBeChecked = newDropList.get(i);
+                simpleInv.setStack(0, itemToBeChecked);
+                smeltingResult = recipeManager.getFirstMatch(RecipeType.SMELTING, simpleInv, entity.world);
+                if (smeltingResult.isPresent() && entity instanceof PlayerEntity playerEntity) {
+                    int count = itemToBeChecked.getCount();
+                    if (EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool) > 0) {
+                        count = getFortuneCount(world.getRandom(), count, EnchantmentHelper.getLevel(Enchantments.FORTUNE, tool));
+                        tool.damage(Math.max(count - 1, 3), playerEntity, player -> player.sendToolBreakStatus(player.getActiveHand()));
+                    }
+                    newDropList.set(i, new ItemStack(smeltingResult.get().getOutput().getItem(), count));
+                    playerEntity.addExperience((int) (smeltingResult.get().getExperience() * itemToBeChecked.getCount()));
                 }
-                dropList.set(stacksIndex, new ItemStack(smeltingResult.get().getOutput().getItem(), count));
-                playerEntity.addExperience((int) (smeltingResult.get().getExperience() * itemToBeChecked.getCount()));
             }
-        }
-
+        return newDropList;
     }
 
     public static int getFortuneCount(Random random, int initialCount, int lvl) {

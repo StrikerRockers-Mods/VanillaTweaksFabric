@@ -6,12 +6,10 @@ import io.github.strikerrocker.vt.events.EntityEquipmentChangeCallback;
 import io.github.strikerrocker.vt.misc.ConeShape;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -21,36 +19,49 @@ import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static io.github.strikerrocker.vt.VanillaTweaks.MOD_ID;
 
 public class EnchantmentModule extends Module {
 
-    public static final Map<String, Enchantment> enchantments = new HashMap<>();
+    public static final Enchantment BLAZING = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "blazing"), new BlazingEnchantment());
+    public static final Enchantment HOPS = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "hops"), new HopsEnchantment());
+    public static final Enchantment NIMBLE = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "nimble"), new NimbleEnchantment());
+    public static final Enchantment SIPHON = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), new SiphonEnchantment());
+    public static final Enchantment VETERAN = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "veteran"), new VeteranEnchantment());
+    public static final Enchantment VIGOR = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "vigor"), new VigorEnchantment());
+    public static final Enchantment HOMING = Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "homing"), new HomingEnchantment());
     private static final UUID nimbleUUID = UUID.fromString("05b61a62-ae84-492e-8536-f365b7143296");
     private static final UUID vigorUUID = UUID.fromString("18339f34-6ab5-461d-a103-9b9a3ac3eec7");
 
+    private static LivingEntity getTarget(World world, LivingEntity shooter, int homingLevel) {
+        Box coneBound = ConeShape.getConeBoundApprox(shooter, homingLevel);
+        List<Entity> potentialTargets = world.getOtherEntities(shooter, coneBound);
+        LivingEntity target = null;
+        for (Entity potentialTarget : potentialTargets) {
+            if (potentialTarget instanceof LivingEntity livingEntity && shooter.canSee(potentialTarget)) {
+                if (livingEntity instanceof Tameable tameable && tameable.getOwnerUuid() == shooter.getUuid()) continue;
+                target = livingEntity;
+            }
+        }
+        VanillaTweaks.LOGGER.debug(coneBound);
+        VanillaTweaks.LOGGER.debug(target);
+        return target;
+    }
+
     @Override
     public void initialize() {
-        enchantments.put("blazing", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "blazing"), new BlazingEnchantment()));
-        enchantments.put("hops", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "hops"), new HopsEnchantment()));
-        enchantments.put("nimble", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "nimble"), new NimbleEnchantment()));
-        enchantments.put("siphon", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "siphon"), new SiphonEnchantment()));
-        enchantments.put("veteran", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "veteran"), new VeteranEnchantment()));
-        enchantments.put("vigor", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "vigor"), new VigorEnchantment()));
-        enchantments.put("homing", Registry.register(Registry.ENCHANTMENT, new Identifier(MOD_ID, "homing"), new HomingEnchantment()));
-        super.initialize();
-        //Nimble, Vigor and Hops functionality
         EntityEquipmentChangeCallback.EVENT.register(((entity, slot, from, to) -> {
+            //Nimble functionality
             if (VanillaTweaks.config.enchanting.enableNimble) {
-                int enchantmentLevel = EnchantmentHelper.getLevel(enchantments.get("nimble"), entity.getEquippedStack(EquipmentSlot.FEET));
+                int enchantmentLevel = EnchantmentHelper.getLevel(NIMBLE, entity.getEquippedStack(EquipmentSlot.FEET));
                 EntityAttributeInstance speedAttribute = entity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
                 EntityAttributeModifier speedModifier = new EntityAttributeModifier(nimbleUUID, "Nimble",
                         (float) enchantmentLevel * 0.20000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -64,8 +75,9 @@ public class EnchantmentModule extends Module {
                     }
                 }
             }
+            //Vigor Functionality
             if (VanillaTweaks.config.enchanting.enableVigor) {
-                int lvl = EnchantmentHelper.getLevel(enchantments.get("vigor"), entity.getEquippedStack(EquipmentSlot.CHEST));
+                int lvl = EnchantmentHelper.getLevel(VIGOR, entity.getEquippedStack(EquipmentSlot.CHEST));
                 EntityAttributeInstance vigorAttribute = entity.getAttributes().getCustomInstance(EntityAttributes.GENERIC_MAX_HEALTH);
                 EntityAttributeModifier vigorModifier = new EntityAttributeModifier(vigorUUID, "vigor", (float) lvl / 10, EntityAttributeModifier.Operation.MULTIPLY_BASE);
                 if (vigorAttribute != null) {
@@ -82,8 +94,9 @@ public class EnchantmentModule extends Module {
                     }
                 }
             }
+            //Hops functionality
             if (VanillaTweaks.config.enchanting.enableHops) {
-                int lvl = EnchantmentHelper.getLevel(enchantments.get("hops"), entity.getEquippedStack(EquipmentSlot.FEET));
+                int lvl = EnchantmentHelper.getLevel(HOPS, entity.getEquippedStack(EquipmentSlot.FEET));
                 if (lvl > 0) {
                     if (!entity.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
                         entity.addStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, Integer.MAX_VALUE, lvl, true, false, false));
@@ -106,25 +119,32 @@ public class EnchantmentModule extends Module {
             if (entity instanceof ArrowEntity arrow && VanillaTweaks.config.enchanting.enableHoming &&
                     arrow.getOwner() instanceof LivingEntity shooter) {
                 ItemStack stack = shooter.getActiveItem();
-                int lvl = EnchantmentHelper.getLevel(EnchantmentModule.enchantments.get("homing"), stack);
+                int lvl = EnchantmentHelper.getLevel(HOMING, stack);
                 if (lvl > 0) {
-                    Box coneBound = ConeShape.getConeBounds(shooter, lvl);
-                    List<Entity> potentialTargets = world.getOtherEntities(shooter, coneBound);
-                    LivingEntity target = null;
-                    for (Entity potentialTarget : potentialTargets) {
-                        if (potentialTarget instanceof LivingEntity livingEntity && shooter.canSee(potentialTarget)) {
-                            target = livingEntity;
-                        }
-                    }
+                    LivingEntity target = getTarget(world, shooter, lvl);
                     if (target != null) {
                         double x = target.getX() - arrow.getX();
                         double y = target.getEyeY() - arrow.getY();
                         double z = target.getZ() - arrow.getZ();
+                        arrow.setNoGravity(true);
                         arrow.setVelocity(x, y, z, (float) arrow.getVelocity().length(), 0);
                     }
                 }
             }
         });
+        //Adds glowing effect to the targeted entity.
+        UseItemCallback.EVENT.register(((player, world, hand) -> {
+            if (!world.isClient()) {
+                int lvl = EnchantmentHelper.getLevel(HOMING, player.getStackInHand(hand));
+                if (lvl > 0) {
+                    LivingEntity target = getTarget(world, player, lvl);
+                    if (target != null) {
+                        target.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 4, 1, true, false, false));
+                    }
+                }
+            }
+            return TypedActionResult.pass(player.getStackInHand(hand));
+        }));
     }
 
     @Override
