@@ -45,7 +45,7 @@ public class EnchantmentModule extends Module {
         LivingEntity target = null;
         for (Entity potentialTarget : potentialTargets) {
             if (potentialTarget instanceof LivingEntity livingEntity && shooter.canSee(potentialTarget)) {
-                if (livingEntity instanceof Tameable tameable && tameable.getOwnerUuid() == shooter.getUuid()) continue;
+                if (livingEntity instanceof Tameable tamed && tamed.getOwnerUuid() == shooter.getUuid()) continue;
                 target = livingEntity;
             }
         }
