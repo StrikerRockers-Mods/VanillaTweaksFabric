@@ -92,4 +92,9 @@ public class BlazingEnchantment extends Enchantment {
     public boolean isTreasure() {
         return VanillaTweaks.config.enchanting.blazingTreasureOnly;
     }
+
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return VanillaTweaks.config.enchanting.enableBlazing;
+    }
 }

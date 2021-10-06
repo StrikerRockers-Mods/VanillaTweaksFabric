@@ -43,4 +43,9 @@ public class VigorEnchantment extends Enchantment {
     public boolean isTreasure() {
         return VanillaTweaks.config.enchanting.vigorTreasureOnly;
     }
+
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return VanillaTweaks.config.enchanting.enableVigor;
+    }
 }

@@ -55,4 +55,9 @@ public class SiphonEnchantment extends Enchantment {
     public boolean isTreasure() {
         return VanillaTweaks.config.enchanting.siphonTreasureOnly;
     }
+
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return VanillaTweaks.config.enchanting.enableSiphon;
+    }
 }

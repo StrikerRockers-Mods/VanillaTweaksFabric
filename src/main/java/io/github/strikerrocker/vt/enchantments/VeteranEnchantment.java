@@ -65,4 +65,9 @@ public class VeteranEnchantment extends Enchantment {
     public boolean isTreasure() {
         return VanillaTweaks.config.enchanting.veteranTreasureOnly;
     }
+
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return VanillaTweaks.config.enchanting.enableVeteran;
+    }
 }

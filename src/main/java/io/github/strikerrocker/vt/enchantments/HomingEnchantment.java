@@ -42,4 +42,9 @@ public class HomingEnchantment extends Enchantment {
     public boolean isTreasure() {
         return VanillaTweaks.config.enchanting.homingTreasureOnly;
     }
+
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return VanillaTweaks.config.enchanting.enableHoming;
+    }
 }
