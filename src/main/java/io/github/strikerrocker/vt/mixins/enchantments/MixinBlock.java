@@ -4,14 +4,14 @@ import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.enchantments.BlazingEnchantment;
 import io.github.strikerrocker.vt.enchantments.EnchantmentModule;
 import io.github.strikerrocker.vt.enchantments.SiphonEnchantment;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -26,13 +26,13 @@ import java.util.List;
 public class MixinBlock {
     @Inject(
             at = @At("RETURN"),
-            method = "getDroppedStacks(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/BlockEntity;Lnet/minecraft/entity/Entity;Lnet/minecraft/item/ItemStack;)Ljava/util/List;",
+            method = "getDrops(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)Ljava/util/List;",
             cancellable = true)
-    private static void dropLoot(BlockState state, ServerWorld world, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack tool, CallbackInfoReturnable<List<ItemStack>> ci) {
-        if (EnchantmentHelper.getLevel(EnchantmentModule.BLAZING, tool) != 0 && VanillaTweaks.config.enchanting.enableBlazing) {
+    private static void dropLoot(BlockState state, ServerLevel world, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack tool, CallbackInfoReturnable<List<ItemStack>> ci) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentModule.BLAZING, tool) != 0 && VanillaTweaks.config.enchanting.enableBlazing) {
             ci.setReturnValue(BlazingEnchantment.blazingLogic(world, entity, tool, ci.getReturnValue()));
         }
-        if (EnchantmentHelper.getLevel(EnchantmentModule.SIPHON, tool) != 0 && VanillaTweaks.config.enchanting.enableSiphon) {
+        if (EnchantmentHelper.getItemEnchantmentLevel(EnchantmentModule.SIPHON, tool) != 0 && VanillaTweaks.config.enchanting.enableSiphon) {
             ci.setReturnValue(SiphonEnchantment.siphonLogic(entity, ci.getReturnValue()));
         }
     }

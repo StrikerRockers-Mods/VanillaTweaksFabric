@@ -2,13 +2,13 @@ package io.github.strikerrocker.vt.mixins.tweaks;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SpawnerBlock;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.SpawnerBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,9 +20,9 @@ public class MixinSpawnerBlock {
     /*
      * Cancels experience drop when spawner is silk touched
      */
-    @Inject(method = "onStacksDropped", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockWithEntity;onStacksDropped(Lnet/minecraft/block/BlockState;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER), cancellable = true)
-    public void cancelXP(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack, CallbackInfo ci) {
-        if (FabricToolTags.PICKAXES.contains(stack.getItem()) && EnchantmentHelper.get(stack).containsKey(Enchantments.SILK_TOUCH)
+    @Inject(method = "spawnAfterBreak", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/BaseEntityBlock;spawnAfterBreak(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;)V", shift = At.Shift.AFTER), cancellable = true)
+    public void cancelXP(BlockState state, ServerLevel world, BlockPos pos, ItemStack stack, CallbackInfo ci) {
+        if (FabricToolTags.PICKAXES.contains(stack.getItem()) && EnchantmentHelper.getEnchantments(stack).containsKey(Enchantments.SILK_TOUCH)
                 && VanillaTweaks.config.tweaks.enableSilkSpawner) {
             ci.cancel();
         }

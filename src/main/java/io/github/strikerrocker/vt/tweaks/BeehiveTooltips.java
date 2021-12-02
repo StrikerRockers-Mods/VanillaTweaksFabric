@@ -2,11 +2,11 @@ package io.github.strikerrocker.vt.tweaks;
 
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.minecraft.block.BeehiveBlock;
-import net.minecraft.item.BlockItem;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.BeehiveBlock;
 
 public class BeehiveTooltips extends Feature {
 
@@ -17,13 +17,13 @@ public class BeehiveTooltips extends Feature {
     public void initialize() {
         ItemTooltipCallback.EVENT.register((stack, context, lines) -> {
             if (context.isAdvanced() && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof BeehiveBlock) {
-                NbtCompound tag = stack.getOrCreateNbt();
-                NbtCompound beTag = tag.getCompound("BlockEntityTag");
-                NbtList bees = beTag.getList("Bees", 10);
-                NbtCompound blockStateTag = tag.getCompound("BlockStateTag");
+                CompoundTag tag = stack.getOrCreateTag();
+                CompoundTag beTag = tag.getCompound("BlockEntityTag");
+                ListTag bees = beTag.getList("Bees", 10);
+                CompoundTag blockStateTag = tag.getCompound("BlockStateTag");
                 String honeyLvl = blockStateTag.getString("honey_level");
-                lines.add(new TranslatableText("vanillatweaks.bees").append(String.format("%d", bees.size())));
-                lines.add(new TranslatableText("vanillatweaks.honey.lvl").append(String.format("%s", honeyLvl)));
+                lines.add(new TranslatableComponent("vanillatweaks.bees").append(String.format("%d", bees.size())));
+                lines.add(new TranslatableComponent("vanillatweaks.honey.lvl").append(String.format("%s", honeyLvl)));
             }
         });
     }

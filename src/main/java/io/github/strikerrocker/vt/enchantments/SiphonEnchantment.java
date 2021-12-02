@@ -1,38 +1,38 @@
 package io.github.strikerrocker.vt.enchantments;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SiphonEnchantment extends Enchantment {
     SiphonEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentTarget.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Rarity.UNCOMMON, EnchantmentCategory.DIGGER, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     public static List<ItemStack> siphonLogic(Entity entity, List<ItemStack> dropList) {
-        if (entity instanceof PlayerEntity playerEntity) {
+        if (entity instanceof Player playerEntity) {
             ArrayList<ItemStack> newDropList = new ArrayList<>(dropList);
-            newDropList.removeIf(playerEntity::giveItemStack);
+            newDropList.removeIf(playerEntity::addItem);
             return newDropList;
         }
         return dropList;
     }
 
     @Override
-    public int getMinPower(int level) {
+    public int getMinCost(int level) {
         return 15;
     }
 
     @Override
-    public int getMaxPower(int level) {
+    public int getMaxCost(int level) {
         return 61;
     }
 
@@ -42,22 +42,22 @@ public class SiphonEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ToolItem && VanillaTweaks.config.enchanting.enableSiphon;
+    public boolean canEnchant(ItemStack stack) {
+        return stack.getItem() instanceof TieredItem && VanillaTweaks.config.enchanting.enableSiphon;
     }
 
     @Override
-    public boolean isAvailableForRandomSelection() {
+    public boolean isDiscoverable() {
         return VanillaTweaks.config.enchanting.enableSiphon;
     }
 
     @Override
-    public boolean isTreasure() {
+    public boolean isTreasureOnly() {
         return VanillaTweaks.config.enchanting.siphonTreasureOnly;
     }
 
     @Override
-    public boolean isAvailableForEnchantedBookOffer() {
+    public boolean isTradeable() {
         return VanillaTweaks.config.enchanting.enableSiphon;
     }
 }

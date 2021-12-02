@@ -4,38 +4,39 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import io.github.strikerrocker.vt.world.WorldModule;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.LootConditionType;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.util.JsonSerializer;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public class KilledByWolfLootCondition implements LootCondition {
+public class KilledByWolfLootCondition implements LootItemCondition {
     public static final KilledByWolfLootCondition INSTANCE = new KilledByWolfLootCondition();
 
     private KilledByWolfLootCondition() {
     }
 
-    public static LootCondition.Builder builder() {
+    public static LootItemCondition.Builder builder() {
         return () -> INSTANCE;
     }
 
     @Override
-    public LootConditionType getType() {
+    public LootItemConditionType getType() {
         return WorldModule.KILLED_BY_WOLF;
     }
 
     @Override
     public boolean test(LootContext lootContext) {
-        return lootContext.get(LootContextParameters.KILLER_ENTITY) instanceof WolfEntity;
+        return lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY) instanceof Wolf;
     }
 
-    public static class Serializer implements JsonSerializer<KilledByWolfLootCondition> {
-        public void toJson(JsonObject jsonObject, KilledByWolfLootCondition killedByWolfLootCondition, JsonSerializationContext jsonSerializationContext) {
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<KilledByWolfLootCondition> {
+        @Override
+        public void serialize(JsonObject jsonObject, KilledByWolfLootCondition object, JsonSerializationContext jsonSerializationContext) {
+
         }
 
-        public KilledByWolfLootCondition fromJson(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
+        public KilledByWolfLootCondition deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
             return INSTANCE;
         }
     }

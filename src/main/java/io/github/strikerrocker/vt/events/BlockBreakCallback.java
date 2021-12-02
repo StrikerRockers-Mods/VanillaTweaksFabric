@@ -2,10 +2,10 @@ package io.github.strikerrocker.vt.events;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public interface BlockBreakCallback {
     Event<BlockBreakCallback> EVENT = EventFactory.createArrayBacked(BlockBreakCallback.class,
@@ -16,5 +16,5 @@ public interface BlockBreakCallback {
             })
     );
 
-    void onBreak(World world, BlockPos pos, BlockState blockState, PlayerEntity playerEntity);
+    void onBreak(Level world, BlockPos pos, BlockState blockState, Player playerEntity);
 }

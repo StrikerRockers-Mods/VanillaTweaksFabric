@@ -3,12 +3,12 @@ package io.github.strikerrocker.vt.tweaks;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.ShearsItem;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ShearsItem;
 
 public class ShearNameTag extends Feature {
 
@@ -18,17 +18,17 @@ public class ShearNameTag extends Feature {
     @Override
     public void initialize() {
         UseEntityCallback.EVENT.register(((player, world, hand, target, entityHitResult) -> {
-            ItemStack heldItem = player.getStackInHand(hand);
+            ItemStack heldItem = player.getItemInHand(hand);
             if (VanillaTweaks.config.tweaks.shearOffNameTag && !heldItem.isEmpty() && heldItem.getItem() instanceof ShearsItem &&
-                    target instanceof LivingEntity && target.hasCustomName() && !world.isClient) {
-                target.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1, 1);
-                ItemStack nameTag = new ItemStack(Items.NAME_TAG).setCustomName(target.getCustomName());
-                nameTag.getOrCreateNbt().putInt("RepairCost", 0);
-                target.dropStack(nameTag);
+                    target instanceof LivingEntity && target.hasCustomName() && !world.isClientSide) {
+                target.playSound(SoundEvents.SHEEP_SHEAR, 1, 1);
+                ItemStack nameTag = new ItemStack(Items.NAME_TAG).setHoverName(target.getCustomName());
+                nameTag.getOrCreateTag().putInt("RepairCost", 0);
+                target.spawnAtLocation(nameTag);
                 target.setCustomName(null);
-                heldItem.damage(1, player, playerEntity -> playerEntity.sendToolBreakStatus(playerEntity.getActiveHand()));
+                heldItem.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(playerEntity.getUsedItemHand()));
             }
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }));
     }
 }

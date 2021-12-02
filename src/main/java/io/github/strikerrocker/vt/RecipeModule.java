@@ -4,19 +4,19 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.strikerrocker.vt.base.Module;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RecipeModule extends Module {
-    public static final Map<Identifier, JsonObject> recipes = new HashMap<>();
+    public static final Map<ResourceLocation, JsonObject> recipes = new HashMap<>();
 
     /**
      * Creates and registers shaped recipe via code
      */
-    public static void createShapedRecipeJson(List<Character> keys, List<Identifier> items, List<String> type, List<String> pattern, Identifier output, int count) {
+    public static void createShapedRecipeJson(List<Character> keys, List<ResourceLocation> items, List<String> type, List<String> pattern, ResourceLocation output, int count) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "minecraft:crafting_shaped");
         JsonArray jsonArray = new JsonArray();
@@ -46,8 +46,8 @@ public class RecipeModule extends Module {
     /**
      * Creates and registers shapeless recipe via code
      */
-    public static void createShapelessRecipeJson(List<Identifier> ingredients, List<String> types
-            , Identifier output, int count) {
+    public static void createShapelessRecipeJson(List<ResourceLocation> ingredients, List<String> types
+            , ResourceLocation output, int count) {
         JsonObject json = new JsonObject();
         json.addProperty("type", "minecraft:crafting_shapeless");
         JsonArray ingredientArray = new JsonArray();
@@ -68,35 +68,35 @@ public class RecipeModule extends Module {
     @Override
     public void addFeatures() {
         if (VanillaTweaks.config.recipe.betterChestRecipe)
-            createShapedRecipeJson(Lists.newArrayList('O'), Lists.newArrayList(new Identifier("logs")), Lists.newArrayList("tag"),
+            createShapedRecipeJson(Lists.newArrayList('O'), Lists.newArrayList(new ResourceLocation("logs")), Lists.newArrayList("tag"),
                     Lists.newArrayList(
                             "OOO",
                             "O O",
                             "OOO"
-                    ), new Identifier("minecraft:chest"), 4);
+                    ), new ResourceLocation("minecraft:chest"), 4);
         if (VanillaTweaks.config.recipe.nameTag) {
-            createShapedRecipeJson(Lists.newArrayList('I', 'P'), Lists.newArrayList(new Identifier("iron_ingot"), new Identifier("paper")),
+            createShapedRecipeJson(Lists.newArrayList('I', 'P'), Lists.newArrayList(new ResourceLocation("iron_ingot"), new ResourceLocation("paper")),
                     Lists.newArrayList("item", "item"), Lists.newArrayList(
                             "  I",
                             " P ",
                             "P  "
-                    ), new Identifier("name_tag"), 1);
+                    ), new ResourceLocation("name_tag"), 1);
         }
         if (VanillaTweaks.config.recipe.woolToString)
-            createShapelessRecipeJson(Lists.newArrayList(new Identifier("wool")), Lists.newArrayList("tag"), new Identifier("string"), 4);
+            createShapelessRecipeJson(Lists.newArrayList(new ResourceLocation("wool")), Lists.newArrayList("tag"), new ResourceLocation("string"), 4);
         if (VanillaTweaks.config.recipe.betterRepeater)
-            createShapedRecipeJson(Lists.newArrayList('S', 'R', 'O'), Lists.newArrayList(new Identifier("stone"), new Identifier("redstone"), new Identifier("stick")),
+            createShapedRecipeJson(Lists.newArrayList('S', 'R', 'O'), Lists.newArrayList(new ResourceLocation("stone"), new ResourceLocation("redstone"), new ResourceLocation("stick")),
                     Lists.newArrayList("item", "item", "item"), Lists.newArrayList(
                             "R R",
                             "ORO",
                             "SSS"
-                    ), new Identifier("repeater"), 1);
+                    ), new ResourceLocation("repeater"), 1);
         if (VanillaTweaks.config.recipe.betterTrappedChestRecipe)
-            createShapedRecipeJson(Lists.newArrayList('P', 'H'), Lists.newArrayList(new Identifier("minecraft:planks"), new Identifier("tripwire_hook")),
+            createShapedRecipeJson(Lists.newArrayList('P', 'H'), Lists.newArrayList(new ResourceLocation("minecraft:planks"), new ResourceLocation("tripwire_hook")),
                     Lists.newArrayList("tag", "item"), Lists.newArrayList(
                             "PPP",
                             "PHP",
                             "PPP"
-                    ), new Identifier("trapped_chest"), 1);
+                    ), new ResourceLocation("trapped_chest"), 1);
     }
 }

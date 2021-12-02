@@ -10,19 +10,19 @@ import net.fabricmc.fabric.api.loot.v1.FabricLootSupplier;
 import net.fabricmc.fabric.api.loot.v1.FabricLootSupplierBuilder;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback;
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback.LootTableSetter;
-import net.minecraft.loot.LootManager;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.context.LootContextType;
-import net.minecraft.loot.function.LootFunction;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTables;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.List;
 
 public class RealisticRelationship extends Feature {
-    private static final Identifier SHEEP_LOOT_TABLE_ID = new Identifier("entities/sheep");
-    private static final Identifier CHICKEN_LOOT_TABLE_ID = new Identifier("entities/chicken");
-    private static final Identifier RABBIT_LOOT_TABLE_ID = new Identifier("entities/rabbit");
+    private static final ResourceLocation SHEEP_LOOT_TABLE_ID = new ResourceLocation("entities/sheep");
+    private static final ResourceLocation CHICKEN_LOOT_TABLE_ID = new ResourceLocation("entities/chicken");
+    private static final ResourceLocation RABBIT_LOOT_TABLE_ID = new ResourceLocation("entities/rabbit");
 
     @Override
     public void initialize() {
@@ -39,13 +39,13 @@ public class RealisticRelationship extends Feature {
     /**
      * Add the given LootCondition to given LootTable ID
      */
-    public void addLootCondition(LootCondition condition, Identifier idToReplace, LootManager manager, Identifier lootTableId, LootTableSetter setter) {
-        if (lootTableId.equals(idToReplace) && manager.getTable(idToReplace) instanceof FabricLootSupplier supplier) {
-            LootContextType contextType = supplier.getType();
+    public void addLootCondition(LootItemCondition condition, ResourceLocation idToReplace, LootTables manager, ResourceLocation lootTableId, LootTableSetter setter) {
+        if (lootTableId.equals(idToReplace) && manager.get(idToReplace) instanceof FabricLootSupplier supplier) {
+            LootContextParamSet contextType = supplier.getType();
             List<LootPool> pools = supplier.getPools();
-            List<LootFunction> functions = supplier.getFunctions();
+            List<LootItemFunction> functions = supplier.getFunctions();
             FabricLootSupplierBuilder replacement = FabricLootSupplierBuilder.builder();
-            replacement.type(contextType);
+            replacement.setParamSet(contextType);
             for (LootPool pool : pools) {
                 FabricLootPoolBuilder modifiablePool = FabricLootPoolBuilder.of(pool);
                 modifiablePool.withCondition(condition);

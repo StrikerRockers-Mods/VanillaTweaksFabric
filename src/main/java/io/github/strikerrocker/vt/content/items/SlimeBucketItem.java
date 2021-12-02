@@ -1,30 +1,30 @@
 package io.github.strikerrocker.vt.content.items;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkRandom;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
 
 public class SlimeBucketItem extends Item {
     SlimeBucketItem() {
-        super(new Item.Settings().group(ItemGroup.MISC).maxCount(1));
+        super(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(1));
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (!world.isClient) {
-            ChunkPos chunkpos = new ChunkPos(user.getBlockPos());
-            boolean slime = ChunkRandom.getSlimeRandom(chunkpos.x, chunkpos.z, ((StructureWorldAccess) world).getSeed(), 987234911L).nextInt(10) == 0;
-            user.sendMessage(new TranslatableText(slime ? "slime.chunk" : "slime.chunk.false"), true);
+    public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+        if (!world.isClientSide) {
+            ChunkPos chunkpos = new ChunkPos(user.blockPosition());
+            boolean slime = WorldgenRandom.seedSlimeChunk(chunkpos.x, chunkpos.z, ((WorldGenLevel) world).getSeed(), 987234911L).nextInt(10) == 0;
+            user.displayClientMessage(new TranslatableComponent(slime ? "slime.chunk" : "slime.chunk.false"), true);
         }
-        return new TypedActionResult<>(ActionResult.PASS, user.getStackInHand(hand));
+        return new InteractionResultHolder<>(InteractionResult.PASS, user.getItemInHand(hand));
     }
 }

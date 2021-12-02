@@ -3,11 +3,11 @@ package io.github.strikerrocker.vt.loot;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.LivingEntityDeathCallback;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 
 public class MobNametag extends Feature {
 
@@ -17,13 +17,13 @@ public class MobNametag extends Feature {
     @Override
     public void initialize() {
         LivingEntityDeathCallback.EVENT.register((livingEntity, damageSource) -> {
-            World world = livingEntity.world;
-            if (!world.isClient && world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT) && damageSource.getAttacker() instanceof PlayerEntity &&
+            Level world = livingEntity.level;
+            if (!world.isClientSide && world.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) && damageSource.getEntity() instanceof Player &&
                     VanillaTweaks.config.loot.namedMobsDropNameTag && livingEntity.hasCustomName()) {
                 ItemStack nameTag = new ItemStack(Items.NAME_TAG);
-                nameTag.setCustomName(livingEntity.getCustomName());
-                nameTag.getOrCreateNbt().putInt("RepairCost", 0);
-                livingEntity.dropStack(nameTag);
+                nameTag.setHoverName(livingEntity.getCustomName());
+                nameTag.getOrCreateTag().putInt("RepairCost", 0);
+                livingEntity.spawnAtLocation(nameTag);
                 livingEntity.setCustomName(null);
             }
         });

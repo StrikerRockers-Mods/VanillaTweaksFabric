@@ -4,17 +4,17 @@ import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.BlockBreakCallback;
 import io.github.strikerrocker.vt.events.BlockPlaceCallback;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SpawnerBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.MobSpawnerBlockEntity;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SpawnerBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 
 public class SilkSpawner extends Feature {
     protected static final String SPAWNER_TAG = "SilkSpawnerData";
@@ -23,13 +23,13 @@ public class SilkSpawner extends Feature {
     public void initialize() {
         // Handles spawner block entity placement
         BlockPlaceCallback.EVENT.register((world, pos, blockState, entity, stack) -> {
-            if (entity instanceof PlayerEntity playerEntity && VanillaTweaks.config.tweaks.enableSilkSpawner &&
+            if (entity instanceof Player playerEntity && VanillaTweaks.config.tweaks.enableSilkSpawner &&
                     !stack.isEmpty() && stack.getItem() == Items.SPAWNER) {
-                NbtCompound spawnerDataNBT = stack.getOrCreateNbt().getCompound(SPAWNER_TAG);
+                CompoundTag spawnerDataNBT = stack.getOrCreateTag().getCompound(SPAWNER_TAG);
                 if (!spawnerDataNBT.isEmpty()) {
                     BlockEntity tile = world.getBlockEntity(pos);
-                    if (tile instanceof MobSpawnerBlockEntity spawner) {
-                        spawner.getLogic().readNbt(world, pos, spawnerDataNBT);
+                    if (tile instanceof SpawnerBlockEntity spawner) {
+                        spawner.getSpawner().load(world, pos, spawnerDataNBT);
                     }
                 }
             }
@@ -37,16 +37,16 @@ public class SilkSpawner extends Feature {
         //Handles spawner breaking logic
         BlockBreakCallback.EVENT.register((world, pos, blockState, playerEntity) -> {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            int lvl = EnchantmentHelper.getLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandStack());
-            if (blockState.getBlock() instanceof SpawnerBlock && !world.isClient() && blockEntity instanceof MobSpawnerBlockEntity && VanillaTweaks.config.tweaks.enableSilkSpawner && lvl >= 1) {
+            int lvl = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, playerEntity.getMainHandItem());
+            if (blockState.getBlock() instanceof SpawnerBlock && !world.isClientSide() && blockEntity instanceof SpawnerBlockEntity && VanillaTweaks.config.tweaks.enableSilkSpawner && lvl >= 1) {
                 ItemStack drop = new ItemStack(Blocks.SPAWNER);
-                NbtCompound spawnerData = ((MobSpawnerBlockEntity) blockEntity).getLogic().writeNbt(world, pos, new NbtCompound());
-                NbtCompound stackTag = new NbtCompound();
+                CompoundTag spawnerData = ((SpawnerBlockEntity) blockEntity).getSpawner().save(new CompoundTag());
+                CompoundTag stackTag = new CompoundTag();
                 spawnerData.remove("Delay");
                 stackTag.put(SPAWNER_TAG, spawnerData);
-                drop.setNbt(stackTag);
+                drop.setTag(stackTag);
 
-                Block.dropStack(playerEntity.getEntityWorld(), pos, drop);
+                Block.popResource(playerEntity.getCommandSenderWorld(), pos, drop);
             }
         });
     }

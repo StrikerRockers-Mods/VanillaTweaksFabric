@@ -3,12 +3,12 @@ package io.github.strikerrocker.vt.tweaks;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.LivingEntityTickCallback;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.ZombieEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class MobsBurnInDaylight extends Feature {
 
@@ -18,24 +18,24 @@ public class MobsBurnInDaylight extends Feature {
     @Override
     public void initialize() {
         LivingEntityTickCallback.EVENT.register(livingEntity -> {
-            if (((livingEntity instanceof CreeperEntity && VanillaTweaks.config.tweaks.creeperBurnInDaylight) ||
-                    (livingEntity instanceof ZombieEntity && livingEntity.isBaby() && VanillaTweaks.config.tweaks.babyZombieBurnInDaylight))) {
+            if (((livingEntity instanceof Creeper && VanillaTweaks.config.tweaks.creeperBurnInDaylight) ||
+                    (livingEntity instanceof Zombie && livingEntity.isBaby() && VanillaTweaks.config.tweaks.babyZombieBurnInDaylight))) {
                 boolean flag = canBurn(livingEntity);
                 if (flag) {
-                    ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.HEAD);
+                    ItemStack itemStack = livingEntity.getItemBySlot(EquipmentSlot.HEAD);
                     // Damages the helmet if its present
                     if (!itemStack.isEmpty()) {
-                        if (itemStack.isDamageable()) {
-                            itemStack.setDamage(itemStack.getDamage() + livingEntity.getRandom().nextInt(2));
-                            if (itemStack.getDamage() >= itemStack.getMaxDamage()) {
-                                livingEntity.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
-                                livingEntity.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                        if (itemStack.isDamageableItem()) {
+                            itemStack.setDamageValue(itemStack.getDamageValue() + livingEntity.getRandom().nextInt(2));
+                            if (itemStack.getDamageValue() >= itemStack.getMaxDamage()) {
+                                livingEntity.broadcastBreakEvent(EquipmentSlot.HEAD);
+                                livingEntity.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
                             }
                         }
                         flag = false;
                     }
                     if (flag) {
-                        livingEntity.setOnFireFor(8);
+                        livingEntity.setSecondsOnFire(8);
                     }
                 }
             }
@@ -46,11 +46,11 @@ public class MobsBurnInDaylight extends Feature {
      * Returns if entity can burn
      */
     boolean canBurn(LivingEntity entity) {
-        World world = entity.world;
-        if (world.isDay() && !world.isClient) {
-            float f = entity.getBrightnessAtEyes();
-            boolean bl = entity.isWet() || entity.inPowderSnow || entity.wasInPowderSnow;
-            return f > 0.5F && entity.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && !bl && world.isSkyVisible(entity.getBlockPos());
+        Level world = entity.level;
+        if (world.isDay() && !world.isClientSide) {
+            float f = entity.getBrightness();
+            boolean bl = entity.isInWaterRainOrBubble() || entity.isInPowderSnow || entity.wasInPowderSnow;
+            return f > 0.5F && entity.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && !bl && world.canSeeSky(entity.blockPosition());
         }
         return false;
     }

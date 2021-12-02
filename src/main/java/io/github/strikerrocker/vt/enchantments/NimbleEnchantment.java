@@ -1,25 +1,25 @@
 package io.github.strikerrocker.vt.enchantments;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class NimbleEnchantment extends Enchantment {
 
     NimbleEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentTarget.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
+        super(Rarity.UNCOMMON, EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET});
     }
 
     @Override
-    public int getMinPower(int level) {
+    public int getMinCost(int level) {
         return 5 + (level - 1) * 8;
     }
 
     @Override
-    public int getMaxPower(int level) {
+    public int getMaxCost(int level) {
         return level * 10 + 51;
     }
 
@@ -29,24 +29,24 @@ public class NimbleEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.FEET) &&
+    public boolean canEnchant(ItemStack stack) {
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlot().equals(EquipmentSlot.FEET) &&
                 VanillaTweaks.config.enchanting.enableNimble;
     }
 
     @Override
-    public boolean isAvailableForRandomSelection() {
+    public boolean isDiscoverable() {
         return VanillaTweaks.config.enchanting.enableNimble;
     }
 
 
     @Override
-    public boolean isTreasure() {
+    public boolean isTreasureOnly() {
         return VanillaTweaks.config.enchanting.nimbleTreasureOnly;
     }
 
     @Override
-    public boolean isAvailableForEnchantedBookOffer() {
+    public boolean isTradeable() {
         return VanillaTweaks.config.enchanting.enableNimble;
     }
 }

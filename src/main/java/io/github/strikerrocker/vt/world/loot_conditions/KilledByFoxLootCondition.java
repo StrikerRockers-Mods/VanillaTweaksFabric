@@ -4,35 +4,36 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import io.github.strikerrocker.vt.world.WorldModule;
-import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.LootConditionType;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.util.JsonSerializer;
+import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public class KilledByFoxLootCondition implements LootCondition {
+public class KilledByFoxLootCondition implements LootItemCondition {
     public static final KilledByFoxLootCondition INSTANCE = new KilledByFoxLootCondition();
 
-    public static LootCondition.Builder builder() {
+    public static LootItemCondition.Builder builder() {
         return () -> INSTANCE;
     }
 
     @Override
-    public LootConditionType getType() {
+    public LootItemConditionType getType() {
         return WorldModule.KILLED_BY_FOX;
     }
 
     @Override
     public boolean test(LootContext lootContext) {
-        return lootContext.get(LootContextParameters.KILLER_ENTITY) instanceof FoxEntity;
+        return lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY) instanceof Fox;
     }
 
-    public static class Serializer implements JsonSerializer<KilledByFoxLootCondition> {
-        public void toJson(JsonObject jsonObject, KilledByFoxLootCondition killedByFoxLootCondition, JsonSerializationContext jsonSerializationContext) {
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<KilledByFoxLootCondition> {
+        @Override
+        public void serialize(JsonObject jsonObject, KilledByFoxLootCondition object, JsonSerializationContext jsonSerializationContext) {
+
         }
 
-        public KilledByFoxLootCondition fromJson(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
+        public KilledByFoxLootCondition deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
             return INSTANCE;
         }
     }

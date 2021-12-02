@@ -1,24 +1,24 @@
 package io.github.strikerrocker.vt.misc;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-public interface ImplementedInventory extends Inventory {
+public interface ImplementedInventory extends Container {
 
-    DefaultedList<ItemStack> getItems();
+    NonNullList<ItemStack> getItems();
 
     @Override
-    default int size() {
+    default int getContainerSize() {
         return getItems().size();
     }
 
     @Override
     default boolean isEmpty() {
-        for (int i = 0; i < size(); i++) {
-            ItemStack stack = getStack(i);
+        for (int i = 0; i < getContainerSize(); i++) {
+            ItemStack stack = getItem(i);
             if (!stack.isEmpty()) {
                 return false;
             }
@@ -27,43 +27,43 @@ public interface ImplementedInventory extends Inventory {
     }
 
     @Override
-    default ItemStack getStack(int slot) {
+    default ItemStack getItem(int slot) {
         return getItems().get(slot);
     }
 
     @Override
-    default ItemStack removeStack(int slot) {
-        markDirty();
-        return Inventories.removeStack(getItems(), slot);
+    default ItemStack removeItemNoUpdate(int slot) {
+        setChanged();
+        return ContainerHelper.takeItem(getItems(), slot);
     }
 
     @Override
-    default ItemStack removeStack(int slot, int count) {
-        ItemStack result = Inventories.splitStack(getItems(), slot, count);
-        markDirty();
+    default ItemStack removeItem(int slot, int count) {
+        ItemStack result = ContainerHelper.removeItem(getItems(), slot, count);
+        setChanged();
         return result;
     }
 
     @Override
-    default void setStack(int slot, ItemStack stack) {
+    default void setItem(int slot, ItemStack stack) {
         getItems().set(slot, stack);
-        if (stack.getCount() > getMaxCountPerStack()) {
-            stack.setCount(getMaxCountPerStack());
+        if (stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
         }
-        markDirty();
+        setChanged();
     }
 
     @Override
-    default void clear() {
+    default void clearContent() {
         getItems().clear();
     }
 
     @Override
-    default void markDirty() {
+    default void setChanged() {
     }
 
     @Override
-    default boolean canPlayerUse(PlayerEntity player) {
+    default boolean stillValid(Player player) {
         return true;
     }
 }

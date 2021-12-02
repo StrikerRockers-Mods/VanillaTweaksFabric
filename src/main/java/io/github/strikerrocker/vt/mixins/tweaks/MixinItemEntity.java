@@ -1,15 +1,19 @@
 package io.github.strikerrocker.vt.mixins.tweaks;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
-import net.minecraft.block.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,30 +31,30 @@ public abstract class MixinItemEntity extends Entity {
      */
     int lastChecked = 0;
 
-    public MixinItemEntity(EntityType<?> type, World world) {
+    public MixinItemEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @Shadow
-    public abstract ItemStack getStack();
+    public abstract ItemStack getItem();
 
     /**
      * Handles the planting logic
      */
-    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"))
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"))
     public void tick(CallbackInfo callbackInfo) {
-        ItemStack stack = this.getStack();
-        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PlantBlock plantBlock && VanillaTweaks.config.world.selfPlanting && age > 20) {
-            if (!(plantBlock instanceof TallPlantBlock)) {
+        ItemStack stack = this.getItem();
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof BushBlock plantBlock && VanillaTweaks.config.world.selfPlanting && tickCount > 20) {
+            if (!(plantBlock instanceof DoublePlantBlock)) {
                 if (lastChecked > 40) {
                     lastChecked = 0;
-                    BlockPos pos = getBlockPos();
-                    if (world.getBlockState(pos).getBlock() instanceof FarmlandBlock)
-                        pos = pos.offset(Direction.UP);
-                    BlockState state = world.getBlockState(pos);
-                    if (plantBlock.canPlaceAt(state, world, pos) && state.getBlock() instanceof AirBlock) {
-                        world.setBlockState(pos, ((BlockItem) stack.getItem()).getBlock().getDefaultState());
-                        stack.decrement(1);
+                    BlockPos pos = blockPosition();
+                    if (level.getBlockState(pos).getBlock() instanceof FarmBlock)
+                        pos = pos.relative(Direction.UP);
+                    BlockState state = level.getBlockState(pos);
+                    if (plantBlock.canSurvive(state, level, pos) && state.getBlock() instanceof AirBlock) {
+                        level.setBlockAndUpdate(pos, ((BlockItem) stack.getItem()).getBlock().defaultBlockState());
+                        stack.shrink(1);
                     }
                 } else {
                     lastChecked++;

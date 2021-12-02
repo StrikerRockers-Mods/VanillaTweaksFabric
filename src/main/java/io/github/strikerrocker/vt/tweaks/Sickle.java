@@ -3,14 +3,15 @@ package io.github.strikerrocker.vt.tweaks;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
-import net.minecraft.block.*;
-import net.minecraft.item.HoeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class Sickle extends Feature {
 
@@ -19,7 +20,7 @@ public class Sickle extends Feature {
      */
     private static boolean canHarvest(BlockState state) {
         Block block = state.getBlock();
-        return (block instanceof PlantBlock && !(block instanceof LilyPadBlock)) || block instanceof SugarCaneBlock;
+        return (block instanceof BushBlock && !(block instanceof WaterlilyBlock)) || block instanceof SugarCaneBlock;
     }
 
     /**
@@ -39,7 +40,7 @@ public class Sickle extends Feature {
     @Override
     public void initialize() {
         AttackBlockCallback.EVENT.register(((player, world, hand, blockPos, direction) -> {
-            ItemStack stack = player.getStackInHand(hand);
+            ItemStack stack = player.getItemInHand(hand);
             if (!stack.isEmpty() && stack.getItem() instanceof HoeItem && canHarvest(world.getBlockState(blockPos)) &&
                     VanillaTweaks.config.tweaks.hoeActsAsSickle) {
                 int range = getRange(stack.getItem());
@@ -47,20 +48,20 @@ public class Sickle extends Feature {
                     for (int k = -range; k < range + 1; k++) {
                         if (i == 0 && k == 0)
                             continue;
-                        BlockPos pos = blockPos.add(i, 0, k);
+                        BlockPos pos = blockPos.offset(i, 0, k);
                         BlockState state = world.getBlockState(pos);
                         if (canHarvest(state)) {
                             Block block = state.getBlock();
-                            if (player.canHarvest(state))
-                                block.afterBreak(world, player, pos, state, world.getBlockEntity(pos), stack);
-                            world.setBlockState(pos, Blocks.AIR.getDefaultState());
-                            world.playSound(player, player.getBlockPos(), block.getSoundGroup(state).getBreakSound(), SoundCategory.BLOCKS, 1f, 1f);
+                            if (player.hasCorrectToolForDrops(state))
+                                block.playerDestroy(world, player, pos, state, world.getBlockEntity(pos), stack);
+                            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                            world.playSound(player, player.blockPosition(), block.getSoundType(state).getBreakSound(), SoundSource.BLOCKS, 1f, 1f);
                         }
                     }
                 }
-                stack.damage(1, player, playerEntity -> playerEntity.sendToolBreakStatus(playerEntity.getActiveHand()));
+                stack.hurtAndBreak(1, player, playerEntity -> playerEntity.broadcastBreakEvent(playerEntity.getUsedItemHand()));
             }
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }));
     }
 }

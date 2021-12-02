@@ -1,22 +1,22 @@
 package io.github.strikerrocker.vt.content.blocks.pedestal;
 
 import io.github.strikerrocker.vt.content.blocks.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
-public class PedestalScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
+public class PedestalScreenHandler extends AbstractContainerMenu {
+    private final Container inventory;
 
-    public PedestalScreenHandler(int id, PlayerInventory playerInventory) {
-        this(id, playerInventory, new SimpleInventory(1));
+    public PedestalScreenHandler(int id, Inventory playerInventory) {
+        this(id, playerInventory, new SimpleContainer(1));
     }
 
-    public PedestalScreenHandler(int id, PlayerInventory playerInv, Inventory inventory) {
+    public PedestalScreenHandler(int id, Inventory playerInv, Container inventory) {
         super(Blocks.PEDESTAL_SCREEN_HANDLER, id);
         this.inventory = inventory;
         addSlot(new Slot(inventory, 0, 80, 20));
@@ -33,31 +33,31 @@ public class PedestalScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
+    public ItemStack quickMoveStack(Player player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot.hasStack()) {
-            ItemStack originalStack = slot.getStack();
+        if (slot.hasItem()) {
+            ItemStack originalStack = slot.getItem();
             newStack = originalStack.copy();
-            if (invSlot < this.inventory.size()) {
-                if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+            if (invSlot < this.inventory.getContainerSize()) {
+                if (!this.moveItemStackTo(originalStack, this.inventory.getContainerSize(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
+            } else if (!this.moveItemStackTo(originalStack, 0, this.inventory.getContainerSize(), false)) {
                 return ItemStack.EMPTY;
             }
 
             if (originalStack.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.markDirty();
+                slot.setChanged();
             }
         }
         return newStack;
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 }

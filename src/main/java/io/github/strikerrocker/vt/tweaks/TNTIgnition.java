@@ -3,12 +3,12 @@ package io.github.strikerrocker.vt.tweaks;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import io.github.strikerrocker.vt.events.BlockPlaceCallback;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MagmaBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.TntBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.MagmaBlock;
+import net.minecraft.world.level.block.TntBlock;
+import net.minecraft.world.level.material.Material;
 
 public class TNTIgnition extends Feature {
     /**
@@ -17,20 +17,20 @@ public class TNTIgnition extends Feature {
     @Override
     public void initialize() {
         BlockPlaceCallback.EVENT.register((world, pos, blockState, entity, stack) -> {
-            if (!world.isClient() && VanillaTweaks.config.tweaks.tntIgnition) {
+            if (!world.isClientSide() && VanillaTweaks.config.tweaks.tntIgnition) {
                 if (blockState.getBlock() instanceof TntBlock) {
                     for (Direction f : Direction.values()) {
-                        if (world.getBlockState(pos.offset(f)).getBlock() instanceof MagmaBlock || world.getBlockState(pos.offset(f)).getMaterial() == Material.LAVA) {
-                            TntBlock.primeTnt(world, pos);
-                            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+                        if (world.getBlockState(pos.relative(f)).getBlock() instanceof MagmaBlock || world.getBlockState(pos.relative(f)).getMaterial() == Material.LAVA) {
+                            TntBlock.explode(world, pos);
+                            world.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
                         }
                     }
                 } else if (blockState.getBlock() instanceof MagmaBlock) {
                     for (Direction f : Direction.values()) {
-                        BlockPos offsetPos = pos.offset(f);
+                        BlockPos offsetPos = pos.relative(f);
                         if (world.getBlockState(offsetPos).getBlock() instanceof TntBlock) {
-                            TntBlock.primeTnt(world, offsetPos);
-                            world.setBlockState(offsetPos, Blocks.AIR.getDefaultState(), 11);
+                            TntBlock.explode(world, offsetPos);
+                            world.setBlock(offsetPos, Blocks.AIR.defaultBlockState(), 11);
                         }
                     }
                 }

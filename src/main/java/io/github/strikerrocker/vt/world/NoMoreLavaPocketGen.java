@@ -5,24 +5,24 @@ import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 
 public class NoMoreLavaPocketGen extends Feature {
     @Override
     public void initialize() {
         if (VanillaTweaks.config.world.disableLavaPockets) {
-            BiomeModifications.create(new Identifier(VanillaTweaks.MOD_ID, "lava_pocket_removal")).
+            BiomeModifications.create(new ResourceLocation(VanillaTweaks.MOD_ID, "lava_pocket_removal")).
                     add(ModificationPhase.REMOVALS,
                             BiomeSelectors.foundInTheNether(),
                             biomeModificationContext ->
-                                    biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("spring_closed"))));
-            BiomeModifications.create(new Identifier(VanillaTweaks.MOD_ID, "lava_pocket_removal_double")).
+                                    biomeModificationContext.getGenerationSettings().removeFeature(ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, new ResourceLocation("spring_closed"))));
+            BiomeModifications.create(new ResourceLocation(VanillaTweaks.MOD_ID, "lava_pocket_removal_double")).
                     add(ModificationPhase.REMOVALS,
                             BiomeSelectors.foundInTheNether(),
                             biomeModificationContext ->
-                                    biomeModificationContext.getGenerationSettings().removeFeature(RegistryKey.of(Registry.CONFIGURED_FEATURE_KEY, new Identifier("spring_closed_double"))));
+                                    biomeModificationContext.getGenerationSettings().removeFeature(ResourceKey.create(Registry.PLACED_FEATURE_REGISTRY, new ResourceLocation("spring_closed_double"))));
         }
     }
 }

@@ -4,37 +4,37 @@ import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.content.ClientContentModule;
 import io.github.strikerrocker.vt.content.items.Items;
 import io.github.strikerrocker.vt.misc.EntitySpawnPacket;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 
-public class DynamiteEntity extends ThrownItemEntity {
+public class DynamiteEntity extends ThrowableItemProjectile {
     private static final int WET_TICKS = 20;
-    private static final TrackedData<Integer> TICKS_WET;
-    private static final TrackedData<Integer> TICKS_SINCE_WET;
+    private static final EntityDataAccessor<Integer> TICKS_WET;
+    private static final EntityDataAccessor<Integer> TICKS_SINCE_WET;
 
     static {
-        TICKS_WET = DataTracker.registerData(DynamiteEntity.class, TrackedDataHandlerRegistry.INTEGER);
-        TICKS_SINCE_WET = DataTracker.registerData(DynamiteEntity.class, TrackedDataHandlerRegistry.INTEGER);
+        TICKS_WET = SynchedEntityData.defineId(DynamiteEntity.class, EntityDataSerializers.INT);
+        TICKS_SINCE_WET = SynchedEntityData.defineId(DynamiteEntity.class, EntityDataSerializers.INT);
     }
 
-    public DynamiteEntity(EntityType<? extends ThrownItemEntity> type, World world) {
+    public DynamiteEntity(EntityType<? extends ThrowableItemProjectile> type, Level world) {
         super(type, world);
     }
 
-    DynamiteEntity(World world, LivingEntity entity) {
+    DynamiteEntity(Level world, LivingEntity entity) {
         super(Items.DYNAMITE_TYPE, entity, world);
     }
 
@@ -44,51 +44,51 @@ public class DynamiteEntity extends ThrownItemEntity {
     }
 
     @Override
-    public ItemStack getItem() {
+    public ItemStack getItemRaw() {
         return new ItemStack(Items.DYNAMITE);
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        dataTracker.startTracking(TICKS_WET, 0);
-        dataTracker.startTracking(TICKS_SINCE_WET, WET_TICKS);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TICKS_WET, 0);
+        entityData.define(TICKS_SINCE_WET, WET_TICKS);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!this.world.isClient) {
-            if (this.isWet())
-                getDataTracker().set(TICKS_WET, getDataTracker().get(TICKS_WET) + 1);
+        if (!this.level.isClientSide) {
+            if (this.isInWaterRainOrBubble())
+                getEntityData().set(TICKS_WET, getEntityData().get(TICKS_WET) + 1);
             else
-                getDataTracker().set(TICKS_WET, 0);
-            if (getDataTracker().get(TICKS_WET) == 0)
-                getDataTracker().set(TICKS_SINCE_WET, getDataTracker().get(TICKS_SINCE_WET) + 1);
+                getEntityData().set(TICKS_WET, 0);
+            if (getEntityData().get(TICKS_WET) == 0)
+                getEntityData().set(TICKS_SINCE_WET, getEntityData().get(TICKS_SINCE_WET) + 1);
             else
-                getDataTracker().set(TICKS_SINCE_WET, 0);
+                getEntityData().set(TICKS_SINCE_WET, 0);
         }
-        if (getDataTracker().get(TICKS_SINCE_WET) < WET_TICKS && !this.isSubmergedInWater())
+        if (getEntityData().get(TICKS_SINCE_WET) < WET_TICKS && !this.isUnderWater())
             for (int i = 0; i < 3; ++i) {
-                float xOffset = (random.nextFloat() * 2 - 1) * getWidth() * 0.5F;
-                float zOffset = (random.nextFloat() * 2 - 1) * getWidth() * 0.5F;
-                BlockPos pos = getBlockPos();
-                world.addParticle(ParticleTypes.DRIPPING_WATER, pos.getX() + xOffset, pos.getY(), pos.getZ() + zOffset, getVelocity().x, getVelocity().y, getVelocity().z);
+                float xOffset = (random.nextFloat() * 2 - 1) * getBbWidth() * 0.5F;
+                float zOffset = (random.nextFloat() * 2 - 1) * getBbWidth() * 0.5F;
+                BlockPos pos = blockPosition();
+                level.addParticle(ParticleTypes.DRIPPING_WATER, pos.getX() + xOffset, pos.getY(), pos.getZ() + zOffset, getDeltaMovement().x, getDeltaMovement().y, getDeltaMovement().z);
             }
     }
 
     @Override
-    protected void onCollision(HitResult hitResult) {
-        if (!world.isClient) {
-            if (getDataTracker().get(TICKS_SINCE_WET) < WET_TICKS) {
-                this.dropItem(Items.DYNAMITE);
+    protected void onHit(HitResult hitResult) {
+        if (!level.isClientSide) {
+            if (getEntityData().get(TICKS_SINCE_WET) < WET_TICKS) {
+                this.spawnAtLocation(Items.DYNAMITE);
                 this.remove(RemovalReason.KILLED);
             } else {
                 if (hitResult instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof DynamiteEntity) {
                     return;
                 } else {
-                    BlockPos pos = getBlockPos();
-                    world.createExplosion(this, pos.getX(), pos.getY(), pos.getZ(), VanillaTweaks.config.content.dynamiteExplosionPower, Explosion.DestructionType.BREAK);
+                    BlockPos pos = blockPosition();
+                    level.explode(this, pos.getX(), pos.getY(), pos.getZ(), VanillaTweaks.config.content.dynamiteExplosionPower, Explosion.BlockInteraction.BREAK);
                 }
             }
             this.remove(RemovalReason.DISCARDED);
@@ -96,12 +96,12 @@ public class DynamiteEntity extends ThrownItemEntity {
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
+    public Packet<?> getAddEntityPacket() {
         return EntitySpawnPacket.create(this, ClientContentModule.PACKET_ID);
     }
 
     @Override
-    public boolean shouldRender(double distance) {
+    public boolean shouldRenderAtSqrDistance(double distance) {
         return true;
     }
 }

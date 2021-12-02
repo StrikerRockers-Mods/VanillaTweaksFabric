@@ -1,36 +1,36 @@
 package io.github.strikerrocker.vt.content.items.dynamite;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class DynamiteItem extends Item {
     public DynamiteItem() {
-        super(new Item.Settings().group(ItemGroup.MISC).maxCount(16));
+        super(new Item.Properties().tab(CreativeModeTab.TAB_MISC).stacksTo(16));
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemstack = user.getStackInHand(hand);
+    public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+        ItemStack itemstack = user.getItemInHand(hand);
         if (!user.isCreative())
-            itemstack.decrement(1);
-        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
-        user.getItemCooldownManager().set(this, VanillaTweaks.config.content.dynamiteCooldown);
-        if (!world.isClient) {
+            itemstack.shrink(1);
+        world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
+        user.getCooldowns().addCooldown(this, VanillaTweaks.config.content.dynamiteCooldown);
+        if (!world.isClientSide) {
             DynamiteEntity dynamite = new DynamiteEntity(world, user);
             dynamite.setItem(itemstack);
-            dynamite.setProperties(user, user.getPitch(), user.getYaw(), 0, 1.5F, 0);
-            world.spawnEntity(dynamite);
+            dynamite.shootFromRotation(user, user.getXRot(), user.getYRot(), 0, 1.5F, 0);
+            world.addFreshEntity(dynamite);
         }
-        user.incrementStat(Stats.USED.getOrCreateStat(this));
-        return TypedActionResult.success(itemstack, world.isClient);
+        user.awardStat(Stats.ITEM_USED.get(this));
+        return InteractionResultHolder.sidedSuccess(itemstack, world.isClientSide);
     }
 }

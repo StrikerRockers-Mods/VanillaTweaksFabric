@@ -3,9 +3,9 @@ package io.github.strikerrocker.vt.tweaks;
 import io.github.strikerrocker.vt.VanillaTweaks;
 import io.github.strikerrocker.vt.base.Feature;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 public class SignEditing extends Feature {
 
@@ -16,13 +16,13 @@ public class SignEditing extends Feature {
     public void initialize() {
         UseBlockCallback.EVENT.register((player, world, hand, blockHitResult) -> {
             BlockEntity te = world.getBlockEntity(blockHitResult.getBlockPos());
-            if (te instanceof SignBlockEntity sign && VanillaTweaks.config.tweaks.enableSignEditing && !world.isClient && !player.isSneaking() && player.getStackInHand(hand).isEmpty()) {
+            if (te instanceof SignBlockEntity sign && VanillaTweaks.config.tweaks.enableSignEditing && !world.isClientSide && !player.isShiftKeyDown() && player.getItemInHand(hand).isEmpty()) {
                 sign.setEditable(true);
-                player.openEditSignScreen(sign);
-                player.swingHand(hand);
-                return ActionResult.SUCCESS;
+                player.openTextEdit(sign);
+                player.swing(hand);
+                return InteractionResult.SUCCESS;
             }
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         });
     }
 }

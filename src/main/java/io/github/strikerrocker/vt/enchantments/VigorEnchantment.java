@@ -1,25 +1,25 @@
 package io.github.strikerrocker.vt.enchantments;
 
 import io.github.strikerrocker.vt.VanillaTweaks;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class VigorEnchantment extends Enchantment {
 
     VigorEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentTarget.ARMOR_CHEST, new EquipmentSlot[]{EquipmentSlot.CHEST});
+        super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR_CHEST, new EquipmentSlot[]{EquipmentSlot.CHEST});
     }
 
     @Override
-    public int getMinPower(int level) {
+    public int getMinCost(int level) {
         return 10 + (level - 1) * 10;
     }
 
     @Override
-    public int getMaxPower(int level) {
+    public int getMaxCost(int level) {
         return level * 10 + 51;
     }
 
@@ -29,23 +29,23 @@ public class VigorEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlotType().equals(EquipmentSlot.CHEST) &&
+    public boolean canEnchant(ItemStack stack) {
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getSlot().equals(EquipmentSlot.CHEST) &&
                 VanillaTweaks.config.enchanting.enableVigor;
     }
 
     @Override
-    public boolean isAvailableForRandomSelection() {
+    public boolean isDiscoverable() {
         return VanillaTweaks.config.enchanting.enableVigor;
     }
 
     @Override
-    public boolean isTreasure() {
+    public boolean isTreasureOnly() {
         return VanillaTweaks.config.enchanting.vigorTreasureOnly;
     }
 
     @Override
-    public boolean isAvailableForEnchantedBookOffer() {
+    public boolean isTradeable() {
         return VanillaTweaks.config.enchanting.enableVigor;
     }
 }
